@@ -1,0 +1,11 @@
+{
+    "name": "vedranselak/web-programming-project",
+    "license": "Apache2",
+    "authors": [
+        {
+            "name": "VedranSelak",
+            "email": "selakvedran@gmail.com"
+        }
+    ],
+    "require": {}
+}
