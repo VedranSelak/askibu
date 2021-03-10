@@ -1,21 +1,10 @@
 <?php
+require_once dirname(__FILE__)."/BaseDao.class.php";
 class UserDao extends BaseDao {
 
 
   public function get_user_by_email($email){
-
-  }
-
-  public function update(){
-
-  }
-
-  public function query(){
-
-  }
-
-  public function query_unique(){
-
+    return $this->query_unique("SELECT * FROM user WHERE email = :email",["email" => $email]);
   }
 
 }
