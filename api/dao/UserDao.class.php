@@ -2,25 +2,16 @@
 require_once dirname(__FILE__)."/BaseDao.class.php";
 class UserDao extends BaseDao {
 
+  public function __construct(){
+    parent::__construct("user");
+  }
 
   public function get_user_by_email($email){
     return $this->query_unique("SELECT * FROM user WHERE email = :email",["email" => $email]);
   }
 
-  public function get_user_by_id($id){
-    return $this->query_unique("SELECT * FROM user WHERE id = :id",["id" => $id]);
-  }
-
-  public function add_user($user){
-    $this->insert("user",$user);
-  }
-
-  public function update_user($id, $user){
-    $this->update("user", $id, $user);
-  }
-
   public function update_user_by_email($email, $user){
-    $this->update("user", $email, $user, "email");
+    $this->update_by_other_id ($email, $user, "email");
   }
 
 }

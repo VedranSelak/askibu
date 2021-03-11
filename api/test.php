@@ -2,15 +2,16 @@
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
 require_once dirname(__FILE__)."/dao/DepartmentDao.class.php";
 
-$user_dao = new UserDao();
 
-$dao = new DepartmentDao();
+$dao = new UserDao();
 
-$department = [
-  "name" => "Information Technology"
+$user = [
+  "name" => "Ilma Tabak",
+  "email" => "ilma.tabak1999@stu.ibu.edu.ba",
+  "pins" => 4
 ];
 
-$dep = $dao->get_departments_by_faculty_id(1);
+$dep = $dao->update_user_by_email("ilma.tabak1999@stu.ibu.edu.ba",$user);
 
 print_r($dep);
 
