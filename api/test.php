@@ -6,13 +6,23 @@ $user_dao = new UserDao();
 //$user = $user_dao->get_user_by_id(2);
 
 $user1 = [
-  "password" => "123"
+  "name" => "Naim Secerovic",
+  "email" => "naim@stu.ibu.edu.ba",
+  "password" => "josvolimmonu",
+  "date_of_joining" => date('Y-m-d H:i:s'),
+  "faculty_id" => 1,
+  "department_id" =>1
 ];
 
-$user = $user_dao->update_user_by_email("elda@stu.ibu.edu.ba",$user1);
+// $user1 = [
+//   "name" => "Admir Krilašević",
+//   "password" => "adminpass"
+// ];
+
+$user = $user_dao->add_user($user1);
 
 //$user_dao->get_user_by_email("dino.keco@gmail.com");
 
-// print_r($user);
+print_r($user);
 
 ?>

@@ -12,8 +12,20 @@ require_once dirname(__FILE__)."/../config.php";
       }
     }
 
-    public function insert(){
-
+    public function insert($table, $entity){
+      $query = "INSERT INTO ${table} (";
+      foreach($entity as $name => $value) {
+        $query .= $name.", ";
+      }
+      $query = substr($query, 0, -2).") VALUES (";
+      foreach($entity as $name => $value) {
+        $query .= ":".$name.", ";
+      }
+      $query = substr($query, 0, -2).")";
+      $stmt = $this->connection->prepare($query);
+      $stmt->execute($entity);
+      $entity['id'] = $this->connection->lastInsertId();
+      return $entity;
     }
 
     public function update($table, $id, $entity, $id_column = "id"){
