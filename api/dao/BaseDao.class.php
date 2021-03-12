@@ -59,6 +59,10 @@ require_once dirname(__FILE__)."/../config.php";
       return $this->insert($this->table,$entity);
     }
 
+    public function get_all($offset = 0, $limit = 25){
+    return $this->query("SELECT * FROM ".$this->table." LIMIT ${limit} OFFSET {$offset}", []);
+    }
+
     protected function query($query, $params){
       $stmt = $this->connection->prepare($query);
       $stmt->execute($params);

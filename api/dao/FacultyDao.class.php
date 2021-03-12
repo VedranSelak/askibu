@@ -1,10 +1,12 @@
 <?php
-  
-  class FacultyDao extends BaseDao {
+require_once dirname(__FILE__)."/BaseDao.class.php";
 
-    public function add_faculty($faculty){
+class FacultyDao extends BaseDao {
 
-    }
+  public function __construct(){
+    parent::__construct("faculty");
   }
+  
+}
 
  ?>

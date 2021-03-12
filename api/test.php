@@ -1,18 +1,24 @@
 <?php
 require_once dirname(__FILE__)."/dao/UserDao.class.php";
 require_once dirname(__FILE__)."/dao/DepartmentDao.class.php";
+require_once dirname(__FILE__)."/dao/YearDao.class.php";
+require_once dirname(__FILE__)."/dao/FacultyDao.class.php";
+require_once dirname(__FILE__)."/dao/CourseDao.class.php";
+require_once dirname(__FILE__)."/dao/QuestionDao.class.php";
+require_once dirname(__FILE__)."/dao/AnswerDao.class.php";
 
 
-$dao = new UserDao();
+$dao = new AnswerDao();
 
-$user = [
-  "name" => "Ilma Tabak",
-  "email" => "ilma.tabak1999@stu.ibu.edu.ba",
-  "pins" => 4
+$answer = [
+  "is_pinned" => 0,
+  "content" => "Google it bro",
+  "user_id" => 5,
+  "question_id" => 1
 ];
 
-$dep = $dao->update_user_by_email("ilma.tabak1999@stu.ibu.edu.ba",$user);
+$entity = $dao->get_all();
 
-print_r($dep);
+print_r($entity);
 
 ?>
