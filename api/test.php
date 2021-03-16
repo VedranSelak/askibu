@@ -8,18 +8,13 @@ require_once dirname(__FILE__)."/dao/QuestionDao.class.php";
 require_once dirname(__FILE__)."/dao/AnswerDao.class.php";
 
 
-$dao = new UserDao();
+$dao = new DepartmentDao();
 
-$answer = [
-  "name" => "Sara Selak",
-  "email" => "sara@gmail.com",
-  "password" => "bratz",
-  "date_of_joining" => date("Y-m-d H:i:s"),
-  "faculty_id" => 1,
-  "department_id" => 1
+$dep = [
+  "name" => "Menagment & Marketing",
 ];
 
-$entity = $dao->get_all();
+$entity = $dao->get_all($_GET['offset'],$_GET['limit']);
 
 echo json_encode($entity,JSON_PRETTY_PRINT);
 
