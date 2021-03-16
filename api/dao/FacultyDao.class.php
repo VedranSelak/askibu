@@ -1,4 +1,4 @@
-<?php
+ <?php
 require_once dirname(__FILE__)."/BaseDao.class.php";
 
 class FacultyDao extends BaseDao {
@@ -6,7 +6,7 @@ class FacultyDao extends BaseDao {
   public function __construct(){
     parent::__construct("faculty");
   }
-  
+
 }
 
  ?>
