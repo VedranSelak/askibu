@@ -23,19 +23,16 @@ class UserService extends BaseService {
     if(!isset($user['department_id'])) throw new Exception("Department not set!");
 
     $availableDepartments = $this->departmentDao->get_departments_by_faculty_id($user['faculty_id']);
-    $doesExist = false;
     $department;
     foreach ($availableDepartments as $index => $dep) {
       if($dep['id'] == $user['department_id']){
         $department = $dep;
-        $doesExist = true;
         break;
-      } else {
-        $doesExist = false;
       }
     }
 
-    if($doesExist) {
+    try {
+      $this->dao->beginTransaction();
       $user = parent::add([
         "name" => $user['name'],
         "email" => $user['email'],
@@ -50,10 +47,35 @@ class UserService extends BaseService {
       ]);
 
       //TODO send email with token
+      $this->dao->commit();
       return $user;
-    } else {
-      throw new Exception("Department doesn't exist");
+    } catch (\Exception $e) {
+      $this->dao->rollBack();
+      throw $e;
     }
+
+    // try {
+    //   if($doesExist) {
+    //     $user = parent::add([
+    //       "name" => $user['name'],
+    //       "email" => $user['email'],
+    //       "password" => $user['password'],
+    //       "pins" => 0,
+    //       "date_of_joining" => $user['date_of_joining'],
+    //       "faculty_id" => $user['faculty_id'],
+    //       "department_id" => $department['id'],
+    //       "status" => "PENDING",
+    //       "role" => "USER",
+    //       "token" => md5(random_bytes(16))
+    //     ]);
+    //
+    //     //TODO send email with token
+    //     return $user;
+    //   }
+    // } catch (\Exception $e) {
+    //   throw $e;
+    // }
+
 
   }
 
