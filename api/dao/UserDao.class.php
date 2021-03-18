@@ -14,9 +14,12 @@ class UserDao extends BaseDao {
     $this->update_by_other_id ($email, $user, "email");
   }
 
-  public function get_users($search, $offset, $limit){
+  public function get_users($search, $offset, $limit, $order = '-id'){
+    list($order_column,$order_direction) = self::parse_order($order);
+
     return $this->query("SELECT * FROM users
                          WHERE LOWER(name) LIKE CONCAT('%', :name, '%')
+                         ORDER BY ${order_column} ${order_direction}
                          LIMIT ${limit} OFFSET ${offset}",["name" => strtolower($search)]);
   }
 
