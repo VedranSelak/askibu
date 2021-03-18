@@ -1,8 +1,8 @@
 <?php
 
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
-require_once dirname(__FILE__) . '/dao/UserDao.class.php';
 require_once dirname(__FILE__) . '/services/UserService.class.php';
+
 //reading query params from URL
 Flight::map('query',function($name, $default_value = NULL){
   $request = Flight::request();
@@ -10,9 +10,6 @@ Flight::map('query',function($name, $default_value = NULL){
   $query_param = $query_param ? $query_param : $default_value;
   return $query_param;
 });
-
-//register DAO layer
-Flight::register('userDao', 'UserDao');
 
 //register BLL services
 Flight::register('userService', 'UserService');
