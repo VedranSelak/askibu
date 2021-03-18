@@ -4,13 +4,8 @@
 Flight::route('GET /users', function(){
     $offset = Flight::query("offset",0);
     $limit = Flight::query("limit",10);
-
     $search = Flight::query('search');
-    if($search) {
-        Flight::json(Flight::userDao()->get_users($search, $offset, $limit));
-    } else {
-        Flight::json(Flight::userDao()->get_all($offset,$limit));
-    }
+    Flight::json(Flight::userService()->get_users($search, $offset, $limit));
 });
 
 Flight::route('GET /users/@id', function($id){
