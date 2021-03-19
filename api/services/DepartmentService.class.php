@@ -24,8 +24,8 @@ class DepartmentService extends BaseService {
     }
   }
 
-  public function get_departments($faculty_id, $offset, $limit){
-    return $this->dao->get_departments_by_faculty_id($faculty_id, $offset, $limit);
+  public function get_departments($faculty_id, $offset, $limit, $search){
+    return $this->dao->get_departments_by_faculty_id($faculty_id, $offset, $limit, $search);
   }
 }
 
