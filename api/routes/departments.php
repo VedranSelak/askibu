@@ -9,9 +9,18 @@ Flight::route('GET /departments', function(){
     Flight::json(Flight::departmentService()->get_departments($faculty_id, $offset, $limit, $search, $order));
 });
 
+Flight::route('GET /departments/@id', function($id){
+    Flight::json(Flight::departmentService()->get_by_id($id));
+});
+
 Flight::route('POST /departments', function(){
     $data = Flight::request()->data->getData();
     Flight::json(Flight::departmentService()->add($data));
+});
+
+Flight::route('PUT /departments/@id', function($id){
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::departmentService()->update($id,$data));
 });
 
  ?>
