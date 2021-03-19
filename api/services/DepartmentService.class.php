@@ -16,7 +16,8 @@ class DepartmentService extends BaseService {
     if($faculty != null){
       parent::add([
         "name" => $department['name'],
-        "faculty_id" => $faculty['id']
+        "faculty_id" => $faculty['id'],
+        "created_at" => date(Config::DATE_FORMAT)
       ]);
       return $department;
     } else {
@@ -24,8 +25,8 @@ class DepartmentService extends BaseService {
     }
   }
 
-  public function get_departments($faculty_id, $offset, $limit, $search){
-    return $this->dao->get_departments_by_faculty_id($faculty_id, $offset, $limit, $search);
+  public function get_departments($faculty_id, $offset, $limit, $search, $order){
+    return $this->dao->get_departments_by_faculty_id($faculty_id, $offset, $limit, $search, $order);
   }
 }
 

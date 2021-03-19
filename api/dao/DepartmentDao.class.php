@@ -6,8 +6,9 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
       parent::__construct("departments");
     }
 
-    public function get_departments_by_faculty_id($faculty_id, $offset, $limit,$search){
+    public function get_departments_by_faculty_id($faculty_id, $offset, $limit,$search, $order){
       $params = ['faculty_id' =>$faculty_id];
+      list($order_column, $order_direction) = self::parse_order($order);
       $query = "SELECT *
                 FROM departments
                 WHERE faculty_id = :faculty_id ";
@@ -15,7 +16,8 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
         $query .= "AND LOWER(name) LIKE CONCAT('%', :search, '%')";
         $params['search'] = strtolower($search);
       }
-
+      
+      $query .= " ORDER BY ${order_column} ${order_direction}";
       $query .= " LIMIT ${limit} OFFSET ${offset}";
 
       return $this->query($query,$params);
