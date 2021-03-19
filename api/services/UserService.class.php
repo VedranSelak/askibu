@@ -57,30 +57,6 @@ class UserService extends BaseService {
         throw $e;
       }
     }
-
-    // try {
-    //   if($doesExist) {
-    //     $user = parent::add([
-    //       "name" => $user['name'],
-    //       "email" => $user['email'],
-    //       "password" => $user['password'],
-    //       "pins" => 0,
-    //       "date_of_joining" => $user['date_of_joining'],
-    //       "faculty_id" => $user['faculty_id'],
-    //       "department_id" => $department['id'],
-    //       "status" => "PENDING",
-    //       "role" => "USER",
-    //       "token" => md5(random_bytes(16))
-    //     ]);
-    //
-    //     //TODO send email with token
-    //     return $user;
-    //   }
-    // } catch (\Exception $e) {
-    //   throw $e;
-    // }
-
-
   }
 
   public function confirm($token){

@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
 require_once dirname(__FILE__) . '/services/UserService.class.php';
+require_once dirname(__FILE__) . '/services/DepartmentService.class.php';
 
 Flight::set('flight.log_errors',TRUE);
 
@@ -20,9 +21,10 @@ Flight::map('query',function($name, $default_value = NULL){
 
 //register BLL services
 Flight::register('userService', 'UserService');
-
+Flight::register('departmentService', 'DepartmentService');
 //include all routes
 require_once dirname(__FILE__) . "/routes/users.php";
+require_once dirname(__FILE__) . "/routes/departments.php";
 
 Flight::start();
 
