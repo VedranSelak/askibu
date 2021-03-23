@@ -22,7 +22,7 @@ class UserService extends BaseService {
   public function register($user){
     if(!isset($user['department_id'])) throw new Exception("Department not set!");
 
-    $availableDepartments = $this->departmentDao->get_departments_by_faculty_id($user['faculty_id']);
+    $availableDepartments = $this->departmentDao->get_departments_by_faculty_id($user['faculty_id'],0,25,"","-id");
     $department;
     foreach ($availableDepartments as $index => $dep) {
       if($dep['id'] == $user['department_id']){
@@ -38,7 +38,7 @@ class UserService extends BaseService {
         "email" => $user['email'],
         "password" => $user['password'],
         "pins" => 0,
-        "date_of_joining" => $user['date_of_joining'],
+        "date_of_joining" => date(Config::DATE_FORMAT),
         "faculty_id" => $user['faculty_id'],
         "department_id" => $department['id'],
         "status" => "PENDING",

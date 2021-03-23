@@ -7,7 +7,7 @@ Flight::set('flight.log_errors',TRUE);
 
 //error handeling
 // Flight::map('error', function(Exception $ex){
-//   Flight::json(["message"=>$ex->getMessage()],$ex->getCode());
+//   Flight::json(["message"=>$ex->getMessage()],$ex->getCode()?$ex->getCode():500);
 // });
 
 //reading query params from URL
