@@ -24,6 +24,10 @@ Flight::route('GET /swagger', function(){
   echo $openapi->toJson();
 });
 
+Flight::route('GET /', function(){
+  Flight::redirect("/docs");
+});
+
 //register BLL services
 Flight::register('userService', 'UserService');
 Flight::register('departmentService', 'DepartmentService');
