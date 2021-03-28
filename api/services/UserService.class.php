@@ -21,6 +21,12 @@ class UserService extends BaseService {
     }
   }
 
+  public function reset($user){
+    $db_user = $this->dao->get_user_by_token($user["token"]);
+    if(!isset($db_user["id"])) throw new Exception("Invalid token",400);
+    $this->dao->update($db_user["id"],["password"=>md5($user["password"])]);
+  }
+
   public function forgot($user){
     $db_user = $this->dao->get_user_by_email($user["email"]);
     if(!isset($db_user["id"])) throw new Exception("User doesn't exist",400);
