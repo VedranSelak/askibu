@@ -23,7 +23,16 @@ class SMTPClient {
       ->setBody('Here is the confirmation link: http://localhost/web-programming-project/api/users/confirm/'.$user["token"]);
       ;
 
-    // Send the message
+    $result = $this->mailer->send($message);
+  }
+
+  public function send_user_recovery_token($user){
+    $message = (new Swift_Message('Reset you password'))
+      ->setFrom([Config::SMTP_USER => 'askIBU'])
+      ->setTo($user['email'])
+      ->setBody('Here is the recovery token: '.$user["token"]);
+      ;
+
     $result = $this->mailer->send($message);
   }
 }

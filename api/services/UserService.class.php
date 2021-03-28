@@ -21,6 +21,13 @@ class UserService extends BaseService {
     }
   }
 
+  public function forgot($user){
+    $db_user = $this->dao->get_user_by_email($user["email"]);
+    if(!isset($db_user["id"])) throw new Exception("User doesn't exist",400);
+    $db_user = $this->update($db_user["id"],["token" => md5(random_bytes(16))]);
+    $this->smtpClient->send_user_recovery_token($db_user);
+  }
+
   public function login($user){
     $db_user = $this->dao->get_user_by_email($user["email"]);
     if(!isset($db_user["id"])) throw new Exception("User doesn't exist",400);
