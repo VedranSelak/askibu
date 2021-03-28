@@ -79,6 +79,24 @@ Flight::route('PUT /users/@id', function($id){
   Flight::json(Flight::userService()->update($id,$data));
 });
 
+/**
+ * @OA\Post(path="/users/register",tags={"user"},
+ * @OA\RequestBody(description="Basic user info", required=true,
+ *    @OA\MediaType(
+ *      mediaType="application/json",
+ *      @OA\Schema(
+ *        @OA\Property(property="name", type="string", example="My test user", desctiption="Name of the user"),
+ *        @OA\Property(property="email", type="string", example="username@gmail.com", desctiption="Users email"),
+ *        @OA\Property(property="password", type="string", example="userspass", desctiption="Users password"),
+ *        @OA\Property(property="faculty_id", type="string", example="1", desctiption="Faculty that the user attends"),
+ *        @OA\Property(property="department_id", type="string", example="1", desctiption="Department that the user attends")
+ *      )
+ *    )
+ *   ),
+ * @OA\Response(response="200", description="User that has been added to the database")
+ * )
+ */
+
 Flight::route('GET /users/confirm/@token', function($token){
   Flight::userService()->confirm($token);
   Flight::json(["message"=>"Your account has been activated"]);

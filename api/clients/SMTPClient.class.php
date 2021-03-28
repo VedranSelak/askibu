@@ -8,16 +8,17 @@ class SMTPClient {
 
 
   public function __construct(){
-    $transport = (new Swift_SmtpTransport(Config::SMTP_HOST, Config::SMTP_PORT))
+    $transport = (new Swift_SmtpTransport(Config::SMTP_HOST, Config::SMTP_PORT, Config::SMTP_ENCRYPT))
       ->setUsername(Config::SMTP_USER)
       ->setPassword(Config::SMTP_PASSWORD)
     ;
+
     $this->mailer = new Swift_Mailer($transport);
   }
 
   public function send_register_user_token($user){
     $message = (new Swift_Message('Confirm your account'))
-      ->setFrom(['vedran.selak@stu.ibu.edu.ba' => 'askIBU'])
+      ->setFrom([Config::SMTP_USER => 'askIBU'])
       ->setTo($user['email'])
       ->setBody('Here is the confirmation link: http://localhost/web-programming-project/api/users/confirm/'.$user["token"]);
       ;
