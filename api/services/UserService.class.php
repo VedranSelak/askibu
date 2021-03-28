@@ -21,6 +21,14 @@ class UserService extends BaseService {
     }
   }
 
+  public function login($user){
+    $db_user = $this->dao->get_user_by_email($user["email"]);
+    if(!isset($db_user["id"])) throw new Exception("User doesn't exist",400);
+    if($db_user["status"] != "ACTIVE") throw new Exception("Account not active",400);
+    if($db_user["password"] != md5($user["password"])) throw new Exception("Invalid password",400);
+    return $db_user;
+  }
+
   public function register($user){
     if(!isset($user['department_id'])) throw new Exception("Department not set!");
 
@@ -38,7 +46,7 @@ class UserService extends BaseService {
       $user = parent::add([
         "name" => $user['name'],
         "email" => $user['email'],
-        "password" => $user['password'],
+        "password" => md5($user['password']),
         "pins" => 0,
         "date_of_joining" => date(Config::DATE_FORMAT),
         "faculty_id" => $user['faculty_id'],
