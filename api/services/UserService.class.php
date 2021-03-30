@@ -3,6 +3,9 @@ require_once dirname(__FILE__) . '/../dao/UserDao.class.php';
 require_once dirname(__FILE__) . '/../dao/DepartmentDao.class.php';
 require_once dirname(__FILE__) . '/BaseService.class.php';
 require_once dirname(__FILE__) . '/../clients/SMTPClient.class.php';
+
+use \Firebase\JWT\JWT;
+
 class UserService extends BaseService {
 
   private $departmentDao;
@@ -38,10 +41,16 @@ class UserService extends BaseService {
 
   public function login($user){
     $db_user = $this->dao->get_user_by_email($user["email"]);
+
     if(!isset($db_user["id"])) throw new Exception("User doesn't exist",400);
+
     if($db_user["status"] != "ACTIVE") throw new Exception("Account not active",400);
+
     if($db_user["password"] != md5($user["password"])) throw new Exception("Invalid password",400);
-    return $db_user;
+
+    $jwt = JWT::encode(["id"=>$db_user["id"], "r"=>$db_user["role"]],"JWT SECRET");
+
+    return ["token"=>$jwt];
   }
 
   public function register($user){
