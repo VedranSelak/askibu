@@ -4,7 +4,8 @@
  * @OA\OpenApi(
  *   @OA\Server(url="http://localhost/web-programming-project/api/", description="Development Enviroment"),
  *   @OA\Server(url="https://askIBU.ba/api/", description="Production Enviroment")
- * )
+ * ),
+ * @OA\SecurityScheme(securityScheme="ApiKeyAuth",type="apiKey",in="header",name="Authentication")
  */
 
 /**
@@ -25,13 +26,24 @@ Flight::route('GET /users', function(){
 });
 
 /**
- * @OA\Get(path="/users/{id}",tags={"user"},
- *     @OA\Parameter(@OA\Schema(type="integer"), in="path", allowReserved=true, name="id", default=1, description="id of user"),
+ * @OA\Get(path="/users/{id}",tags={"user"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of user"),
  *     @OA\Response(response="200", description="Get user by id")
  * )
  */
 Flight::route('GET /users/@id', function($id){
-    Flight::json(Flight::userService()->get_by_id($id));
+    $headers = getallheaders();
+    $token = @$headers["Authentication"];
+    try {
+      $decoded = (array) \Firebase\JWT\JWT::decode($token,"JWT SECRET",["HS256"]);
+      if($decoded["id"] == $id){
+        Flight::json(Flight::userService()->get_by_id($id));
+      } else {
+        Flight::json(["message"=>"That account is not for you"],401);
+      }
+  } catch (\Exception $e) {
+      Flight::json(["message"=>$e->getMessage()],401);
+    }
 });
 
 /**
