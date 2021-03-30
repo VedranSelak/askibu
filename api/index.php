@@ -7,9 +7,9 @@ require_once dirname(__FILE__) . '/services/DepartmentService.class.php';
 Flight::set('flight.log_errors',TRUE);
 
 //error handeling
-// Flight::map('error', function(Exception $ex){
-//   Flight::json(["message"=>$ex->getMessage()],$ex->getCode()?$ex->getCode():500);
-// });
+Flight::map('error', function(Exception $ex){
+  Flight::json(["message"=>$ex->getMessage()],$ex->getCode()?$ex->getCode():500);
+});
 
 //reading query params from URL
 Flight::map('query',function($name, $default_value = NULL){
@@ -35,6 +35,7 @@ Flight::register('departmentService', 'DepartmentService');
 //include all routes
 require_once dirname(__FILE__) . "/routes/users.php";
 require_once dirname(__FILE__) . "/routes/departments.php";
+require_once dirname(__FILE__) . "/routes/middleware.php";
 
 Flight::start();
 

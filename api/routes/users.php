@@ -9,7 +9,7 @@
  */
 
 /**
- * @OA\Get(path="/users", tags={"user"},
+ * @OA\Get(path="/users", tags={"user"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for users. Case insensitive search"),
@@ -32,18 +32,8 @@ Flight::route('GET /users', function(){
  * )
  */
 Flight::route('GET /users/@id', function($id){
-    $headers = getallheaders();
-    $token = @$headers["Authentication"];
-    try {
-      $decoded = (array) \Firebase\JWT\JWT::decode($token,"JWT SECRET",["HS256"]);
-      if($decoded["id"] == $id){
-        Flight::json(Flight::userService()->get_by_id($id));
-      } else {
-        Flight::json(["message"=>"That account is not for you"],401);
-      }
-  } catch (\Exception $e) {
-      Flight::json(["message"=>$e->getMessage()],401);
-    }
+  if(Flight::get("user")["id"] != $id) throw new Exception("This account is not for you!",403);
+    Flight::json(Flight::userService()->get_by_id($id));
 });
 
 /**
@@ -68,9 +58,9 @@ Flight::route('POST /users/register', function(){
     Flight::userService()->register($data);
     Flight::json(["message" => "Confirmaiton email has been sent. Please confirm your account."]);
 });
-
+//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjkyIiwiciI6IlVTRVIifQ.MNKzBUOWu1ttULA5uzVXkah2QC6wJ18jJ1DMc1MmOp0
 /**
- * @OA\Put(path="/users/{id}",tags={"user"},
+ * @OA\Put(path="/users/{id}",tags={"user"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="path", name="id", default=1),
  *       @OA\RequestBody(description="Basic user info that is going to be updated", required=true,
  *         @OA\MediaType(
