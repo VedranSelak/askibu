@@ -33,9 +33,10 @@ Flight::route('GET /', function(){
 Flight::register('userService', 'UserService');
 Flight::register('departmentService', 'DepartmentService');
 //include all routes
+require_once dirname(__FILE__) . "/routes/middleware.php";
 require_once dirname(__FILE__) . "/routes/users.php";
 require_once dirname(__FILE__) . "/routes/departments.php";
-require_once dirname(__FILE__) . "/routes/middleware.php";
+
 
 Flight::start();
 
