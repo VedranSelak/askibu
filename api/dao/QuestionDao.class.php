@@ -23,7 +23,7 @@ class QuestionDao extends BaseDao{
     return $this->query($query,$params);
   }
 
-  public function get_questions($offset, $limit, $search, $order = "-id"){
+  public function get_questions($offset = 0, $limit = 25, $search, $order = "-id"){
     list($order_column,$order_direction) = self::parse_order($order);
     $params = [];
     $query = "SELECT * FROM questions WHERE 1=1";
@@ -33,7 +33,7 @@ class QuestionDao extends BaseDao{
     }
     $query .= " ORDER BY ${order_column} ${order_direction} LIMIT ${limit} OFFSET ${offset}";
     return $this->query($query,$params);
-  }
+    }
 
 }
 ?>

@@ -15,7 +15,7 @@ class QuestionService extends BaseService {
     if(isset($user_id)) {
       return $this->dao->get_questions_by_user($user_id, $offset, $limit, $search, $order);
     }
-    return $this->dao->get_all($offset, $limit, $search, $order);
+    return $this->dao->get_questions($offset, $limit, $search, $order);
   }
 
   public function post_question($user, $question){
@@ -40,7 +40,7 @@ class QuestionService extends BaseService {
   public function update_question($user, $id, $data) {
     $db_question = $this->dao->get_by_id($id);
     if($db_question["user_id"] != $user["id"]) throw new Exception("Invalid question!", 403);
-    return parent::update($id, $data);
+    return $this->update($id, $data);
   }
 
 }

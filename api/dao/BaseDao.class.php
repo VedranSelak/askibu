@@ -69,7 +69,7 @@ require_once dirname(__FILE__)."/../config.php";
     }
 
     public function update($id, $entity){
-      $this->execute_update($this->table, $id, $entity);
+      return $this->execute_update($this->table, $id, $entity);
     }
 
     public function update_by_other_id($id, $entity, $column){
