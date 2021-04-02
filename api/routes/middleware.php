@@ -1,6 +1,6 @@
 <?php
 
-Flight::route('/users/*', function(){
+Flight::route('/user/*', function(){
   $token = Flight::header("Authentication");
   try {
    $user = (array) \Firebase\JWT\JWT::decode($token,Config::JWT_SECRET,["HS256"]);
