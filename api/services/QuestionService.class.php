@@ -7,6 +7,9 @@ class QuestionService extends BaseService {
   public function __construct(){
     $this->dao = new QuestionDao();
   }
+  public function get_questions_by_question_id($user_id, $id){
+    return  $this->dao->get_questions_by_question_id($user_id, $id);
+  }
 
   public function get_questions($user_id, $offset, $limit, $search, $order){
     if(isset($user_id)) {
@@ -17,6 +20,7 @@ class QuestionService extends BaseService {
 
   public function post_question($user, $question){
     try {
+      //TODO : do validation of the fields
       $data = [
         "subject" => $question["subject"],
         "body" => $question["body"],
@@ -28,7 +32,7 @@ class QuestionService extends BaseService {
       ];
       return parent::add($data);
     } catch (\Exception $e) {
-      throw new Exception($e->getMessage(),403);
+      throw new Exception("One of the fields is invalid!",403);
     }
 
   }

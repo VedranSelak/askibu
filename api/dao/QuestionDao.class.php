@@ -7,6 +7,10 @@ class QuestionDao extends BaseDao{
     parent::__construct("questions");
   }
 
+  public function get_questions_by_question_id($user_id, $id) {
+    return $this->query_unique("SELECT * FROM questions WHERE id = :id AND user_id = :user_id",["id" => $id, "user_id" => $user_id]);
+  }
+
   public function get_questions_by_user($user_id, $offset, $limit, $search, $order = "-id") {
     list($order_column,$order_direction) = self::parse_order($order);
     $params = ["user_id" => $user_id];
