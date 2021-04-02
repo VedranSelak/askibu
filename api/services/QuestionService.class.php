@@ -12,10 +12,7 @@ class QuestionService extends BaseService {
   }
 
   public function get_questions($user_id, $offset, $limit, $search, $order){
-    if(isset($user_id)) {
-      return $this->dao->get_questions_by_user($user_id, $offset, $limit, $search, $order);
-    }
-    return $this->dao->get_questions($offset, $limit, $search, $order);
+    return $this->dao->get_questions($user_id, $offset, $limit, $search, $order);
   }
 
   public function post_question($user, $question){

@@ -11,10 +11,14 @@ class QuestionDao extends BaseDao{
     return $this->query_unique("SELECT * FROM questions WHERE id = :id AND user_id = :user_id",["id" => $id, "user_id" => $user_id]);
   }
 
-  public function get_questions_by_user($user_id, $offset, $limit, $search, $order = "-id") {
+  public function get_questions($user_id, $offset, $limit, $search, $order = "-id") {
     list($order_column,$order_direction) = self::parse_order($order);
-    $params = ["user_id" => $user_id];
-    $query = "SELECT * FROM questions WHERE user_id = :user_id";
+    $params = [];
+    $query = "SELECT * FROM questions WHERE 1=1";
+    if(isset($user_id)){
+      $query .= " AND user_id = :user_id";
+      $params["user_id"] = $user_id;
+    }
     if(isset($search)){
       $query .= " AND LOWER(subject) LIKE CONCAT('%', :subject, '%')";
       $params["subject"] = strtolower($search);
@@ -22,18 +26,6 @@ class QuestionDao extends BaseDao{
     $query .= " ORDER BY ${order_column} ${order_direction} LIMIT ${limit} OFFSET ${offset}";
     return $this->query($query,$params);
   }
-
-  public function get_questions($offset = 0, $limit = 25, $search, $order = "-id"){
-    list($order_column,$order_direction) = self::parse_order($order);
-    $params = [];
-    $query = "SELECT * FROM questions WHERE 1=1";
-    if(isset($search)){
-      $query .= " AND LOWER(subject) LIKE CONCAT('%', :subject, '%')";
-      $params["subject"] = strtolower($search);
-    }
-    $query .= " ORDER BY ${order_column} ${order_direction} LIMIT ${limit} OFFSET ${offset}";
-    return $this->query($query,$params);
-    }
 
 }
 ?>
