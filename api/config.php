@@ -14,6 +14,7 @@
     const SMTP_PASSWORD = "";
 
     const JWT_SECRET =  "8234854794";
+    const JWT_TOKEN_TIME = 604800;
   }
 
 
