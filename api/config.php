@@ -12,6 +12,8 @@
     const SMTP_ENCRYPT = "tls";
     const SMTP_USER = "selakvedran@gmail.com";
     const SMTP_PASSWORD = "";
+
+    const JWT_SECRET =  "8234854794";
   }
 
 
