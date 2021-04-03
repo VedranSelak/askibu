@@ -20,8 +20,9 @@ class QuestionDao extends BaseDao{
       $params["user_id"] = $user_id;
     }
     if(isset($search)){
-      $query .= " AND LOWER(subject) LIKE CONCAT('%', :subject, '%')";
-      $params["subject"] = strtolower($search);
+      $query .= " AND LOWER(subject) LIKE CONCAT('%', :search, '%')
+                  OR LOWER(body) LIKE CONCAT('%', :search, '%')";
+      $params["search"] = strtolower($search);
     }
     $query .= " ORDER BY ${order_column} ${order_direction} LIMIT ${limit} OFFSET ${offset}";
     return $this->query($query,$params);

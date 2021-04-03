@@ -7,5 +7,24 @@ class AnswerDao extends BaseDao{
     parent::__construct("answers");
   }
 
+  public function get_answers($user_id, $offset, $limit, $search, $order = "-id") {
+    list($order_column,$order_direction) = self::parse_order($order);
+    $params = [];
+    $query = "SELECT a.*, u.name, u.email
+              FROM answers a
+              JOIN users u ON u.id=a.user_id
+              WHERE 1=1";
+    if(isset($user_id)){
+      $query .= " AND a.user_id = :user_id";
+      $params["user_id"] = $user_id;
+    }
+    if(isset($search)){
+      $query .= " AND LOWER(a.body) LIKE CONCAT('%', :body, '%')";
+      $params["body"] = strtolower($search);
+    }
+    $query .= " ORDER BY ${order_column} ${order_direction} LIMIT ${limit} OFFSET ${offset}";
+    return $this->query($query,$params);
+    }
+
 }
  ?>
