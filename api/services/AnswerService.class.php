@@ -8,9 +8,9 @@ class AnswerService extends BaseService {
   public function __construct(){
     $this->dao = new AnswerDao();
   }
-  // public function get_questions_by_question_id($user_id, $id){
-  //   return  $this->dao->get_anwser_by_anwser_id($user_id, $id);
-  // }
+  public function get_answer_by_answer_id($user_id, $id){
+    return  $this->dao->get_answer_by_answer_id($user_id, $id);
+  }
 
   public function get_answers($user_id, $offset, $limit, $search, $order){
     return $this->dao->get_answers($user_id, $offset, $limit, $search, $order);
@@ -33,11 +33,11 @@ class AnswerService extends BaseService {
 
   }
 
-  // public function update_question($user, $id, $data) {
-  //   $db_question = $this->dao->get_by_id($id);
-  //   if($db_question["user_id"] != $user["id"]) throw new Exception("Invalid question!", 403);
-  //   return $this->update($id, $data);
-  // }
+  public function update_answer($user, $id, $data) {
+    $db_answer = $this->dao->get_by_id($id);
+    if($db_answer["user_id"] != $user["id"]) throw new Exception("Invalid answer!", 403);
+    return $this->update($id, $data);
+  }
 
 }
 

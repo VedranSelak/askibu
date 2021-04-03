@@ -7,6 +7,10 @@ class AnswerDao extends BaseDao{
     parent::__construct("answers");
   }
 
+  public function get_answer_by_answer_id($user_id, $id){
+      return $this->query_unique("SELECT * FROM answers WHERE id = :id AND user_id = :user_id",["id" => $id, "user_id" => $user_id]);
+  }
+
   public function get_answers($user_id, $offset, $limit, $search, $order = "-id") {
     list($order_column,$order_direction) = self::parse_order($order);
     $params = [];
