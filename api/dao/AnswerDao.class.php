@@ -11,7 +11,7 @@ class AnswerDao extends BaseDao{
       return $this->query_unique("SELECT * FROM answers WHERE id = :id AND user_id = :user_id",["id" => $id, "user_id" => $user_id]);
   }
 
-  public function get_answers($user_id, $offset, $limit, $search, $order = "-id") {
+  public function get_answers($user_id, $offset, $limit, $status, $search, $order = "-id") {
     list($order_column,$order_direction) = self::parse_order($order);
     $params = [];
     $query = "SELECT a.*, u.name, u.email
@@ -25,6 +25,10 @@ class AnswerDao extends BaseDao{
     if(isset($search)){
       $query .= " AND LOWER(a.body) LIKE CONCAT('%', :body, '%')";
       $params["body"] = strtolower($search);
+    }
+    if(isset($status)){
+      $query .= " AND a.status = :status";
+      $params["status"] = $status;
     }
     $query .= " ORDER BY ${order_column} ${order_direction} LIMIT ${limit} OFFSET ${offset}";
     return $this->query($query,$params);

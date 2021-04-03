@@ -12,8 +12,8 @@ class AnswerService extends BaseService {
     return  $this->dao->get_answer_by_answer_id($user_id, $id);
   }
 
-  public function get_answers($user_id, $offset, $limit, $search, $order){
-    return $this->dao->get_answers($user_id, $offset, $limit, $search, $order);
+  public function get_answers($user_id, $offset, $limit, $status, $search, $order){
+    return $this->dao->get_answers($user_id, $offset, $limit, $status, $search, $order);
   }
 
   public function post_answer($user, $answer){
@@ -36,6 +36,7 @@ class AnswerService extends BaseService {
   public function update_answer($user, $id, $data) {
     $db_answer = $this->dao->get_by_id($id);
     if($db_answer["user_id"] != $user["id"]) throw new Exception("Invalid answer!", 403);
+    $data["status"] = "UPDATED";
     return $this->update($id, $data);
   }
 

@@ -3,6 +3,7 @@
  * @OA\Get(path="/user/answer",tags={"x-user","answer"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25, description="Limit for pagination"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Search by status"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for questions. Case insensitive search"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
  *     @OA\Response(response="200", description="Get answers by users id")
@@ -11,9 +12,10 @@
 Flight::route("GET /user/answer", function(){
   $offset = Flight::query("offset",0);
   $limit = Flight::query("limit",10);
+  $status = Flight::query("status","ACTIVE");
   $search = Flight::query('search');
   $order = Flight::query('order','-id');
-  Flight::json(Flight::answerService()->get_answers(Flight::get("user")["id"], $offset, $limit, $search, $order));
+  Flight::json(Flight::answerService()->get_answers(Flight::get("user")["id"], $offset, $limit, $status, $search, $order));
 });
 
 /**
