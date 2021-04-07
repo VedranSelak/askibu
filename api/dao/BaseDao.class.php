@@ -30,7 +30,7 @@ require_once dirname(__FILE__)."/../config.php";
     public function __construct($table){
       $this->table = $table;
       try {
-        $this->connection = new PDO("mysql:host=".Config::DB_HOST.";port=".Config::DB_PORT.";dbname=".Config::DB_SCHEME, Config::DB_USERNAME, Config::DB_PASSWORD);
+        $this->connection = new PDO("mysql:host=".Config::DB_HOST().";port=".Config::DB_PORT().";dbname=".Config::DB_SCHEME(), Config::DB_USERNAME(), Config::DB_PASSWORD());
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         //$this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
       } catch(PDOException $e) {
