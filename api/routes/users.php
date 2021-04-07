@@ -3,7 +3,7 @@
  * @OA\Info(title="askIBU API", version="0.1")
  * @OA\OpenApi(
  *   @OA\Server(url="http://localhost/web-programming-project/api/", description="Development Enviroment"),
- *   @OA\Server(url="https://askIBU.ba/api/", description="Production Enviroment")
+ *   @OA\Server(url="https://askibu.selak.me/api/", description="Production Enviroment")
  * ),
  * @OA\SecurityScheme(securityScheme="ApiKeyAuth",type="apiKey",in="header",name="Authentication")
  */
