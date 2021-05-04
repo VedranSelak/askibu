@@ -28,7 +28,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body>
+    <body style="display:none;">
 
         <div class="container">
             <div class="row">
@@ -47,7 +47,7 @@
                                         <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <a id="login-link" onclick="doLogin()" class="btn btn-lg btn-success btn-block">Login</a>
+                                    <button id="login-link" onclick="doLogin()" class="btn btn-lg btn-success btn-block">Login</button>
                                 </fieldset>
                             </form>
                         </div>
@@ -64,6 +64,14 @@
 
         <script type="text/javascript">
 
+          $(function(){
+            if(window.localStorage.getItem("token")){
+              window.location = "index.html";
+            } else {
+              $("body").show();
+            }
+          });
+
           function doLogin(){
 
             var login_info = {
@@ -72,6 +80,7 @@
             };
             $("#login-link").prop("disabled", true);
             $.post("http://localhost/web-programming-project/api/login", login_info ).done(function( data ) {
+              window.localStorage.setItem("token", data.token);
               window.location = "index.html";
             }).fail(function(error) {
               $("#login-link").prop("disabled", false);
