@@ -20,7 +20,7 @@ class SMTPClient {
     $message = (new Swift_Message('Confirm your account'))
       ->setFrom([Config::SMTP_USER => 'askIBU'])
       ->setTo($user['email'])
-      ->setBody('Here is the confirmation link: http://localhost/web-programming-project/api/users/confirm/'.$user["token"]);
+      ->setBody('Here is the confirmation link: http://localhost/web-programming-project/api/confirm/'.$user["token"]);
       ;
 
     $result = $this->mailer->send($message);
