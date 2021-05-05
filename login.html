@@ -139,6 +139,7 @@
                         <div class="panel-body">
                             <form role="form">
                                 <fieldset>
+                                    <input id="reset-token" placeholder="Password" name="token" type="hidden" value="">
                                     <div class="form-group">
                                         <input id="reset-password" class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
@@ -171,6 +172,12 @@
             } else {
               $("body").show();
             }
+
+            var urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.has("token")){
+              $("#reset-token").val(urlParams.get("token"));
+              showResetPasswordForm();
+            }
           });
 
           function doForgotPassword(){
@@ -195,6 +202,13 @@
               $("#forgot-alert").addClass("alert-danger");
               $("#forgot-alert").removeClass("hidden");
             });
+          }
+
+          function showResetPasswordForm(){
+            $("#reset-form-container").removeClass("hidden");
+            $("#login-form-container").addClass("hidden");
+            $("#forgot-form-container").addClass("hidden");
+            $("#register-form-container").addClass("hidden");
           }
 
           function showForgotForm(){
@@ -252,6 +266,21 @@
               window.location = "index.html";
             }).fail(function(error) {
               $("#login-link").prop("disabled", false);
+              alert(error.responseJSON.message);
+            });
+          }
+
+          function doResetPassword(){
+            var reset_info = {
+              "token" : $("#reset-token").val(),
+              "password" : $("#reset-password").val()
+            };
+            $("#reset-link").prop("disabled", true);
+            $.post("http://localhost/web-programming-project/api/reset", reset_info ).done(function( data ) {
+              window.localStorage.setItem("token", data.token);
+              window.location = "index.html";
+            }).fail(function(error) {
+              $("#reset-link").prop("disabled", false);
               alert(error.responseJSON.message);
             });
           }
