@@ -165,7 +165,7 @@
         <script src="./assets/js/bootstrap.min.js"></script>
 
         <script type="text/javascript">
-
+          // function triggers at load
           $(function(){
             if(window.localStorage.getItem("token")){
               window.location = "index.html";
@@ -179,30 +179,6 @@
               showResetPasswordForm();
             }
           });
-
-          function doForgotPassword(){
-            var forgot_info = {
-              "email" : $("#forgot-email").val()
-            };
-            $("#forgot-link").prop("disabled", true);
-            $.post("http://localhost/web-programming-project/api/forgot", forgot_info ).done(function( data ) {
-              if($("#forgot-alert").hasClass("alert-danger")){
-                $("#forgot-alert").removeClass("alert-danger");
-              }
-              $("#forgot-alert").html(data.message);
-              $("#forgot-alert").addClass("alert-success");
-              $("#forgot-alert").removeClass("hidden");
-            }).fail(function(error) {
-              $("#forgot-link").prop("disabled", false);
-              if($("#forgot-alert").hasClass("alert-success")){
-                $("#forgot-alert").removeClass("alert-success");
-              }
-
-              $("#forgot-alert").html(error.responseJSON.message);
-              $("#forgot-alert").addClass("alert-danger");
-              $("#forgot-alert").removeClass("hidden");
-            });
-          }
 
           function showResetPasswordForm(){
             $("#reset-form-container").removeClass("hidden");
@@ -282,6 +258,30 @@
             }).fail(function(error) {
               $("#reset-link").prop("disabled", false);
               alert(error.responseJSON.message);
+            });
+          }
+
+          function doForgotPassword(){
+            var forgot_info = {
+              "email" : $("#forgot-email").val()
+            };
+            $("#forgot-link").prop("disabled", true);
+            $.post("http://localhost/web-programming-project/api/forgot", forgot_info ).done(function( data ) {
+              if($("#forgot-alert").hasClass("alert-danger")){
+                $("#forgot-alert").removeClass("alert-danger");
+              }
+              $("#forgot-alert").html(data.message);
+              $("#forgot-alert").addClass("alert-success");
+              $("#forgot-alert").removeClass("hidden");
+            }).fail(function(error) {
+              $("#forgot-link").prop("disabled", false);
+              if($("#forgot-alert").hasClass("alert-success")){
+                $("#forgot-alert").removeClass("alert-success");
+              }
+
+              $("#forgot-alert").html(error.responseJSON.message);
+              $("#forgot-alert").addClass("alert-danger");
+              $("#forgot-alert").removeClass("hidden");
             });
           }
 
