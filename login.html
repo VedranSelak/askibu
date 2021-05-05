@@ -31,7 +31,7 @@
     <body style="display:none;">
 
         <div class="container">
-            <div class="row">
+            <div id="login-form-container" class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="login-panel panel panel-default">
                         <div class="panel-heading">
@@ -46,9 +46,110 @@
                                     <div class="form-group">
                                         <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
-                                    <!-- Change this to a button or input when using this as a form -->
-                                    <button id="login-link" onclick="doLogin()" class="btn btn-lg btn-success btn-block">Login</button>
+                                    <div class="form-group">
+                                      <!-- Change this to a button or input when using this as a form -->
+                                      <button id="login-link" onclick="doLogin()" class="btn btn-lg btn-success btn-block">Login</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <a href="#" onclick="showRegiterForm()" style="float:right;">Register here...</a>
+                                    </div>
+                                    <div class="form-group">
+                                        <a href="#" onclick="showForgotForm()" style="float:right; padding-right: 1em;">Forgot password?</a>
+                                    </div>
                                 </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="register-form-container" class="row hidden">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Register</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="register-name" class="form-control" placeholder="Full name" name="name" type="text" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-faculty-id" class="form-control" placeholder="Faculty" name="faculty" type="text" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-department-id" class="form-control" placeholder="Department" name="department" type="text" value="">
+                                    </div>
+                                    <div class="form-group">
+                                      <!-- Change this to a button or input when using this as a form -->
+                                      <button id="register-link" onclick="doRegister()" class="btn btn-lg btn-success btn-block">Register</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <a href="#" onclick="showLoginForm()" style="float:right;">Back to login</a>
+                                    </div>
+                                </fieldset>
+                                <div id="register-alert" style="margin-top:1em; margin-bottom:1em;" class="alert hidden" role="alert">
+                                  Succesfull registration
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="forgot-form-container" class="row hidden">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Forgot Password</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="forgot-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                      <!-- Change this to a button or input when using this as a form -->
+                                      <button id="forgot-link" onclick="doForgotPassword()" class="btn btn-lg btn-success btn-block">Send Recovery Link</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <a href="#" onclick="showLoginForm()" style="float:right;">Back to login</a>
+                                    </div>
+                                </fieldset>
+                                <div id="register-alert" style="margin-top:1em; margin-bottom:1em;" class="alert hidden" role="alert">
+                                  Succesfull registration
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="reset-form-container" class="row hidden">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Change Password</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="reset-password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    </div>
+                                    <div class="form-group">
+                                      <!-- Change this to a button or input when using this as a form -->
+                                      <button id="reset-link" onclick="doResetPassword()" class="btn btn-lg btn-success btn-block">Change Password</button>
+                                    </div>
+                                </fieldset>
+                                <div id="register-alert" style="margin-top:1em; margin-bottom:1em;" class="alert hidden" role="alert">
+                                  Succesfull registration
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -71,6 +172,63 @@
               $("body").show();
             }
           });
+
+          function doForgotPassword(){
+            var forgot_info = {
+              "email" : $("#forgot-email").val()
+            };
+            $("#forgot-link").prop("disabled", true);
+            $.post("http://localhost/web-programming-project/api/forgot", login_info ).done(function( data ) {
+              console.log(data);
+              alert("forgot in action");
+            }).fail(function(error) {
+              $("#login-link").prop("disabled", false);
+              alert(error.responseJSON.message);
+            });
+          }
+
+          function showForgotForm(){
+            $("#login-form-container").addClass("hidden");
+            $("#forgot-form-container").removeClass("hidden");
+          }
+
+          function showRegiterForm(){
+            $("#login-form-container").addClass("hidden");
+            $("#register-form-container").removeClass("hidden");
+          }
+
+          function showLoginForm(){
+            $("#login-form-container").removeClass("hidden");
+            $("#register-form-container").addClass("hidden");
+            $("#forgot-form-container").addClass("hidden");
+          }
+
+          function doRegister(){
+            var register_info = {
+              "name" : $("#register-name").val(),
+              "email" : $("#register-email").val(),
+              "password" : $("#register-password").val(),
+              "faculty_id" : parseInt($("#register-faculty-id").val()),
+              "department_id" : parseInt($("#register-department-id").val())
+            };
+            $("#register-link").prop("disabled", true);
+            $.post("http://localhost/web-programming-project/api/register", register_info ).done(function( data ) {
+              if($("#register-alert").hasClass("alert-danger")){
+                $("#register-alert").removeClass("alert-danger");
+              }
+              $("#register-alert").html(data.message);
+              $("#register-alert").addClass("alert-success");
+              $("#register-alert").removeClass("hidden");
+            }).fail(function(error) {
+              if($("#register-alert").hasClass("alert-success")){
+                $("#register-alert").removeClass("alert-success");
+              }
+              $("#register-link").prop("disabled", false);
+              $("#register-alert").html(error.responseJSON.message);
+              $("#register-alert").addClass("alert-danger");
+              $("#register-alert").removeClass("hidden");
+            });
+          }
 
           function doLogin(){
 
