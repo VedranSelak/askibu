@@ -51,18 +51,17 @@ class UserService extends BaseService {
   }
 
   public function register($user){
-    if(!isset($user['department_id'])) throw new Exception("Department not set!");
-
-    $availableDepartments = $this->departmentDao->get_departments_by_faculty_id($user['faculty_id'],0,25,"","-id");
-    $department;
-    foreach ($availableDepartments as $index => $dep) {
-      if($dep['id'] == $user['department_id']){
-        $department = $dep;
-        break;
-      }
-    }
-
     try {
+      if(!isset($user['department_id'])) throw new Exception("Department not set!");
+
+      $availableDepartments = $this->departmentDao->get_departments_by_faculty_id($user['faculty_id'],0,25,"","-id");
+      $department;
+      foreach ($availableDepartments as $index => $dep) {
+        if($dep['id'] == $user['department_id']){
+          $department = $dep;
+          break;
+        }
+      }
       $this->dao->beginTransaction();
       $user = parent::add([
         "name" => $user['name'],
@@ -83,11 +82,11 @@ class UserService extends BaseService {
       if(str_contains($e->getMessage(),'uq_user_email')){
         throw new Exception("Account with same email exists in the database!", 400, $e);
       } else {
-        throw $e;
+        throw new Exception("Invalid registrations", 400);
       }
     }
     $this->smtpClient->send_register_user_token($user);
-    return $user;
+    return ["message" => "Confirmaiton email has been sent. Please confirm your account."];
   }
 
   public function confirm($token){

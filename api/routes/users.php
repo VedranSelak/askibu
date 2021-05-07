@@ -65,8 +65,7 @@ Flight::route('GET /user/account', function(){
  */
 Flight::route('POST /register', function(){
     $data = Flight::request()->data->getData();
-    Flight::userService()->register($data);
-    Flight::json(["message" => "Confirmaiton email has been sent. Please confirm your account."]);
+    Flight::json(Flight::userService()->register($data));
 });
 
 /**
