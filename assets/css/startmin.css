@@ -8,6 +8,11 @@ body {
     background-color: #f8f8f8;
 }
 
+.error {
+  color: red;
+  padding-top: 1rem;
+}
+
 #wrapper {
     width: 100%;
 }
