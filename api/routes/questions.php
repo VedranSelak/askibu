@@ -10,7 +10,7 @@
  */
 Flight::route("GET /user/question", function(){
   $offset = Flight::query("offset",0);
-  $limit = Flight::query("limit",10);
+  $limit = Flight::query("limit",25);
   $search = Flight::query('search');
   $order = Flight::query('order','-id');
   Flight::json(Flight::questionService()->get_questions(Flight::get("user")["id"], $offset, $limit, $search, $order));
