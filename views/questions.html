@@ -38,6 +38,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
           <form id="add-question" role="form">
+            <input type="hidden" name="id" />
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Ask a question</h4>
@@ -81,19 +82,70 @@
   $("#add-question").validate({
    submitHandler: function(form, event) {
      event.preventDefault();
-     console.log(jsonize_form($(form)));
-     addQuestion(jsonize_form($(form)));
+     let data = jsonize_form($(form));
+
+    console.log(data);
+    if (data.id){
+      updateQuestion(data);
+    }else{
+      addQuestion(data);
+    }
 
    }
   });
 
   getQuestions();
 
+  function updateQuestion(question){
+   console.log(question);
+   $.ajax({
+        url: "api/user/question/"+question.id,
+        type: "PUT",
+        data: JSON.stringify(question),
+        contentType: "application/json",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        success: function(data) {
+          toastr.success("Question was updated!");
+          getQuestions();
+          $("#add-question").trigger("reset");
+          $("#add-question *[name='id']").val("");
+          $('#add-question-modal').modal("hide");
+          console.log(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown ){
+          toastr.error(jqXHR.responseJSON.message);
+          console.log(jqXHR);
+        }
+     });
+ }
+
+  function openEditQuestionModal(id){
+    $.ajax({
+         url: "api/user/question/"+id,
+         type: "GET",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+           $("#add-question *[name='id']").val(data.id);
+           $("#add-question *[name='subject']").val(data.subject);
+           $("#add-question *[name='body']").val(data.body);
+           $("#add-question *[name='department_id']").val(data.department_id);
+           $("#add-question *[name='course_id']").val(data.course_id);
+           $("#add-question *[name='year_id']").val(data.year_id);
+           $("#add-question-modal").modal("show");
+           console.log(data);
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           console.log(jqXHR);
+         }
+      });
+  }
+
   function addQuestion(question){
     $.ajax({
          url: "api/user/question",
          type: "POST",
-         data: question,
+         data: JSON.stringify(question),
+         contentType: "application/json",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
           toastr.success("Question posted successfuly");
@@ -102,7 +154,8 @@
           $("#add-question-modal").modal("hide");
         },
         error: function(jqXHR, textStatus, errorThrown){
-          toastr.error("Question cannot be posted");
+          toastr.error(jqXHR.responseJSON.message);
+          console.log(jqXHR);
         }
       });
   }
@@ -111,6 +164,7 @@
     $("#question-table").dataTable({
       processing: true,
       serverSide: true,
+      bDestroy: true,
       preDrawCallback: function( settings ) {
         settings._iRecordsTotal = 100;
         settings._iRecordsDisplay = 100;
@@ -127,15 +181,23 @@
         },
         data: function ( d ) {
             d.offset = d.start;
-            d.limit = d.lenght;
+            d.limit = d.length;
             d.search = d.search.value;
             d.order = encodeURIComponent((d.order[0].dir == 'asc' ? "-" : "+")+d.columns[d.order[0].column].data);
+
+            delete d.start;
+            delete d.lenght;
+            delete d.columns;
+            delete d.draw;
             console.log(d);
         },
 
       },
       columns: [
-        {"data" : "id"},
+        {"data" : "id",
+        "render": function ( data, type, row, meta ) {
+                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditQuestionModal('+data+')"><i class="fa fa-edit"></i></a>';
+                }},
         {"data" : "subject"},
         {"data" : "body"},
         {"data" : "department_id"},

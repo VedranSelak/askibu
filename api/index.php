@@ -18,7 +18,7 @@ Flight::map('query',function($name, $default_value = NULL){
   $request = Flight::request();
   $query_param = @$request->query->getData()[$name];
   $query_param = $query_param ? $query_param : $default_value;
-  return urldecode($query_param);
+  return $query_param;
 });
 
 Flight::map('header', function($name){
