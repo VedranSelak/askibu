@@ -17,6 +17,15 @@ Flight::route("GET /user/question", function(){
 });
 
 /**
+ * @OA\Get(path="/user/question-count",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Response(response="200", description="Get your question count")
+ * )
+ */
+Flight::route("GET /user/question-count", function(){
+  Flight::json(Flight::questionService()->get_question_count(Flight::get("user")["id"]));
+});
+
+/**
  * @OA\Get(path="/user/question/{id}",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of a question"),
  *     @OA\Response(response="200", description="Get user by id")

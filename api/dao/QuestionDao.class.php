@@ -11,6 +11,10 @@ class QuestionDao extends BaseDao{
     return $this->query_unique("SELECT * FROM questions WHERE id = :id AND user_id = :user_id",["id" => $id, "user_id" => $user_id]);
   }
 
+  public function get_question_count($user_id){
+    return $this->query_unique("SELECT COUNT(*) AS count FROM questions WHERE user_id = :user_id",["user_id" => $user_id]);
+  }
+
   public function get_questions($user_id, $offset, $limit, $search, $order = "-id") {
     list($order_column,$order_direction) = self::parse_order($order);
     $params = [];

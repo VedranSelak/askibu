@@ -12,6 +12,10 @@ class AnswerService extends BaseService {
     return  $this->dao->get_answer_by_answer_id($user_id, $id);
   }
 
+  public function get_answer_count($user_id){
+    return $this->dao->get_answer_count($user_id);
+  }
+
   public function get_answers($user_id, $offset, $limit, $status, $search, $order){
     return $this->dao->get_answers($user_id, $offset, $limit, $status, $search, $order);
   }

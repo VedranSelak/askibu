@@ -9,95 +9,48 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-3 col-md-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
+                <div class="panel panel-info" style="border-radius: 10%;">
+                    <div class="panel-heading" style="border-radius: 10%;">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-comments fa-5x"></i>
+                                <i class="fa fa-question fa-4x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">26</div>
-                                <div>New Comments!</div>
+                                <div id="question-count" class="huge">0</div>
+                                <div>Questions Asked</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
+                <div class="panel panel-warning" style="border-radius: 10%;">
+                    <div class="panel-heading" style="border-radius: 10%;">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-tasks fa-5x"></i>
+                                <i class="fa fa-font fa-4x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">12</div>
-                                <div>New Tasks!</div>
+                                <div id="answer-count" class="huge">0</div>
+                                <div>Answers Given</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
-                <div class="panel panel-yellow">
-                    <div class="panel-heading">
+                <div class="panel panel-success" style="border-radius: 10%;">
+                    <div class="panel-heading" style="border-radius: 10%;">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-shopping-cart fa-5x"></i>
+                                <i class="fa fa-map-pin fa-4x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">124</div>
-                                <div>New Orders!</div>
+                                <div id="pin-count" class="huge">0</div>
+                                <div>Pins Gained</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-red">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-support fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">13</div>
-                                <div>Support Tickets!</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
                 </div>
             </div>
         </div>
@@ -605,3 +558,45 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $.ajax({
+         url: "api/user/question-count",
+         type: "GET",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+           $("#question-count").html(data.count);
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           console.log(jqXHR);
+         }
+      });
+
+      $.ajax({
+           url: "api/user/answer-count",
+           type: "GET",
+           beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+           success: function(data) {
+             $("#answer-count").html(data.count);
+           },
+           error: function(jqXHR, textStatus, errorThrown ){
+             console.log(jqXHR);
+           }
+        });
+
+        $.ajax({
+             url: "api/user/pins",
+             type: "GET",
+             beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+             success: function(data) {
+               $("#pin-count").html(data.pins);
+             },
+             error: function(jqXHR, textStatus, errorThrown ){
+               console.log(jqXHR);
+             }
+          });
+
+  });
+
+</script>

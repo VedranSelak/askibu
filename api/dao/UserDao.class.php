@@ -23,6 +23,10 @@ class UserDao extends BaseDao {
                          LIMIT ${limit} OFFSET ${offset}",["name" => strtolower($search)]);
   }
 
+  public function get_pins($user_id){
+    return $this->query_unique("SELECT pins FROM users WHERE id = :id",["id"=>$user_id]);
+  }
+
   public function get_user_by_token($token){
     return $this->query_unique("SELECT * FROM users WHERE token = :token",["token"=>$token]);
   }
