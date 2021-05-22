@@ -163,14 +163,20 @@
                                 <a href="#questions"><i class="fa fa-question fa-lg"></i> Questions</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">
+                                <a href="#"><i class="fa fa-university fa-fw"></i> Faculties<span class="fa arrow"></span></a>
+                                <ul id="faculty-list" class="nav nav-second-level">
                                     <li>
-                                        <a href="flot.html">Flot Charts</a>
+                                        <a href="#">Flot Charts<span class="fa arrow"></span></a>
+                                        <ul class="nav nav-second-level">
+                                            <li>
+                                                <a href="flot.html">Flot Charts</a>
+                                            </li>
+                                            <li>
+                                                <a href="morris.html">Morris.js Charts</a>
+                                            </li>
+                                        </ul>
                                     </li>
-                                    <li>
-                                        <a href="morris.html">Morris.js Charts</a>
-                                    </li>
+
                                 </ul>
                                 <!-- /.nav-second-level -->
                             </li>
@@ -302,6 +308,26 @@
             }else {
               $("body").show();
             }
+
+            $.ajax({
+                 url: "api/faculties",
+                 type: "GET",
+                 success: function(data) {
+                   console.log(data.length);
+                   var text = "";
+                   for(let i=0; i<data.length; i++){
+
+                    console.log(data[i].name);
+                     text +=  "<li><a href='#'>"+ data[i].name +"<span class='fa arrow'></span></a><ul class='nav nav-second-level'><li><a href='#'>Flot Charts</a></li><li><a href='#'>Morris.js Charts</a></li></ul></li>";
+                  }
+                  console.log($("#faculty-list").html());
+                  $("#faculty-list").html(text);
+
+                 },
+                 error: function(jqXHR, textStatus, errorThrown ){
+                   console.log(jqXHR);
+                 }
+              });
 
           });
         </script>
