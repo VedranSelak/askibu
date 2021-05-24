@@ -165,17 +165,7 @@
                             <li>
                                 <a href="#"><i class="fa fa-university fa-fw"></i> Faculties<span class="fa arrow"></span></a>
                                 <ul id="faculty-list" class="nav nav-second-level">
-                                    <li>
-                                        <a href="#">Flot Charts<span class="fa arrow"></span></a>
-                                        <ul class="nav nav-second-level">
-                                            <li>
-                                                <a href="flot.html">Flot Charts</a>
-                                            </li>
-                                            <li>
-                                                <a href="morris.html">Morris.js Charts</a>
-                                            </li>
-                                        </ul>
-                                    </li>
+<li><a href='#'>Third Level <span class='fa arrow'></span></a><ul class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li><li><a href='#'>Third Level <span class='fa arrow'></span></a><ul class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li><li><a href='#'>Third Level <span class='fa arrow'></span></a><ul class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li>
 
                                 </ul>
                                 <!-- /.nav-second-level -->
@@ -299,10 +289,9 @@
             window.localStorage.clear();
             window.location = "login.html";
           }
-          $(document).ready(function() {
-            var app = $.jQuerySPApp({defaultView  : "dashboard"}); // initialize
 
-            app.run();
+          $(document).ready(function() {
+
             if(!window.localStorage.getItem("token")){
               window.location = "login.html";
             }else {
@@ -313,21 +302,21 @@
                  url: "api/faculties",
                  type: "GET",
                  success: function(data) {
-                   console.log(data.length);
                    var text = "";
-                   for(let i=0; i<data.length; i++){
-
-                    console.log(data[i].name);
-                     text +=  "<li><a href='#'>"+ data[i].name +"<span class='fa arrow'></span></a><ul class='nav nav-second-level'><li><a href='#'>Flot Charts</a></li><li><a href='#'>Morris.js Charts</a></li></ul></li>";
+                   for(var i=0; i<data.length; i++){
+                     text += "<li><a href='#'>"+data[i].name+"<span class='fa arrow'></span></a><ul class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li>";
                   }
-                  console.log($("#faculty-list").html());
                   $("#faculty-list").html(text);
-
+                  var app = $.jQuerySPApp({defaultView  : "dashboard"});
+                  app.run();
+                  $('#side-menu').metisMenu();
                  },
                  error: function(jqXHR, textStatus, errorThrown ){
                    console.log(jqXHR);
                  }
               });
+
+
 
           });
         </script>
