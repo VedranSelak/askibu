@@ -304,8 +304,27 @@
                  success: function(data) {
                    var text = "";
                    for(var i=0; i<data.length; i++){
-                     text += "<li><a href='#'>"+data[i].name+"<span class='fa arrow'></span></a><ul class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li>";
+                     text += "<li><a href='#'>"+data[i].name+"<span class='fa arrow'></span></a><ul id='"+data[i].id+"'class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li>";
                   }
+
+                  for(var i=0; i<data.length; i++){
+                    $.ajax({
+                         url: "api/user/departments?faculty_id="+data[i].id,
+                         type: "GET",
+                         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+                         success: function(dep) {
+                           let text = "";
+                           for(var i=0; i<dep.length; i++){
+                              text += "<li><a href='#'>"+dep[i].name+"</a></li>";
+                          }
+                          $("#"+dep[0].faculty_id+"").html(text);
+                         },
+                         error: function(jqXHR, textStatus, errorThrown ){
+                           console.log(jqXHR);
+                         }
+                      });
+                  }
+
                   $("#faculty-list").html(text);
                   var app = $.jQuerySPApp({defaultView  : "dashboard"});
                   app.run();
@@ -316,6 +335,24 @@
                  }
               });
 
+
+              // $.ajax({
+              //      url: "api/user/departments",
+              //      type: "GET",
+              //      success: function(data) {
+              //        var text = "";
+              //        for(var i=0; i<data.length; i++){
+              //          text += "<li><a href='#'>"+data[i].name+"<span class='fa arrow'></span></a><ul class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li>";
+              //       }
+              //       $("#faculty-list").html(text);
+              //       var app = $.jQuerySPApp({defaultView  : "dashboard"});
+              //       app.run();
+              //       $('#side-menu').metisMenu();
+              //      },
+              //      error: function(jqXHR, textStatus, errorThrown ){
+              //        console.log(jqXHR);
+              //      }
+              //   });
 
 
           });

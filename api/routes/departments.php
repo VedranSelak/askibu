@@ -1,6 +1,15 @@
 <?php
-
-Flight::route('GET /departments', function(){
+/**
+ * @OA\Get(path="/user/departments", tags={"user", "department"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="faculty_id", default=1, description="Faculty of the department"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25, description="Limit for pagination"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for users. Case insensitive search"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
+ *     @OA\Response(response="200", description="List users from database")
+ * )
+ */
+Flight::route('GET /user/departments', function(){
     $faculty_id = Flight::query('faculty_id',1);
     $offset = Flight::query("offset",0);
     $limit = Flight::query("limit",10);
