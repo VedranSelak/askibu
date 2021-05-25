@@ -165,8 +165,6 @@
                             <li>
                                 <a href="#"><i class="fa fa-university fa-fw"></i> Faculties<span class="fa arrow"></span></a>
                                 <ul id="faculty-list" class="nav nav-second-level">
-<li><a href='#'>Third Level <span class='fa arrow'></span></a><ul class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li><li><a href='#'>Third Level <span class='fa arrow'></span></a><ul class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li><li><a href='#'>Third Level <span class='fa arrow'></span></a><ul class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li>
-
                                 </ul>
                                 <!-- /.nav-second-level -->
                             </li>
@@ -249,6 +247,7 @@
               <section id="tables" data-load="tables.html" ></section>
               <section id="notifications" data-load="notifications.html" ></section>
               <section id="questions" data-load="questions.html" ></section>
+              <section id="departments" data-load="departments.html" ></section>
             </main>
         </div>
         <!-- /#wrapper -->
@@ -315,7 +314,7 @@
                          success: function(dep) {
                            let text = "";
                            for(var i=0; i<dep.length; i++){
-                              text += "<li><a href='#'>"+dep[i].name+"</a></li>";
+                              text += "<li><a href='#departments' onclick='loadDepartment("+dep[i].id+")'>"+dep[i].name+"</a></li>";
                           }
                           $("#"+dep[0].faculty_id+"").html(text);
                          },
@@ -334,28 +333,11 @@
                    console.log(jqXHR);
                  }
               });
-
-
-              // $.ajax({
-              //      url: "api/user/departments",
-              //      type: "GET",
-              //      success: function(data) {
-              //        var text = "";
-              //        for(var i=0; i<data.length; i++){
-              //          text += "<li><a href='#'>"+data[i].name+"<span class='fa arrow'></span></a><ul class='nav nav-third-level'><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li><li><a href='#'>Third Level Item</a></li></ul></li>";
-              //       }
-              //       $("#faculty-list").html(text);
-              //       var app = $.jQuerySPApp({defaultView  : "dashboard"});
-              //       app.run();
-              //       $('#side-menu').metisMenu();
-              //      },
-              //      error: function(jqXHR, textStatus, errorThrown ){
-              //        console.log(jqXHR);
-              //      }
-              //   });
-
-
           });
+
+          function loadDepartment(department_id){
+            localStorage.setItem("department", department_id);
+          }
         </script>
 
     </body>

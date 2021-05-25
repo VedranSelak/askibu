@@ -1,0 +1,22 @@
+
+<div id="page-wrapper">
+  <h1 id="header">veka</h1>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $.ajax({
+         url: "api/user/departments/"+localStorage.getItem("department"),
+         type: "GET",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+           $("#header").html(data.name);
+           console.log(data);
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
+           console.log(jqXHR);
+         }
+      });
+  });
+</script>
