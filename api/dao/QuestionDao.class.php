@@ -7,6 +7,10 @@ class QuestionDao extends BaseDao{
     parent::__construct("questions");
   }
 
+  public function get_questions_by_department_id($id) {
+    return $this->query("SELECT * FROM questions WHERE department_id = :department_id",["department_id" => $id]);
+  }
+
   public function get_questions_by_question_id($user_id, $id) {
     return $this->query_unique("SELECT * FROM questions WHERE id = :id AND user_id = :user_id",["id" => $id, "user_id" => $user_id]);
   }

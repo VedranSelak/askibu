@@ -36,6 +36,16 @@ Flight::route("GET /user/question/@id", function($id){
 });
 
 /**
+ * @OA\Get(path="/user/question-by-department/{id}",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of the department"),
+ *     @OA\Response(response="200", description="Get questions by department id")
+ * )
+ */
+Flight::route("GET /user/question-by-department/@id", function($id){
+  Flight::json(Flight::questionService()->get_questions_by_department_id($id));
+});
+
+/**
  * @OA\Get(path="/admin/question",tags={"x-admin","question"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="user_id", default=92, description="Users id"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),

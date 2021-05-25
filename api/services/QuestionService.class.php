@@ -19,6 +19,10 @@ class QuestionService extends BaseService {
     return $this->dao->get_questions($user_id, $offset, $limit, $search, $order);
   }
 
+  public function get_questions_by_department_id($id){
+    return  $this->dao->get_questions_by_department_id($id);
+  }
+
   public function post_question($user, $question){
     try {
       //TODO : do validation of the fields
