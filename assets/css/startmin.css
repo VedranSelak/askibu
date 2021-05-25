@@ -8,6 +8,16 @@ body {
     background-color: #f8f8f8;
 }
 
+.card-style {
+  border-radius: 10px;
+  border: 1px solid black;
+  margin-bottom: 2rem;
+}
+
+.card-padding {
+  padding: 0 2rem 2rem 2rem;
+}
+
 .error {
   color: red;
   padding-top: 1rem;
