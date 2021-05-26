@@ -336,7 +336,7 @@
           });
 
           function loadDepartment(department_id){
-            localStorage.setItem("department", department_id);
+            window.history.replaceState(null, null, "?department="+department_id);
           }
         </script>
 

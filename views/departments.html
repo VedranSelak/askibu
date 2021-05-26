@@ -34,9 +34,19 @@
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function() {
+  $(window).on('hashchange', function(e){
+    loadPage();
+  });
+
+  function loadPage(){
+    let query = window.location.search;
+    const urlParams = new URLSearchParams(query);
+    let department = urlParams.get("department");
+    console.log(department);
+    console.log(typeof(department));
+
     $.ajax({
-         url: "api/user/departments/"+localStorage.getItem("department"),
+         url: "api/user/departments/"+department,
          type: "GET",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
@@ -50,7 +60,7 @@
       });
 
       $.ajax({
-           url: "api/user/question-by-department/"+localStorage.getItem("department"),
+           url: "api/user/question-by-department/"+department,
            type: "GET",
            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
            success: function(data) {
@@ -61,5 +71,8 @@
              console.log(jqXHR);
            }
         });
+  }
+  $(document).ready(function() {
+    loadPage();
   });
 </script>
