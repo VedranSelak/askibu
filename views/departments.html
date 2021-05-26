@@ -6,7 +6,7 @@
             <h1 id="title" class="page-header">Questions</h1>
         </div>
     </div>
-    <div id="questions" class="row">
+    <div id="question-list" class="row">
       <div class="col-lg-12">
         <div class="card bg-info card-padding card-style" style="height: 15rem;">
           <div class="card-body">
@@ -42,8 +42,6 @@
     let query = window.location.search;
     const urlParams = new URLSearchParams(query);
     let department = urlParams.get("department");
-    console.log(department);
-    console.log(typeof(department));
 
     $.ajax({
          url: "api/user/departments/"+department,
@@ -65,12 +63,19 @@
            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
            success: function(data) {
              console.log(data);
+             var text = "";
+             for(var i=0; i<data.length; i++){
+               text += "<div class='col-lg-12'><div class='card bg-info card-padding card-style' style='height: 15rem;'><div class='card-body'><h3 class='card-title'>"+data[i].subject+"</h3><h6 class='card-subtitle mb-2 text-muted'>"+data[i].posted_at+"</h6><h6 class='card-subtitle mb-2 text-muted'>Posted by: "+data[i].name+"</h6><p class='card-text'>"+data[i].body+"</p></div></div></div>";
+             }
+
+             $('#question-list').html(text);
            },
            error: function(jqXHR, textStatus, errorThrown ){
              toastr.error(jqXHR.responseJSON.message);
              console.log(jqXHR);
            }
         });
+
   }
   $(document).ready(function() {
     loadPage();

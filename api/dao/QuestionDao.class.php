@@ -8,7 +8,7 @@ class QuestionDao extends BaseDao{
   }
 
   public function get_questions_by_department_id($id) {
-    return $this->query("SELECT * FROM questions WHERE department_id = :department_id",["department_id" => $id]);
+    return $this->query("SELECT questions.*, users.name FROM questions JOIN users ON questions.user_id=users.id WHERE questions.department_id = :department_id",["department_id" => $id]);
   }
 
   public function get_questions_by_question_id($user_id, $id) {
