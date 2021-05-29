@@ -20,6 +20,10 @@ class AnswerService extends BaseService {
     return $this->dao->get_answers($user_id, $offset, $limit, $status, $search, $order);
   }
 
+  public function get_answer_by_question_id($id){
+    return $this->dao->get_answer_by_question_id($id);
+  }
+
   public function post_answer($user, $answer){
     try {
       //TODO : do validation of the fields
