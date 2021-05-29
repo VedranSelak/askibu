@@ -7,41 +7,68 @@
         </div>
     </div>
     <div id="question-list" class="row">
-      <div class="col-lg-12">
-        <div class="card bg-info card-padding card-style" style="height: 15rem;">
-          <div class="card-body">
-            <h3 class="card-title">Card title</h3>
-            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-12">
-        <div class="card bg-info card-padding card-style" style="height: 15rem;">
-          <div class="card-body">
-            <h3 class="card-title">Card title</h3>
-            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
-          </div>
-        </div>
-      </div>
     </div>
+    <div class="row">
+      <h6 id="page-number" class="pagination-header"></h6>
+    </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination pull-right">
+        <li class="page-item"><button id="previous" onclick="paginate(this)" class="button-pag" href="#">Previous</button></li>
+        <li class="page-item"><button id="next" onclick="paginate(this)" class="button-pag" href="#">Next</button></li>
+      </ul>
+    </nav>
   </div>
 </div>
 
 <script type="text/javascript">
+
   $(window).on('hashchange', function(e){
     loadPage();
   });
+
+  let questionsList = [];
+  let maxPage;
+  let currentPage = 1;
+  let rows = 5;
+
+  function displayQuestions(items, wrapper, rowsPerPage, page){
+    $(wrapper).html("");
+    page--;
+
+    $("#page-number").html("Page " + (page + 1) + " out of " + maxPage);
+
+    let start = rowsPerPage * page;
+    let end = start + rowsPerPage
+    let paginatedItems = items.slice(start, end);
+
+    for(let i=0; i<paginatedItems.length; i++){
+      let item = paginatedItems[i];
+
+       $(wrapper).append(item);
+    }
+  }
+
+  function paginate(element){
+    let id = element.id;
+    if (id == "next"){
+      if (maxPage >= currentPage + 1){
+        currentPage++;
+        displayQuestions(questionsList, "#question-list", rows, currentPage);
+      }
+    } else if (id == "previous"){
+      if (currentPage - 1 > 0){
+        currentPage--;
+        displayQuestions(questionsList, "#question-list", rows, currentPage);
+      }
+    }
+
+  }
 
   function loadPage(){
     let query = window.location.search;
     const urlParams = new URLSearchParams(query);
     let department = urlParams.get("department");
+    questionsList = [];
 
     $.ajax({
          url: "api/user/departments/"+department,
@@ -49,7 +76,6 @@
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
            $("#title").html(data.name);
-           console.log(data);
          },
          error: function(jqXHR, textStatus, errorThrown ){
            toastr.error(jqXHR.responseJSON.message);
@@ -62,13 +88,16 @@
            type: "GET",
            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
            success: function(data) {
-             console.log(data);
-             var text = "";
              for(var i=0; i<data.length; i++){
-               text += "<div class='col-lg-12'><div class='card bg-info card-padding card-style' style='height: 15rem;'><div class='card-body'><h3 class='card-title'>"+data[i].subject+"</h3><h6 class='card-subtitle mb-2 text-muted'>"+data[i].posted_at+"</h6><h6 class='card-subtitle mb-2 text-muted'>Posted by: "+data[i].name+"</h6><p class='card-text'>"+data[i].body+"</p></div></div></div>";
+               questionsList[i] = "<div class='col-lg-12'><div class='card bg-info card-padding card-style' style='height: auto;'><div class='card-body'><h3 class='card-title'>"+data[i].subject+"</h3><h6 class='card-subtitle mb-2 text-muted'>"+data[i].posted_at+"</h6><h6 class='card-subtitle mb-2 text-muted'>Posted by: "+data[i].name+"</h6><p class='card-text'>"+data[i].body+"</p></div></div></div>";
              }
-
-             $('#question-list').html(text);
+             if(questionsList.length%rows == 0) {
+               maxPage = questionsList.length/rows;
+             } else {
+               maxPage = Math.floor(questionsList.length/rows) + 1;
+             }
+             currentPage = 1;
+            displayQuestions(questionsList, "#question-list",rows, currentPage);
            },
            error: function(jqXHR, textStatus, errorThrown ){
              toastr.error(jqXHR.responseJSON.message);
@@ -77,7 +106,9 @@
         });
 
   }
+
   $(document).ready(function() {
     loadPage();
   });
+
 </script>

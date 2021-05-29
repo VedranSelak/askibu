@@ -14,6 +14,19 @@ body {
   margin-bottom: 2rem;
 }
 
+.button-pag{
+  border: 1px solid #4287f5;
+  border-radius: 5px;
+}
+
+.pagination-header{
+  float: right;
+  margin-right: 3rem;
+  margin-bottom: 0;
+  padding: 0;
+  color: #999999;
+}
+
 .card-padding {
   padding: 0 2rem 2rem 2rem;
 }
