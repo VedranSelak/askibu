@@ -38,11 +38,13 @@ Flight::route("GET /user/question/@id", function($id){
 /**
  * @OA\Get(path="/user/question-by-department/{id}",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of the department"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
  *     @OA\Response(response="200", description="Get questions by department id")
  * )
  */
 Flight::route("GET /user/question-by-department/@id", function($id){
-  Flight::json(Flight::questionService()->get_questions_by_department_id($id));
+  $order = urldecode(Flight::query('order','-id'));
+  Flight::json(Flight::questionService()->get_questions_by_department_id($id, $order));
 });
 
 /**

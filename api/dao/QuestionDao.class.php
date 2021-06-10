@@ -7,8 +7,9 @@ class QuestionDao extends BaseDao{
     parent::__construct("questions");
   }
 
-  public function get_questions_by_department_id($id) {
-    return $this->query("SELECT questions.*, users.name FROM questions JOIN users ON questions.user_id=users.id WHERE questions.department_id = :department_id",["department_id" => $id]);
+  public function get_questions_by_department_id($id, $order = "-id") {
+    list($order_column,$order_direction) = self::parse_order($order);
+    return $this->query("SELECT questions.*, users.name FROM questions JOIN users ON questions.user_id=users.id WHERE questions.department_id = :department_id ORDER BY ${order_column} ${order_direction}",["department_id" => $id]);
   }
 
   public function get_questions_by_question_id($user_id, $id) {

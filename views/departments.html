@@ -142,6 +142,7 @@
       $.ajax({
            url: "api/user/question-by-department/"+department,
            type: "GET",
+           data: {"order":"%2Bid"},
            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
            success: function(data) {
              for(var i=0; i<data.length; i++){
