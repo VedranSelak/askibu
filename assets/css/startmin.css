@@ -14,6 +14,10 @@ body {
   margin-bottom: 2rem;
 }
 
+.ask-button {
+  margin: 2rem;
+}
+
 .button-pag{
   border: 1px solid #4287f5;
   border-radius: 5px;
