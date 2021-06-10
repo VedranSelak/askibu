@@ -28,6 +28,7 @@
         <div class="modal-content">
           <form id="ask-question" role="form">
             <input type="hidden" name="id" />
+            <input name="department_id" type="hidden" />
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Ask a question</h4>
@@ -40,10 +41,6 @@
                   <div class="form-group">
                       <label>Body</label>
                       <textarea name="body" class="form-control" rows="10"></textarea>
-                  </div>
-                  <div class="form-group">
-                      <label>Department ID</label>
-                      <input name="department_id" type="number" class="form-control" placeholder="Enter ID" required>
                   </div>
                   <div class="form-group">
                       <label>Course ID</label>
@@ -69,7 +66,13 @@
 
   $("#ask-question").validate({
    submitHandler: function(form, event) {
+     let query = window.location.search;
      event.preventDefault();
+
+     const urlParams = new URLSearchParams(query);
+     let department = urlParams.get("department");
+     $("#ask-question *[name='department_id']").val(department);
+
      let data = jsonize_form($(form));
 
     console.log(data);
@@ -234,6 +237,7 @@
         }
       });
   }
+
 
   $(document).ready(function() {
     loadPage();
