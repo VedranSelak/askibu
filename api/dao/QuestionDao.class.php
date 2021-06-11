@@ -7,9 +7,21 @@ class QuestionDao extends BaseDao{
     parent::__construct("questions");
   }
 
-  public function get_questions_by_department_id($id, $order = "-id") {
+  public function get_questions_for_departments($order = "-id", $department_id, $semester_id) {
     list($order_column,$order_direction) = self::parse_order($order);
-    return $this->query("SELECT questions.*, users.name FROM questions JOIN users ON questions.user_id=users.id WHERE questions.department_id = :department_id ORDER BY ${order_column} ${order_direction}",["department_id" => $id]);
+    $params = [];
+    $query = "SELECT questions.*, users.name FROM questions JOIN users ON questions.user_id=users.id WHERE 1=1";
+
+    if(isset($department_id)){
+      $query .= " AND questions.department_id = :department_id";
+      $params["department_id"] = $department_id;
+    }
+    if(isset($semester_id)){
+      $query .= " AND questions.year_id = :semester_id";
+      $params["semester_id"] = $semester_id;
+    }
+    $query .= " ORDER BY ${order_column} ${order_direction}";
+    return $this->query($query, $params);
   }
 
   public function get_questions_by_question_id($user_id, $id) {
@@ -24,6 +36,7 @@ class QuestionDao extends BaseDao{
     list($order_column,$order_direction) = self::parse_order($order);
     $params = [];
     $query = "SELECT * FROM questions WHERE 1=1";
+
     if(isset($user_id)){
       $query .= " AND user_id = :user_id";
       $params["user_id"] = $user_id;

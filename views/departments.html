@@ -97,6 +97,7 @@
   });
 
   $(window).on('hashchange', function(e){
+    console.log("change");
     loadPage();
   });
 
@@ -142,7 +143,9 @@
     let query = window.location.search;
     const urlParams = new URLSearchParams(query);
     let department = urlParams.get("department");
+    let semester = urlParams.get("semester");
     questionsList = [];
+    console.log(semester);
 
     $.ajax({
          url: "api/user/departments/"+department,
@@ -161,7 +164,6 @@
            url: "api/semesters",
            type: "GET",
            success: function(data) {
-             console.log(data);
              let html = "";
              for(let i=0; i<data.length; i++){
                html += `<li><a href="javascript:semesterClicked(${data[i].id})">${data[i].level}</a></li>`;
@@ -175,9 +177,9 @@
         });
 
       $.ajax({
-           url: "api/user/question-by-department/"+department,
+           url: "api/questions",
            type: "GET",
-           data: {"order":"%2Bid"},
+           data: {"department_id":department, "semester_id":semester ,"order":"%2Bid"},
            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
            success: function(data) {
              for(var i=0; i<data.length; i++){
@@ -271,7 +273,16 @@
   }
 
   function semesterClicked(semester_id){
-    console.log(semester_id);
+    var url = new URL(window.location);
+    console.log(url);
+    if(url.search.includes("semester")){
+      url.searchParams.set("semester", semester_id);
+    } else {
+      url.searchParams.append("semester", semester_id);
+    }
+
+    window.history.replaceState(null, null, url.search+"#departments");
+    loadPage();
   }
 
 

@@ -13,7 +13,7 @@ Flight::route("GET /user/question", function(){
   $limit = Flight::query("limit",25);
   $search = Flight::query('search');
   $order = urldecode(Flight::query('order','-id'));
-  Flight::json(Flight::questionService()->get_questions(Flight::get("user")["id"], $offset, $limit, $search, $order));
+  Flight::json(Flight::questionService()->get_questions(Flight::get("user")["id"],$offset, $limit, $search, $order));
 });
 
 /**
@@ -36,15 +36,18 @@ Flight::route("GET /user/question/@id", function($id){
 });
 
 /**
- * @OA\Get(path="/user/question-by-department/{id}",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
- *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of the department"),
+ * @OA\Get(path="/questions}",tags={"question"},
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="department_id", description="id of department"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="semester_id", description="id of semester"),
  *     @OA\Response(response="200", description="Get questions by department id")
  * )
  */
-Flight::route("GET /user/question-by-department/@id", function($id){
+Flight::route("GET /questions", function(){
+  $department_id = Flight::query("department_id");
+  $semester_id = Flight::query('semester_id', 1);
   $order = urldecode(Flight::query('order','-id'));
-  Flight::json(Flight::questionService()->get_questions_by_department_id($id, $order));
+  Flight::json(Flight::questionService()->get_questions_for_departments($order, $department_id, $semester_id));
 });
 
 /**
