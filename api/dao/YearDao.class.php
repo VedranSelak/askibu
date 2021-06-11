@@ -8,6 +8,10 @@ class YearDao extends BaseDao{
     parent::__construct("years");
   }
 
+  public function get_semesters(){
+    return $this->query("SELECT * FROM years",[]);
+  }
+
 }
 
 ?>

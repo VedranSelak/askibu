@@ -6,9 +6,26 @@
             <h1 id="title" class="page-header"></h1>
         </div>
     </div>
-    <div class="row">
-      <button class="btn pull-right ask-button btn-success" data-toggle="modal" data-target="#ask-question-modal">Ask question</button>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="dropdown ask-button">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Semester
+            </button>
+            <div class="dropdown-menu" id="dropdown-menu-semesters" aria-labelledby="dropdownMenuButton">
+              <li><a href="javascript:void(0)">Action</a></li>
+              <li><a href="javascript:void(0)">Action</a></li>
+              <li><a href="javascript:void(0)">Action</a></li>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <button class="btn pull-right ask-button btn-success" data-toggle="modal" data-target="#ask-question-modal">Ask question</button>
+        </div>
+      </div>
     </div>
+
     <div id="question-list" class="row">
     </div>
     <div class="row">
@@ -74,8 +91,6 @@
      $("#ask-question *[name='department_id']").val(department);
 
      let data = jsonize_form($(form));
-
-    console.log(data);
     askQuestion(data);
 
    }
@@ -141,6 +156,23 @@
            console.log(jqXHR);
          }
       });
+
+      $.ajax({
+           url: "api/semesters",
+           type: "GET",
+           success: function(data) {
+             console.log(data);
+             let html = "";
+             for(let i=0; i<data.length; i++){
+               html += `<li><a href="javascript:semesterClicked(${data[i].id})">${data[i].level}</a></li>`;
+             }
+             $("#dropdown-menu-semesters").html(html);
+           },
+           error: function(jqXHR, textStatus, errorThrown ){
+             toastr.error(jqXHR.responseJSON.message);
+             console.log(jqXHR);
+           }
+        });
 
       $.ajax({
            url: "api/user/question-by-department/"+department,
@@ -236,6 +268,10 @@
           console.log(jqXHR);
         }
       });
+  }
+
+  function semesterClicked(semester_id){
+    console.log(semester_id);
   }
 
 
