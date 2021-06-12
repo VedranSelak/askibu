@@ -24,6 +24,9 @@
           <button class="btn pull-right ask-button btn-success" data-toggle="modal" data-target="#ask-question-modal">Ask question</button>
         </div>
       </div>
+      <div class="row" id="courses-labels">
+        <span class="label label-primary">Primary Label</span>
+      </div>
     </div>
 
     <div id="question-list" class="row">
@@ -217,6 +220,25 @@
              console.log(jqXHR);
            }
         });
+
+        $.ajax({
+             url: "api/courses",
+             type: "GET",
+             data: {
+               "semester_id" : semester
+             },
+             success: function(data) {
+               let html = "";
+               for(let i=0; i<data.length; i++){
+                 html += `<span class="label label-info">${data[i].name}</span>`;
+               }
+               $("#courses-labels").html(html);
+             },
+             error: function(jqXHR, textStatus, errorThrown ){
+               toastr.error(jqXHR.responseJSON.message);
+               console.log(jqXHR);
+             }
+          });
 
   }
 

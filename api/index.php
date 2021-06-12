@@ -6,6 +6,7 @@ require_once dirname(__FILE__) . '/services/AnswerService.class.php';
 require_once dirname(__FILE__) . '/services/DepartmentService.class.php';
 require_once dirname(__FILE__) . '/services/FacultyService.class.php';
 require_once dirname(__FILE__) . '/services/SemesterService.class.php';
+require_once dirname(__FILE__) . '/services/CourseService.class.php';
 
 
 Flight::set('flight.log_errors',TRUE);
@@ -50,6 +51,7 @@ Flight::register('answerService', 'AnswerService');
 Flight::register('departmentService', 'DepartmentService');
 Flight::register('facultyService', 'FacultyService');
 Flight::register('semesterService', 'SemesterService');
+Flight::register('courseService', 'CourseService');
 //include all routes
 require_once dirname(__FILE__) . "/routes/middleware.php";
 require_once dirname(__FILE__) . "/routes/users.php";
@@ -58,6 +60,7 @@ require_once dirname(__FILE__) . "/routes/answers.php";
 require_once dirname(__FILE__) . "/routes/departments.php";
 require_once dirname(__FILE__) . "/routes/faculties.php";
 require_once dirname(__FILE__) . "/routes/semesters.php";
+require_once dirname(__FILE__) . "/routes/courses.php";
 
 
 Flight::start();
