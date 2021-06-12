@@ -8,6 +8,10 @@ body {
     background-color: #f8f8f8;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .mb-1 {
   margin-bottom: 1rem;
 }

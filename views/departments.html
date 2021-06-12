@@ -211,14 +211,14 @@
                                          <p class='card-text'>${data[i].body}</p>
                                        </div>
                                        <div class='card-footer'>
-                                         <a onclick='loadAnswers(${data[i].id})' style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                         <a onclick='loadAnswers(${data[i].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
                                        </div>
                                        <div id='answers-container-${data[i].id}' class="container-fluid hidden">
                                          <div class="row" id='answers-list-${data[i].id}'>
 
                                          </div>
                                          <div class='row text-center'>
-                                           <div class="card-footer" onclick='hideAnswers(${data[i].id})'><i class="fa fa-chevron-up"></i></div>
+                                           <div class="card-footer" onclick='hideAnswers(${data[i].id})'><i class="fa fa-chevron-up pointer"></i></div>
                                          </div>
                                        </div>
                                      </div>
@@ -248,7 +248,7 @@
              success: function(data) {
                let html = "";
                for(let i=0; i<data.length; i++){
-                 html += `<span class="label label-info mr-1" onclick="courseClicked(${data[i].id})">${data[i].name}</span>`;
+                 html += `<span class="label label-info mr-1 pointer" onclick="courseClicked(${data[i].id})">${data[i].name}</span>`;
                }
                $("#courses-labels").html(html);
              },
