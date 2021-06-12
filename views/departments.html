@@ -46,6 +46,7 @@
           <form id="ask-question" role="form">
             <input type="hidden" name="id" />
             <input name="department_id" type="hidden" />
+            <input name="year_id" type="hidden" />
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Ask a question</h4>
@@ -62,10 +63,6 @@
                   <div class="form-group">
                       <label>Course ID</label>
                       <input name="course_id" type="number" class="form-control" placeholder="Enter ID" required>
-                  </div>
-                  <div class="form-group">
-                      <label>Year ID</label>
-                      <input name="year_id" type="number" class="form-control" placeholder="Enter ID" required>
                   </div>
             </div>
             <div class="modal-footer">
@@ -88,10 +85,12 @@
 
      const urlParams = new URLSearchParams(query);
      let department = urlParams.get("department");
+     let semester = urlParams.get("semester");
      $("#ask-question *[name='department_id']").val(department);
+     $("#ask-question *[name='year_id']").val(semester);
 
      let data = jsonize_form($(form));
-    askQuestion(data);
+     askQuestion(data);
 
    }
   });
