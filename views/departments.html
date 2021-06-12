@@ -210,15 +210,33 @@
                                          <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
                                          <p class='card-text'>${data[i].body}</p>
                                        </div>
-                                       <div class='card-footer'>
-                                         <a onclick='loadAnswers(${data[i].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                       <div class="container">
+                                         <div class="row">
+                                           <div class="col-md-6">
+                                             <a onclick='loadAnswers(${data[i].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                           </div>
+                                           <div class="col-md-6">
+                                             <a onclick="showAnswerForm(${data[i].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                           </div>
+                                         </div>
+                                       </div>
+                                       <div id="add-answer-${data[i].id}" class="container hidden">
+
+                                          <input name="question_id" type="hidden" value="${data[i].id}">
+                                          <div class="row">
+                                             <input name="body" type="text" class="form-control">
+                                          </div>
+                                           <div class="row">
+                                             <button onclick="addAnswer('#add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
+                                           </div>
+
                                        </div>
                                        <div id='answers-container-${data[i].id}' class="container-fluid hidden">
                                          <div class="row" id='answers-list-${data[i].id}'>
 
                                          </div>
                                          <div class='row text-center'>
-                                           <div class="card-footer" onclick='hideAnswers(${data[i].id})'><i class="fa fa-chevron-up pointer"></i></div>
+                                           <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='hideAnswers(${data[i].id})'></i></div>
                                          </div>
                                        </div>
                                      </div>
@@ -294,8 +312,12 @@
                                    </div>
                                  </div>`;
            }
-           $("#answers-list-"+data[0].question_id).html(text);
-           $("#answers-container-"+data[0].question_id).removeClass("hidden");
+           try {
+             $("#answers-list-"+data[0].question_id).html(text);
+             $("#answers-container-"+data[0].question_id).removeClass("hidden");
+           } catch(e){
+             toastr.error("There is no answers for this question!");
+           }
          },
          error: function(jqXHR, textStatus, errorThrown ){
            toastr.error(jqXHR.responseJSON.message);
@@ -351,6 +373,34 @@
     }
 
     $("#ask-question-modal").modal("show");
+  }
+
+  function showAnswerForm(question_id){
+    $("#add-answer-"+question_id).toggleClass("hidden");
+  }
+
+  function addAnswer(selector){
+    let question_id = $(selector+" *[name='question_id']").val();
+    let body = $(selector+" *[name='body']").val();
+    $.ajax({
+         url: "api/user/answer",
+         type: "POST",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         data: JSON.stringify({
+            "body" : body,
+            "question_id" : question_id
+         }),
+         contentType: "application/json",
+         success: function(data) {
+           toastr.success("Answer added successfuly!");
+           showAnswerForm(question_id);
+           loadAnswers(question_id);
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
+           console.log(jqXHR);
+         }
+      });
   }
 
 

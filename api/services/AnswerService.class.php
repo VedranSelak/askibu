@@ -27,6 +27,9 @@ class AnswerService extends BaseService {
   public function post_answer($user, $answer){
     try {
       //TODO : do validation of the fields
+      print_r($answer["body"]);
+      print_r($user["id"]);
+      print_r($answer["question_id"]);
       $data = [
         "is_pinned" => 0,
         "body" => $answer["body"],
@@ -36,7 +39,8 @@ class AnswerService extends BaseService {
       ];
       return parent::add($data);
     } catch (\Exception $e) {
-      throw new Exception("One of the fields is invalid!",403);
+      //throw new Exception("One of the fields is invalid!",403);
+      throw new $e;
     }
 
   }
