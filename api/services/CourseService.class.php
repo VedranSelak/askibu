@@ -9,8 +9,8 @@ class CourseService extends BaseService {
     $this->dao = new CourseDao();
   }
 
-  public function get_courses($semester_id ,$search, $order){
-    return $this->dao->get_courses($semester_id, $search, $order);
+  public function get_courses($semester_id ,$search, $order, $department_id){
+    return $this->dao->get_courses($semester_id, $search, $order, $department_id);
   }
 }
  ?>

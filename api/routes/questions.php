@@ -40,14 +40,16 @@ Flight::route("GET /user/question/@id", function($id){
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="department_id", description="id of department"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="semester_id", description="id of semester"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="course_id", description="id of course"),
  *     @OA\Response(response="200", description="Get questions by department id")
  * )
  */
 Flight::route("GET /questions", function(){
   $department_id = Flight::query("department_id");
   $semester_id = Flight::query('semester_id', 1);
+  $course_id = Flight::query('course_id');
   $order = urldecode(Flight::query('order','-id'));
-  Flight::json(Flight::questionService()->get_questions_for_departments($order, $department_id, $semester_id));
+  Flight::json(Flight::questionService()->get_questions_for_departments($order, $department_id, $semester_id, $course_id));
 });
 
 /**

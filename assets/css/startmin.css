@@ -8,6 +8,14 @@ body {
     background-color: #f8f8f8;
 }
 
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.mr-1 {
+  margin-right: 1rem;
+}
+
 .card-style {
   border-radius: 10px;
   border: 1px solid black;

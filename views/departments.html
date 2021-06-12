@@ -24,7 +24,7 @@
           <button class="btn pull-right ask-button btn-success" data-toggle="modal" data-target="#ask-question-modal">Ask question</button>
         </div>
       </div>
-      <div class="row" id="courses-labels">
+      <div class="row mb-1" id="courses-labels">
         <span class="label label-primary">Primary Label</span>
       </div>
     </div>
@@ -146,8 +146,13 @@
     const urlParams = new URLSearchParams(query);
     let department = urlParams.get("department");
     let semester = urlParams.get("semester");
+    let course = null;
+    if(urlParams.has("course")){
+      course = urlParams.get("course");
+    }
+    console.log(course);
+
     questionsList = [];
-    console.log(semester);
 
     $.ajax({
          url: "api/user/departments/"+department,
@@ -181,7 +186,12 @@
       $.ajax({
            url: "api/questions",
            type: "GET",
-           data: {"department_id":department, "semester_id":semester ,"order":"%2Bid"},
+           data: {
+             "department_id":department,
+             "semester_id":semester,
+             "course_id" : course,
+             "order":"%2Bid"
+           },
            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
            success: function(data) {
              for(var i=0; i<data.length; i++){
@@ -225,12 +235,13 @@
              url: "api/courses",
              type: "GET",
              data: {
-               "semester_id" : semester
+               "semester_id" : semester,
+               "department_id" : department
              },
              success: function(data) {
                let html = "";
                for(let i=0; i<data.length; i++){
-                 html += `<span class="label label-info">${data[i].name}</span>`;
+                 html += `<span class="label label-info mr-1" onclick="courseClicked(${data[i].id})">${data[i].name}</span>`;
                }
                $("#courses-labels").html(html);
              },
@@ -240,6 +251,19 @@
              }
           });
 
+  }
+
+  function courseClicked(course_id){
+    var url = new URL(window.location);
+    console.log(url);
+    if(url.search.includes("course")){
+      url.searchParams.set("course", course_id);
+    } else {
+      url.searchParams.append("course", course_id);
+    }
+
+    window.history.replaceState(null, null, url.search+"#departments");
+    loadPage();
   }
 
   function hideAnswers(questionId){

@@ -7,7 +7,7 @@ class QuestionDao extends BaseDao{
     parent::__construct("questions");
   }
 
-  public function get_questions_for_departments($order = "-id", $department_id, $semester_id) {
+  public function get_questions_for_departments($order = "-id", $department_id, $semester_id, $course_id) {
     list($order_column,$order_direction) = self::parse_order($order);
     $params = [];
     $query = "SELECT questions.*, users.name FROM questions JOIN users ON questions.user_id=users.id WHERE 1=1";
@@ -19,6 +19,10 @@ class QuestionDao extends BaseDao{
     if(isset($semester_id)){
       $query .= " AND questions.year_id = :semester_id";
       $params["semester_id"] = $semester_id;
+    }
+    if($course_id != NULL){
+      $query .= " AND questions.course_id = :course_id";
+      $params["course_id"] = $course_id;
     }
     $query .= " ORDER BY ${order_column} ${order_direction}";
     return $this->query($query, $params);
