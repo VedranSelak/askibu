@@ -150,7 +150,7 @@
     if(urlParams.has("course")){
       course = urlParams.get("course");
     }
-    console.log(course);
+    console.log(semester);
 
     questionsList = [];
 
@@ -318,15 +318,19 @@
   }
 
   function semesterClicked(semester_id){
-    var url = new URL(window.location);
-    console.log(url);
-    if(url.search.includes("semester")){
-      url.searchParams.set("semester", semester_id);
+    let query = window.location.search;
+    const urlParams = new URLSearchParams(query);
+    if(urlParams.has("semester")){
+      urlParams.set("semester", semester_id);
     } else {
-      url.searchParams.append("semester", semester_id);
+      urlParams.append("semester", semester_id);
     }
 
-    window.history.replaceState(null, null, url.search+"#departments");
+    if(urlParams.has("course")){
+      urlParams.delete("course");
+    }
+
+    window.history.replaceState(null, null, "?"+urlParams.toString()+"#departments");
     loadPage();
   }
 
