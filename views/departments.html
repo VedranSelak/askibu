@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="col-md-6">
-          <button class="btn pull-right ask-button btn-success" data-toggle="modal" data-target="#ask-question-modal">Ask question</button>
+          <button class="btn pull-right ask-button btn-success" onclick="openAskQuestionModal()">Ask question</button>
         </div>
       </div>
       <div class="row mb-1" id="courses-labels">
@@ -50,6 +50,7 @@
             <input type="hidden" name="id" />
             <input name="department_id" type="hidden" />
             <input name="year_id" type="hidden" />
+            <input name="course_id" type="hidden" />
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Ask a question</h4>
@@ -63,12 +64,12 @@
                       <label>Body</label>
                       <textarea name="body" class="form-control" rows="10"></textarea>
                   </div>
-                  <div class="form-group">
-                      <label>Course ID</label>
-                      <input name="course_id" type="number" class="form-control" placeholder="Enter ID" required>
-                  </div>
             </div>
+
             <div class="modal-footer">
+                <div class="alert alert-warning text-left" id="warn-user" role="alert">
+                  You have not selected a course. You question will only be seen when displaying all semester questions.
+                </div>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-default">Save changes</button>
             </div>
@@ -89,10 +90,16 @@
      const urlParams = new URLSearchParams(query);
      let department = urlParams.get("department");
      let semester = urlParams.get("semester");
+     let course = null;
+     if (urlParams.has("course")){
+       course = urlParams.get("course");
+       $("#ask-question *[name='course_id']").val(course);
+     }
      $("#ask-question *[name='department_id']").val(department);
      $("#ask-question *[name='year_id']").val(semester);
 
      let data = jsonize_form($(form));
+     console.log(data);
      askQuestion(data);
 
    }
@@ -332,6 +339,18 @@
 
     window.history.replaceState(null, null, "?"+urlParams.toString()+"#departments");
     loadPage();
+  }
+
+  function openAskQuestionModal(){
+    let query = window.location.search;
+    const urlParams = new URLSearchParams(query);
+    if (urlParams.has("course")){
+      $("#warn-user").addClass("hidden");
+    } else {
+      $("#warn-user").removeClass("hidden");
+    }
+
+    $("#ask-question-modal").modal("show");
   }
 
 

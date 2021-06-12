@@ -26,6 +26,9 @@ class QuestionService extends BaseService {
   public function post_question($user, $question){
     try {
       //TODO : do validation of the fields
+      if($question["course_id"] == ""){
+        $question["course_id"] = NULL;
+      }
       $data = [
         "subject" => $question["subject"],
         "body" => $question["body"],
