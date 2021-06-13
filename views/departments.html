@@ -299,6 +299,9 @@
     $.ajax({
          url: "api/user/answers-by-question/"+questionId,
          type: "GET",
+         data: {
+           "order" : "%2Bid"
+         },
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
            text = "";

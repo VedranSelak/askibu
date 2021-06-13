@@ -15,8 +15,10 @@ class AnswerDao extends BaseDao{
     return $this->query_unique("SELECT COUNT(*) AS count FROM answers WHERE user_id = :user_id",["user_id" => $user_id]);
   }
 
-  public function get_answer_by_question_id($id){
-    return $this->query("SELECT * FROM answers WHERE question_id = :question_id",["question_id" => $id]);
+  public function get_answer_by_question_id($id, $order){
+    list($order_column,$order_direction) = self::parse_order($order);
+
+    return $this->query("SELECT * FROM answers WHERE question_id = :question_id ORDER BY ${order_column} ${order_direction}",["question_id" => $id]);
   }
 
   public function get_answers($user_id, $offset, $limit, $status, $search, $order = "-id") {

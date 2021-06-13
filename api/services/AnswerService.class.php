@@ -20,16 +20,13 @@ class AnswerService extends BaseService {
     return $this->dao->get_answers($user_id, $offset, $limit, $status, $search, $order);
   }
 
-  public function get_answer_by_question_id($id){
-    return $this->dao->get_answer_by_question_id($id);
+  public function get_answer_by_question_id($id, $order){
+    return $this->dao->get_answer_by_question_id($id, $order);
   }
 
   public function post_answer($user, $answer){
     try {
       //TODO : do validation of the fields
-      print_r($answer["body"]);
-      print_r($user["id"]);
-      print_r($answer["question_id"]);
       $data = [
         "is_pinned" => 0,
         "body" => $answer["body"],
