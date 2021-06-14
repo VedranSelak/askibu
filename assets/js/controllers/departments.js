@@ -203,25 +203,37 @@ class Departments {
   }
 
   loadAnswers(questionId){
-    RestClient.get("api/user/answers-by-question/"+questionId, { "order" : "%2Bid" }, function(data) {
-      let text = "";
-      for(var i=0; i<data.length; i++){
-        text += `<div class='col-lg-12'>
-                              <div class='card bg-info card-padding card-style' style='height: auto;'>
-                                <div class='card-body'>
-                                  <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
-                                  <p class='card-text'>${data[i].body}</p>
-                                </div>
-                              </div>
-                            </div>`;
-      }
-      try {
-        $("#answers-list-"+data[0].question_id).html(text);
-        $("#answers-container-"+data[0].question_id).removeClass("hidden");
-      } catch(e){
-        toastr.error("There is no answers for this question!");
-      }
+    $.ajax({
+       url: "api/user/answers-by-question/"+questionId,
+       type: "GET",
+       beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+       data: { "order" : "+id" },
+       success: function(data) {
+         let text = "";
+         for(var i=0; i<data.length; i++){
+           text += `<div class='col-lg-12'>
+                                 <div class='card bg-info card-padding card-style' style='height: auto;'>
+                                   <div class='card-body'>
+                                     <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
+                                     <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                                     <p class='card-text'>${data[i].body}</p>
+                                   </div>
+                                 </div>
+                               </div>`;
+         }
+         try {
+           $("#answers-list-"+data[0].question_id).html(text);
+           $("#answers-container-"+data[0].question_id).removeClass("hidden");
+         } catch(e){
+           toastr.error("There is no answers for this question!");
+         }
+       },
+       error: function(jqXHR, textStatus, errorThrown ){
+         toastr.error(jqXHR.responseJSON.message);
+         console.log(jqXHR);
+       }
     });
+
   }
 
   askQuestion(question){

@@ -45,7 +45,7 @@ Flight::route("GET /user/answer/@id", function($id){
  * )
  */
 Flight::route("GET /user/answers-by-question/@id", function($id){
-  $order = urldecode(Flight::query('order','-id'));
+  $order = Flight::query('order','-id');
   Flight::json(Flight::answerService()->get_answer_by_question_id($id, $order));
 });
 
