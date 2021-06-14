@@ -50,13 +50,13 @@
                                     </div>
                                     <div class="form-group">
                                       <!-- Change this to a button or input when using this as a form -->
-                                      <button id="login-link" onclick="doLogin()" class="btn btn-lg btn-success btn-block">Login</button>
+                                      <button id="login-link" onclick="Login.doLogin()" class="btn btn-lg btn-success btn-block">Login</button>
                                     </div>
                                     <div class="form-group">
-                                        <a href="#" onclick="showRegiterForm()" style="float:right;">Register here...</a>
+                                        <a href="#" onclick="Login.showRegiterForm()" style="float:right;">Register here...</a>
                                     </div>
                                     <div class="form-group">
-                                        <a href="#" onclick="showForgotForm()" style="float:right; padding-right: 1em;">Forgot password?</a>
+                                        <a href="#" onclick="Login.showForgotForm()" style="float:right; padding-right: 1em;">Forgot password?</a>
                                     </div>
                                 </fieldset>
                             </form>
@@ -90,10 +90,10 @@
                                     </div>
                                     <div class="form-group">
                                       <!-- Change this to a button or input when using this as a form -->
-                                      <button id="register-link" onclick="doRegister()" class="btn btn-lg btn-success btn-block">Register</button>
+                                      <button id="register-link" onclick="Login.doRegister()" class="btn btn-lg btn-success btn-block">Register</button>
                                     </div>
                                     <div class="form-group">
-                                        <a href="#" onclick="showLoginForm()" style="float:right;">Back to login</a>
+                                        <a href="#" onclick="Login.showLoginForm()" style="float:right;">Back to login</a>
                                     </div>
                                 </fieldset>
                                 <div id="register-alert" style="margin-top:1em; margin-bottom:1em;" class="alert hidden" role="alert">
@@ -118,10 +118,10 @@
                                     </div>
                                     <div class="form-group">
                                       <!-- Change this to a button or input when using this as a form -->
-                                      <button id="forgot-link" onclick="doForgotPassword()" class="btn btn-lg btn-success btn-block">Send Recovery Link</button>
+                                      <button id="forgot-link" onclick="Login.doForgotPassword()" class="btn btn-lg btn-success btn-block">Send Recovery Link</button>
                                     </div>
                                     <div class="form-group">
-                                        <a href="#" onclick="showLoginForm()" style="float:right;">Back to login</a>
+                                        <a href="#" onclick="Login.showLoginForm()" style="float:right;">Back to login</a>
                                     </div>
                                 </fieldset>
                                 <div id="forgot-alert" style="margin-top:1em; margin-bottom:1em;" class="alert hidden" role="alert">
@@ -147,7 +147,7 @@
                                     </div>
                                     <div class="form-group">
                                       <!-- Change this to a button or input when using this as a form -->
-                                      <button id="reset-link" onclick="doResetPassword()" class="btn btn-lg btn-success btn-block">Change Password</button>
+                                      <button id="reset-link" onclick="Login.doResetPassword()" class="btn btn-lg btn-success btn-block">Change Password</button>
                                     </div>
                                 </fieldset>
                                 <div id="register-alert" style="margin-top:1em; margin-bottom:1em;" class="alert hidden" role="alert">
@@ -170,108 +170,13 @@
 
         <script src="./assets/js/utils.js"></script>
 
+        <script src="./assets/js/restClient.js"></script>
+
+        <script src="./assets/js/controllers/login.js"></script>
+
         <script type="text/javascript">
-          // function triggers at load
-          $(function(){
-            if(window.localStorage.getItem("token")){
-              window.location = "index.html";
-            } else {
-              $("body").show();
-            }
 
-            var urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.has("token")){
-              $("#reset-token").val(urlParams.get("token"));
-              showResetPasswordForm();
-            }
-          });
-
-          function showResetPasswordForm(){
-            $("#reset-form-container").removeClass("hidden");
-            $("#login-form-container").addClass("hidden");
-            $("#forgot-form-container").addClass("hidden");
-            $("#register-form-container").addClass("hidden");
-          }
-
-          function showForgotForm(){
-            $("#login-form-container").addClass("hidden");
-            $("#forgot-form-container").removeClass("hidden");
-          }
-
-          function showRegiterForm(){
-            $("#login-form-container").addClass("hidden");
-            $("#register-form-container").removeClass("hidden");
-          }
-
-          function showLoginForm(){
-            $("#login-form-container").removeClass("hidden");
-            $("#register-form-container").addClass("hidden");
-            $("#forgot-form-container").addClass("hidden");
-          }
-
-          function doRegister(){
-            $("#register-link").prop("disabled", true);
-            $.post("api/register", jsonize_form("#register-form") ).done(function( data ) {
-              console.log(data);
-              if($("#register-alert").hasClass("alert-danger")){
-                $("#register-alert").removeClass("alert-danger");
-              }
-              $("#register-alert").html(data.message);
-              $("#register-alert").addClass("alert-success");
-              $("#register-alert").removeClass("hidden");
-            }).fail(function(error) {
-              if($("#register-alert").hasClass("alert-success")){
-                $("#register-alert").removeClass("alert-success");
-              }
-              $("#register-link").prop("disabled", false);
-              $("#register-alert").html(error.responseJSON.message);
-              $("#register-alert").addClass("alert-danger");
-              $("#register-alert").removeClass("hidden");
-            });
-          }
-
-          function doLogin(){
-            $("#login-link").prop("disabled", true);
-            $.post("api/login", jsonize_form("#login-form") ).done(function( data ) {
-              window.localStorage.setItem("token", data.token);
-              window.location = "index.html";
-            }).fail(function(error) {
-              $("#login-link").prop("disabled", false);
-              toastr.error(error.responseJSON.message);
-            });
-          }
-
-          function doResetPassword(){
-            $("#reset-link").prop("disabled", true);
-            $.post("api/reset", jsonize_form("#reset-form") ).done(function( data ) {
-              window.localStorage.setItem("token", data.token);
-              window.location = "index.html";
-            }).fail(function(error) {
-              $("#reset-link").prop("disabled", false);
-              alert(error.responseJSON.message);
-            });
-          }
-
-          function doForgotPassword(){
-            $("#forgot-link").prop("disabled", true);
-            $.post("api/forgot", jsonize_form("#forgot-form") ).done(function( data ) {
-              if($("#forgot-alert").hasClass("alert-danger")){
-                $("#forgot-alert").removeClass("alert-danger");
-              }
-              $("#forgot-alert").html(data.message);
-              $("#forgot-alert").addClass("alert-success");
-              $("#forgot-alert").removeClass("hidden");
-            }).fail(function(error) {
-              $("#forgot-link").prop("disabled", false);
-              if($("#forgot-alert").hasClass("alert-success")){
-                $("#forgot-alert").removeClass("alert-success");
-              }
-
-              $("#forgot-alert").html(error.responseJSON.message);
-              $("#forgot-alert").addClass("alert-danger");
-              $("#forgot-alert").removeClass("hidden");
-            });
-          }
+          Login.init();
 
         </script>
 

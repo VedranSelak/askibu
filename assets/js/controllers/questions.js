@@ -32,6 +32,10 @@ class Questions {
         url: "api/user/question",
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        dataSrc: function (response) {
+
+          return response;
+        },
         data: function ( d ) {
             d.offset = d.start;
             d.limit = d.length;
