@@ -213,10 +213,22 @@ class Departments {
          for(var i=0; i<data.length; i++){
            text += `<div class='col-lg-12'>
                                  <div class='card bg-info card-padding card-style' style='height: auto;'>
+                                  <div class="card-header">
+                                    <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
+                                    <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                                  </div>
                                    <div class='card-body'>
-                                     <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                                     <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
-                                     <p class='card-text'>${data[i].body}</p>
+                                     <div class="container-fluid">
+                                        <div class="row">
+                                          <div class="col-md-6">
+                                            <p class='card-text'>${data[i].body}</p>
+                                          </div>
+                                          <div class="col-md-6">
+                                            <a onclick='departments.pinned(${data[i].id})' id="pin-${data[i].id}" class="pointer pull-right" style='text-decoration: none;'><i class="fa fa-map-pin"></i></a>
+                                          </div>
+                                        </div>
+                                      </div>
+
                                    </div>
                                  </div>
                                </div>`;
@@ -293,6 +305,7 @@ class Departments {
   addAnswer(selector){
     let question_id = $(selector+" *[name='question_id']").val();
     let body = $(selector+" *[name='body']").val();
+    $(selector+" *[name='body']").val("");
     let me = this;
     $.ajax({
          url: "api/user/answer",
