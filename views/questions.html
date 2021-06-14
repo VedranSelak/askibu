@@ -97,62 +97,29 @@
   getQuestions();
 
   function updateQuestion(question){
-   console.log(question);
-   $.ajax({
-        url: "api/user/question/"+question.id,
-        type: "PUT",
-        data: JSON.stringify(question),
-        contentType: "application/json",
-        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-        success: function(data) {
-          toastr.success("Question was updated!");
-          getQuestions();
-          $("#add-question").trigger("reset");
-          $("#add-question *[name='id']").val("");
-          $('#add-question-modal').modal("hide");
-          console.log(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown ){
-          toastr.error(jqXHR.responseJSON.message);
-          console.log(jqXHR);
-        }
-     });
+    RestClient.put("api/user/question/"+question.id, question, function(data){
+        toastr.success("Question was updated!");
+        getQuestions();
+        $("#add-question").trigger("reset");
+        $("#add-question *[name='id']").val("");
+        $('#add-question-modal').modal("hide");
+    });
  }
 
   function openEditQuestionModal(id){
-    $.ajax({
-         url: "api/user/question/"+id,
-         type: "GET",
-         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-         success: function(data) {
-           AskIbuUtils.dataToForm("#add-question", data);
-           $("#add-question-modal").modal("show");
-           console.log(data);
-         },
-         error: function(jqXHR, textStatus, errorThrown ){
-           console.log(jqXHR);
-         }
-      });
+    RestClient.get("api/user/question/"+id, null, function(data){
+        AskIbuUtils.dataToForm("#add-question", data);
+        $("#add-question-modal").modal("show");
+    });
   }
 
   function addQuestion(question){
-    $.ajax({
-         url: "api/user/question",
-         type: "POST",
-         data: JSON.stringify(question),
-         contentType: "application/json",
-         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-         success: function(data) {
-          toastr.success("Question posted successfuly");
-          getQuestions();
-          $("#add-question").trigger("reset");
-          $("#add-question-modal").modal("hide");
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-          toastr.error(jqXHR.responseJSON.message);
-          console.log(jqXHR);
-        }
-      });
+    RestClient.post("api/user/question/", question, function(data){
+       toastr.success("Question posted successfuly");
+       getQuestions();
+       $("#add-question").trigger("reset");
+       $("#add-question-modal").modal("hide");
+    });
   }
 
   function getQuestions(){

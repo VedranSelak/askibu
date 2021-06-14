@@ -13,7 +13,7 @@ class AskIbuUtils {
   static dataToForm(selector, data){
     for (const attr in data){
       $(selector+" *[name='"+attr+"']").val(data[attr]);
-    }
+    } 
   }
 
 }
