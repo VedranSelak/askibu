@@ -82,7 +82,7 @@
   $("#add-question").validate({
    submitHandler: function(form, event) {
      event.preventDefault();
-     let data = jsonize_form($(form));
+     let data = AskIbuUtils.formToJson($(form));
 
     console.log(data);
     if (data.id){
@@ -125,12 +125,7 @@
          type: "GET",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
-           $("#add-question *[name='id']").val(data.id);
-           $("#add-question *[name='subject']").val(data.subject);
-           $("#add-question *[name='body']").val(data.body);
-           $("#add-question *[name='department_id']").val(data.department_id);
-           $("#add-question *[name='course_id']").val(data.course_id);
-           $("#add-question *[name='year_id']").val(data.year_id);
+           AskIbuUtils.dataToForm("#add-question", data);
            $("#add-question-modal").modal("show");
            console.log(data);
          },
@@ -207,31 +202,5 @@
         {"data" : "year_id"}
       ]
     });
-
-
-    // $.ajax({
-    //      url: "api/user/question?order="+ encodeURIComponent("+id"),
-    //      type: "GET",
-    //      beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-    //      success: function(data) {
-    //        console.log(data);
-    //
-    //       var html = "";
-    //        for(var i=0; i<data.length; i++){
-    //         html += '<tr class="odd">'
-    //              + '<td>'+data[i].id+'</td>'
-    //              + '<td>'+data[i].subject+'</td>'
-    //              + '<td>'+data[i].body+'</td>'
-    //              + '<td>'+data[i].department_id+'</td>'
-    //              + '<td>',+data[i].course_id+'</td>'
-    //              + '<td>'+data[i].posted_at+'</td>'
-    //              + '<td>'+data[i].user_id+'</td>'
-    //              + '<td>'+data[i].year_id+'</td></tr>';
-    //        }
-    //
-    //        $("#questions-table-body").html(html);
-    //        $("#question-table").dataTable();
-    //      }
-    //   });
   }
 </script>

@@ -98,7 +98,7 @@
      $("#ask-question *[name='department_id']").val(department);
      $("#ask-question *[name='year_id']").val(semester);
 
-     let data = jsonize_form($(form));
+     let data = AskIbuUtils.formToJson($(form));
      console.log(data);
      askQuestion(data);
 
