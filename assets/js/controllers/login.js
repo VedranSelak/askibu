@@ -39,15 +39,14 @@ class Login {
 
   static doRegister(){
     $("#register-link").prop("disabled", true);
-    $.post("api/register", AskIbuUtils.formToJson("#register-form") ).done(function( data ) {
-      console.log(data);
+    RestClient.post("api/register", AskIbuUtils.formToJson("#register-form"), function(data){
       if($("#register-alert").hasClass("alert-danger")){
         $("#register-alert").removeClass("alert-danger");
       }
       $("#register-alert").html(data.message);
       $("#register-alert").addClass("alert-success");
       $("#register-alert").removeClass("hidden");
-    }).fail(function(error) {
+    }, function(error){
       if($("#register-alert").hasClass("alert-success")){
         $("#register-alert").removeClass("alert-success");
       }
@@ -60,10 +59,11 @@ class Login {
 
   static doLogin(){
     $("#login-link").prop("disabled", true);
-    $.post("api/login",  AskIbuUtils.formToJson("#login-form") ).done(function( data ) {
+
+    RestClient.post("api/login",  AskIbuUtils.formToJson("#login-form"), function(data) {
       window.localStorage.setItem("token", data.token);
       window.location = "index.html";
-    }).fail(function(error) {
+    }, function(error) {
       $("#login-link").prop("disabled", false);
       toastr.error(error.responseJSON.message);
     });
@@ -71,10 +71,10 @@ class Login {
 
   static doResetPassword(){
     $("#reset-link").prop("disabled", true);
-    $.post("api/reset",  AskIbuUtils.formToJson("#reset-form") ).done(function( data ) {
+    RestClient.post("api/reset",  AskIbuUtils.formToJson("#reset-form"), function(data) {
       window.localStorage.setItem("token", data.token);
       window.location = "index.html";
-    }).fail(function(error) {
+    }, function(error) {
       $("#reset-link").prop("disabled", false);
       alert(error.responseJSON.message);
     });
@@ -82,14 +82,14 @@ class Login {
 
   static doForgotPassword(){
     $("#forgot-link").prop("disabled", true);
-    $.post("api/forgot",  AskIbuUtils.formToJson("#forgot-form") ).done(function( data ) {
+    RestClient.post("api/forgot",  AskIbuUtils.formToJson("#forgot-form"), function(data) {
       if($("#forgot-alert").hasClass("alert-danger")){
         $("#forgot-alert").removeClass("alert-danger");
       }
       $("#forgot-alert").html(data.message);
       $("#forgot-alert").addClass("alert-success");
       $("#forgot-alert").removeClass("hidden");
-    }).fail(function(error) {
+    }, function(error) {
       $("#forgot-link").prop("disabled", false);
       if($("#forgot-alert").hasClass("alert-success")){
         $("#forgot-alert").removeClass("alert-success");
