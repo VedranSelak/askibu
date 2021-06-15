@@ -18,12 +18,12 @@ class AnswerDao extends BaseDao{
   public function get_answer_by_question_id($id, $order){
     list($order_column,$order_direction) = self::parse_order($order);
 
-    return $this->query("SELECT answers.*, users.name FROM answers JOIN users ON answers.user_id = users.id WHERE question_id = :question_id ORDER BY answers.id,${order_column} ${order_direction}",["question_id" => $id]);
+    return $this->query("SELECT answers.*, users.name FROM answers JOIN users ON answers.user_id = users.id WHERE question_id = :question_id ORDER BY answers.${order_column} ${order_direction}, answers.posted_at ${order_direction}",["question_id" => $id]);
   }
 
-  public function pin_answer($id){
+  public function pin_answer($id, $value){
     $entity = [
-      "is_pinned" => 1
+      "is_pinned" => $value
     ];
     return $this->update($id, $entity);
   }

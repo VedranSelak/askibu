@@ -209,6 +209,7 @@ class Departments {
        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
        data: { "order" : "+is_pinned" },
        success: function(data) {
+         console.log(data);
          let text = "";
          for(var i=0; i<data.length; i++){
            text += `<div class='col-lg-12'>
@@ -334,24 +335,48 @@ class Departments {
   }
 
   pinned(answer_id, question_id){
-    let me = this;
-    $.ajax({
-         url: "api/user/answer/pin/"+answer_id,
-         type: "PUT",
-         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-         data: JSON.stringify({
-           "question_id":question_id
-         }),
-         contentType: "application/json",
-         success: function(data) {
-           toastr.success("Answer pinned successfuly!");
-           me.loadAnswers(question_id);
-         },
-         error: function(jqXHR, textStatus, errorThrown ){
-           toastr.error(jqXHR.responseJSON.message);
-           console.log(jqXHR);
-         }
-      });
+    if(!$("#pin-"+answer_id).hasClass("green")){
+      let me = this;
+      $.ajax({
+           url: "api/user/answer/pin/"+answer_id+"/"+question_id+"/"+1,
+           type: "PUT",
+           beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+           data: JSON.stringify({
+             "question_id" : question_id,
+             "set" : 1
+           }),
+           contentType: "application/json",
+           success: function(data) {
+             toastr.success("Pin updated successfuly!");
+             me.loadAnswers(question_id);
+           },
+           error: function(jqXHR, textStatus, errorThrown ){
+             toastr.error(jqXHR.responseJSON.message);
+             console.log(jqXHR);
+           }
+        });
+    } else {
+      let me = this;
+      $.ajax({
+           url: "api/user/answer/pin/"+answer_id+"/"+question_id+"/"+0,
+           type: "PUT",
+           beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+           data: JSON.stringify({
+             question : question_id,
+             set : 0
+           }),
+           contentType: "application/json; charset=utf-8",
+           success: function(data) {
+             toastr.success("Pin updated successfuly!");
+             me.loadAnswers(question_id);
+           },
+           error: function(jqXHR, textStatus, errorThrown ){
+             toastr.error(jqXHR.responseJSON.message);
+             console.log(jqXHR);
+           }
+        });
+    }
+
   }
 
 }

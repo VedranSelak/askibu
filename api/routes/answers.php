@@ -89,15 +89,15 @@ Flight::route("PUT /user/answer/@id", function($id){
 });
 
 /**
- * @OA\Put(path="/user/answer/pin/{id}",tags={"x-user","answer"},security={{"ApiKeyAuth": {}}},
- * @OA\Parameter(type="integer", in="path", name="id", default=1),
- * @OA\Parameter(@OA\Schema(type="integer"), in="query", name="question_id", description="id of the question"),
- * @OA\Response(response="200", description="Pin answer")
+ * @OA\Put(path="/user/answer/pin/{id}/{question}/{set}",tags={"x-user","answer"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of a answer"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="question", description="Offset for pagination"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="set", description="Limit for pagination"),
+ *     @OA\Response(response="200", description="Get questions by users id")
  * )
  */
-Flight::route("PUT /user/answer/pin/@id", function($id){
-  $question_id = Flight::query('question_id');
-  Flight::json(Flight::answerService()->pin_answer(Flight::get("user")["id"] , $id, $question_id));
+Flight::route("PUT /user/answer/pin/@id/@quesiton/@set", function($id, $question, $set){
+  Flight::json(Flight::answerService()->pin_answer(Flight::get("user")["id"] , $id, $question, $set));
 });
 
  ?>

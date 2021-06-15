@@ -28,13 +28,13 @@ class AnswerService extends BaseService {
     return $this->dao->get_answer_by_question_id($id, $order);
   }
 
-  public function pin_answer($user_id, $id, $question_id){
+  public function pin_answer($user_id, $id, $question_id, $value){
     $question = $this->questionDao->get_questions_by_question_id($user_id, $question_id);
     if($question != NULL){
-      $this->dao->pin_answer($id);
+      $this->dao->pin_answer($id, $value);
       return "Answer pinned successfuly!";
     } else {
-      throw new Exception("Cant pin answers that are not on your question!", 403);
+      throw new Exception("Can't pin answers that are not on your question!", 403);
     }
   }
 
