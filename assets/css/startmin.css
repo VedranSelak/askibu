@@ -8,6 +8,10 @@ body {
     background-color: #f8f8f8;
 }
 
+.green {
+  color: #34eb4f;
+}
+
 .pointer {
   cursor: pointer;
 }

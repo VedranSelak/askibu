@@ -88,4 +88,16 @@ Flight::route("PUT /user/answer/@id", function($id){
   Flight::json(Flight::answerService()->update_answer(Flight::get("user") , $id, $data));
 });
 
+/**
+ * @OA\Put(path="/user/answer/pin/{id}",tags={"x-user","answer"},security={{"ApiKeyAuth": {}}},
+ * @OA\Parameter(type="integer", in="path", name="id", default=1),
+ * @OA\Parameter(@OA\Schema(type="integer"), in="query", name="question_id", description="id of the question"),
+ * @OA\Response(response="200", description="Pin answer")
+ * )
+ */
+Flight::route("PUT /user/answer/pin/@id", function($id){
+  $question_id = Flight::query('question_id');
+  Flight::json(Flight::answerService()->pin_answer(Flight::get("user")["id"] , $id, $question_id));
+});
+
  ?>

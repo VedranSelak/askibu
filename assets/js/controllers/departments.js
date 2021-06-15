@@ -212,26 +212,25 @@ class Departments {
          let text = "";
          for(var i=0; i<data.length; i++){
            text += `<div class='col-lg-12'>
-                                 <div class='card bg-info card-padding card-style' style='height: auto;'>
-                                  <div class="card-header">
-                                    <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                                    <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
-                                  </div>
-                                   <div class='card-body'>
-                                     <div class="container-fluid">
-                                        <div class="row">
-                                          <div class="col-md-6">
-                                            <p class='card-text'>${data[i].body}</p>
-                                          </div>
-                                          <div class="col-md-6">
-                                            <a onclick='departments.pinned(${data[i].id})' id="pin-${data[i].id}" class="pointer pull-right" style='text-decoration: none;'><i class="fa fa-map-pin"></i></a>
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                   </div>
-                                 </div>
-                               </div>`;
+                       <div class='card bg-info card-padding card-style' style='height: auto;'>
+                        <div class="card-header">
+                          <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
+                          <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                        </div>
+                         <div class='card-body'>
+                           <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <p class='card-text'>${data[i].body}</p>
+                                </div>
+                                <div id="pin-${data[i].id}" class="col-md-6">
+                                  <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+                                </div>
+                              </div>
+                            </div>
+                         </div>
+                       </div>
+                     </div>`;
          }
          try {
            $("#answers-list-"+data[0].question_id).html(text);
@@ -320,6 +319,28 @@ class Departments {
            toastr.success("Answer added successfuly!");
            me.showAnswerForm(question_id);
            me.loadAnswers(question_id);
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
+           console.log(jqXHR);
+         }
+      });
+  }
+
+  pinned(answer_id, question_id){
+    let me = this;
+    $.ajax({
+         url: "api/user/answer/pin/"+answer_id,
+         type: "PUT",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         data: JSON.stringify({
+           "question_id":question_id
+         }),
+         contentType: "application/json",
+         success: function(data) {
+           toastr.success("Answer pinned successfuly!");
+           me.loadAnswers(question_id);
+           $("#pin-"+answer_id).addClass("green");
          },
          error: function(jqXHR, textStatus, errorThrown ){
            toastr.error(jqXHR.responseJSON.message);

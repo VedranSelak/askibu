@@ -21,6 +21,13 @@ class AnswerDao extends BaseDao{
     return $this->query("SELECT answers.*, users.name FROM answers JOIN users ON answers.user_id = users.id WHERE question_id = :question_id ORDER BY ${order_column} ${order_direction}",["question_id" => $id]);
   }
 
+  public function pin_answer($id){
+    $entity = [
+      "is_pinned" => 1
+    ];
+    return $this->update($id, $entity);
+  }
+
   public function get_answers($user_id, $offset, $limit, $status, $search, $order = "-id") {
     list($order_column,$order_direction) = self::parse_order($order);
     $params = [];

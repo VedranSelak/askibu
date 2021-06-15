@@ -2,11 +2,15 @@
 
 require_once dirname(__FILE__) . '/BaseService.class.php';
 require_once dirname(__FILE__) . '/../dao/AnswerDao.class.php';
+require_once dirname(__FILE__) . '/../dao/QuestionDao.class.php';
 
 class AnswerService extends BaseService {
 
+  private $questionDao;
+
   public function __construct(){
     $this->dao = new AnswerDao();
+    $this->questionDao = new QuestionDao();
   }
   public function get_answer_by_answer_id($user_id, $id){
     return  $this->dao->get_answer_by_answer_id($user_id, $id);
@@ -22,6 +26,16 @@ class AnswerService extends BaseService {
 
   public function get_answer_by_question_id($id, $order){
     return $this->dao->get_answer_by_question_id($id, $order);
+  }
+
+  public function pin_answer($user_id, $id, $question_id){
+    $question = $this->questionDao->get_questions_by_question_id($user_id, $question_id);
+    if(isset($question)){
+      $this->dao->pin_answer($id);
+      return "Answer pinned successfuly!";
+    } else {
+      throw new Exception("Cant pin answers that are not on your question!", 403);
+    }
   }
 
   public function post_answer($user, $answer){
