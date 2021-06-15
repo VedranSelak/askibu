@@ -1,10 +1,10 @@
 class Departments {
 
-  constructor(_questionsList, _maxPage, _currentPage, _rows){
-    this.questionsList = _questionsList;
-    this.maxPage = _maxPage;
-    this.currentPage = _currentPage;
-    this.rows = _rows;
+  constructor(){
+    this.questionsList = [];
+    this.maxPage;
+    this.currentPage = 1;
+    this.rows = 5;
   }
 
   loadPage(){
@@ -16,7 +16,6 @@ class Departments {
     if(urlParams.has("course")){
       course = urlParams.get("course");
     }
-    console.log(semester);
 
     this.questionsList = [];
 
@@ -27,6 +26,9 @@ class Departments {
     RestClient.get("api/semesters", null, function(data) {
       let html = "";
       for(let i=0; i<data.length; i++){
+        if (data[i].id == semester) {
+          $("#semester-dropdown").html(data[i].level);
+        }
         html += `<li><a href="javascript:departments.semesterClicked(${data[i].id})">${data[i].level}</a></li>`;
       }
       $("#dropdown-menu-semesters").html(html);
@@ -45,10 +47,10 @@ class Departments {
             success: function(data) {
               for(var i=0; i<data.length; i++){
                 me.questionsList[i] = `<div class='col-lg-12'>
-                                      <div class='card bg-info card-padding card-style' style='height: auto;'>
+                                      <div class='card bg-grey card-padding card-style text-ligh' style='height: auto;'>
                                         <div class='card-body'>
                                           <h3 class='card-title'>${data[i].subject}</h3>
-                                          <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                                          <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
                                           <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
                                           <p class='card-text'>${data[i].body}</p>
                                         </div>
@@ -108,7 +110,11 @@ class Departments {
                     success: function(data) {
                       let html = "";
                       for(let i=0; i<data.length; i++){
-                        html += `<span class="label label-info mr-1 pointer" onclick="departments.courseClicked(${data[i].id})">${data[i].name}</span>`;
+                        if(data[i].id == course){
+                          html += `<span class="label label-info mr-1 pointer border-dark" onclick="departments.courseClicked(${data[i].id})">${data[i].name}</span>`;
+                        } else {
+                          html += `<span class="label label-info mr-1 pointer" onclick="departments.courseClicked(${data[i].id})">${data[i].name}</span>`;
+                        }
                       }
                       $("#courses-labels").html(html);
                     },
@@ -221,15 +227,15 @@ class Departments {
                          <div class='card-body'>
                            <div class="container-fluid">
                               <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-10">
                                   <p class='card-text'>${data[i].body}</p>
                                 </div>`;
           if(data[i].is_pinned == 1){
-              text += `<div id="pin-${data[i].id}" class="col-md-6 green">
+              text += `<div id="pin-${data[i].id}" class="col-md-2 green">
               <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
             </div>`;
           } else {
-            text += `<div id="pin-${data[i].id}" class="col-md-6">
+            text += `<div id="pin-${data[i].id}" class="col-md-2">
             <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
           </div>`;
           }

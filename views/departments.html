@@ -6,29 +6,32 @@
             <h1 id="title" class="page-header"></h1>
         </div>
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="dropdown ask-button">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Semester
-            </button>
-            <div class="dropdown-menu" id="dropdown-menu-semesters" aria-labelledby="dropdownMenuButton">
-              <li><a href="javascript:void(0)">Action</a></li>
-              <li><a href="javascript:void(0)">Action</a></li>
-              <li><a href="javascript:void(0)">Action</a></li>
+    <div class="row">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="dropdown ask-button">
+              <button id="semester-dropdown" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Semester
+              </button>
+              <div class="dropdown-menu" id="dropdown-menu-semesters" aria-labelledby="dropdownMenuButton">
+              </div>
             </div>
           </div>
+          <div class="col-md-6">
+            <button class="btn pull-right ask-button btn-success" onclick="departments.openAskQuestionModal()">Ask question</button>
+          </div>
         </div>
-        <div class="col-md-6">
-          <button class="btn pull-right ask-button btn-success" onclick="departments.openAskQuestionModal()">Ask question</button>
+        <div class="row">
+          <h2>Courses</h2>
         </div>
-      </div>
-      <div class="row mb-1" id="courses-labels">
-        <span class="label label-primary">Primary Label</span>
+        <div class="row mb-1" id="courses-labels">
+        </div>
+        <div class="row">
+          <h2 id="course-header"></h2>
+        </div>
       </div>
     </div>
-
     <div id="question-list" class="row">
     </div>
     <div class="row">
@@ -82,7 +85,7 @@
 
 <script type="text/javascript">
 
-  var departments = new Departments([], 0, 1, 5);
+  var departments = new Departments();
 
   departments.init();
 
