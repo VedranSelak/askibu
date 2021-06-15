@@ -22,7 +22,7 @@
             <button class="btn pull-right ask-button btn-success" onclick="departments.openAskQuestionModal()">Ask question</button>
           </div>
         </div>
-        <div class="row">
+        <div class="row mb-1">
           <h2>Courses</h2>
         </div>
         <div class="row mb-1" id="courses-labels">
@@ -34,10 +34,22 @@
     </div>
     <div id="question-list" class="row">
     </div>
-    <div class="row">
+    <div id="no-questions-alert" class="row hidden">
+      <div class="page-wrap d-flex flex-row align-items-center">
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-md-12 text-center">
+                      <span class="display-1 d-block m-1"><i class="fa fa-5x fa-folder-open"></i></span>
+                      <div class="mb-4 lead">There is no questions in this section. Be the first one to ask.</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="row pagination-nav">
       <h6 id="page-number" class="pagination-header"></h6>
     </div>
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" class="pagination-nav">
       <ul class="pagination pull-right">
         <li class="page-item"><button id="previous" onclick="departments.paginate(this)" class="button-pag" href="#">Previous</button></li>
         <li class="page-item"><button id="next" onclick="departments.paginate(this)" class="button-pag" href="#">Next</button></li>

@@ -45,16 +45,21 @@ class Departments {
             },
             beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
             success: function(data) {
+              if(data == null){
+                $("#no-questions-alert").removeClass("hidden");
+              } else {
+                $("#no-questions-alert").addClass("hidden");
+              }
               for(var i=0; i<data.length; i++){
                 me.questionsList[i] = `<div class='col-lg-12'>
-                                      <div class='card bg-grey card-padding card-style text-ligh' style='height: auto;'>
-                                        <div class='card-body'>
+                                      <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                                        <div class='card-body p-1'>
                                           <h3 class='card-title'>${data[i].subject}</h3>
                                           <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
                                           <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                                          <p class='card-text'>${data[i].body}</p>
+                                          <p class='card-text panel p-1'>${data[i].body}</p>
                                         </div>
-                                        <div class="container">
+                                        <div class="container p-1">
                                           <div class="row">
                                             <div class="col-md-6">
                                               <a onclick='departments.loadAnswers(${data[i].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
@@ -64,17 +69,7 @@ class Departments {
                                             </div>
                                           </div>
                                         </div>
-                                        <div id="add-answer-${data[i].id}" class="container hidden">
 
-                                           <input name="question_id" type="hidden" value="${data[i].id}">
-                                           <div class="row">
-                                              <input name="body" type="text" class="form-control">
-                                           </div>
-                                            <div class="row">
-                                              <button onclick="departments.addAnswer('#add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
-                                            </div>
-
-                                        </div>
                                         <div id='answers-container-${data[i].id}' class="container-fluid hidden">
                                           <div class="row" id='answers-list-${data[i].id}'>
 
@@ -82,6 +77,17 @@ class Departments {
                                           <div class='row text-center'>
                                             <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='departments.hideAnswers(${data[i].id})'></i></div>
                                           </div>
+                                        </div>
+                                        <div id="add-answer-${data[i].id}" class="container hidden">
+
+                                           <input name="question_id" type="hidden" value="${data[i].id}">
+                                           <div class="row m-1">
+                                              <textarea name="body" type="text" class="form-control"></textarea>
+                                           </div>
+                                            <div class="row m-1">
+                                              <button onclick="departments.addAnswer('#add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
+                                            </div>
+
                                         </div>
                                       </div>
                                     </div>`;
@@ -162,6 +168,14 @@ class Departments {
   displayQuestions(items, wrapper, rowsPerPage, page){
     $(wrapper).html("");
     page--;
+
+    if(this.maxPage == 0) {
+      $(".pagination-nav").addClass("hidden");
+      $("#no-questions-alert").removeClass("hidden");
+      return;
+    } else {
+      $(".pagination-nav").removeClass("hidden");
+    }
 
     $("#page-number").html("Page " + (page + 1) + " out of " + this.maxPage);
 

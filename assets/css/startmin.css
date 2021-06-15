@@ -29,7 +29,7 @@ body {
 }
 
 .bg-grey{
-  background-color: #ffffff;
+  background-color: #f7f7f7;
 }
 
 .text-light {
@@ -56,9 +56,12 @@ body {
   margin-right: 1rem;
 }
 
+.p-1 {
+  padding: 1rem;
+}
+
 .card-style {
   border-radius: 5px;
-  border: 1px solid black;
   margin-bottom: 2rem;
 }
 
