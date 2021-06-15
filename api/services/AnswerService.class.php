@@ -30,7 +30,7 @@ class AnswerService extends BaseService {
 
   public function pin_answer($user_id, $id, $question_id){
     $question = $this->questionDao->get_questions_by_question_id($user_id, $question_id);
-    if(isset($question)){
+    if($question != NULL){
       $this->dao->pin_answer($id);
       return "Answer pinned successfuly!";
     } else {

@@ -207,7 +207,7 @@ class Departments {
        url: "api/user/answers-by-question/"+questionId,
        type: "GET",
        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-       data: { "order" : "+id" },
+       data: { "order" : "+is_pinned" },
        success: function(data) {
          let text = "";
          for(var i=0; i<data.length; i++){
@@ -222,11 +222,17 @@ class Departments {
                               <div class="row">
                                 <div class="col-md-6">
                                   <p class='card-text'>${data[i].body}</p>
-                                </div>
-                                <div id="pin-${data[i].id}" class="col-md-6">
-                                  <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
-                                </div>
-                              </div>
+                                </div>`;
+          if(data[i].is_pinned == 1){
+              text += `<div id="pin-${data[i].id}" class="col-md-6 green">
+              <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+            </div>`;
+          } else {
+            text += `<div id="pin-${data[i].id}" class="col-md-6">
+            <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+          </div>`;
+          }
+          text += `            </div>
                             </div>
                          </div>
                        </div>
@@ -340,7 +346,6 @@ class Departments {
          success: function(data) {
            toastr.success("Answer pinned successfuly!");
            me.loadAnswers(question_id);
-           $("#pin-"+answer_id).addClass("green");
          },
          error: function(jqXHR, textStatus, errorThrown ){
            toastr.error(jqXHR.responseJSON.message);
