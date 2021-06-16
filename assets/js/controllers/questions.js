@@ -23,9 +23,10 @@ class Questions {
       serverSide: true,
       bDestroy: true,
       preDrawCallback: function( settings ) {
-        settings._iRecordsTotal = 100;
-        settings._iRecordsDisplay = 100;
-        console.log(settings);
+        if(settings.jqXHR) {
+          settings._iRecordsTotal = settings.jqXHR.getResponseHeader("total-records");
+          settings._iRecordsDisplay = settings.jqXHR.getResponseHeader("total-records");
+        }
       },
       paginationType: "simple",
       ajax: {
@@ -33,7 +34,6 @@ class Questions {
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
         dataSrc: function (response) {
-
           return response;
         },
         data: function ( d ) {

@@ -13,6 +13,8 @@ Flight::route("GET /user/question", function(){
   $limit = Flight::query("limit",25);
   $search = Flight::query('search');
   $order = urldecode(Flight::query('order','-id'));
+  $total = Flight::questionService()->get_questions(Flight::get("user")["id"], $offset, $limit, $search, $order, TRUE);
+  header('total-records: '.$total['total']);
   Flight::json(Flight::questionService()->get_questions(Flight::get("user")["id"],$offset, $limit, $search, $order));
 });
 
