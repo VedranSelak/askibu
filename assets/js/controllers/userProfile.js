@@ -31,17 +31,18 @@ class UserProfile {
       processing: true,
       serverSide: true,
       bDestroy: true,
-      preDrawCallback: function( settings ) {
-        settings._iRecordsTotal = 100;
-        settings._iRecordsDisplay = 100;
-      },
       paginationType: "simple",
+      preDrawCallback: function( settings ) {
+        if(settings.jqXHR) {
+          settings._iRecordsTotal = settings.jqXHR.getResponseHeader("total-records");
+          settings._iRecordsDisplay = settings.jqXHR.getResponseHeader("total-records");
+        }
+      },
       ajax: {
         url: "api/admin/question",
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
         dataSrc: function (response) {
-
           return response;
         },
         data: function ( d ) {
@@ -57,7 +58,6 @@ class UserProfile {
             delete d.draw;
             console.log(d);
         },
-
       },
       columns: [
         {"data" : "id",
@@ -79,8 +79,10 @@ class UserProfile {
       serverSide: true,
       bDestroy: true,
       preDrawCallback: function( settings ) {
-        settings._iRecordsTotal = 100;
-        settings._iRecordsDisplay = 100;
+        if(settings.jqXHR) {
+          settings._iRecordsTotal = settings.jqXHR.getResponseHeader("total-records");
+          settings._iRecordsDisplay = settings.jqXHR.getResponseHeader("total-records");
+        }
       },
       paginationType: "simple",
       ajax: {
@@ -88,7 +90,6 @@ class UserProfile {
         type: "GET",
         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
         dataSrc: function (response) {
-
           return response;
         },
         data: function ( d ) {

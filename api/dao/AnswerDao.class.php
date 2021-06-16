@@ -28,12 +28,19 @@ class AnswerDao extends BaseDao{
     return $this->update($id, $entity);
   }
 
-  public function get_answers($user_id, $offset, $limit, $status, $search, $order = "-id") {
+  public function get_answers($user_id, $offset, $limit, $status, $search, $order = "-id", $total = FALSE) {
     list($order_column,$order_direction) = self::parse_order($order);
+
     $params = [];
-    $query = "SELECT a.*, u.name, u.email
-              FROM answers a
-              JOIN users u ON u.id=a.user_id
+
+    if ($total){
+      $query = "SELECT COUNT(*) AS total ";
+    }else{
+      $query = "SELECT a.*, u.name, u.email ";
+    }
+
+    $query .= "FROM answers a
+              JOIN users u ON a.user_id=u.id
               WHERE 1=1";
     if(isset($user_id)){
       $query .= " AND a.user_id = :user_id";
@@ -47,15 +54,15 @@ class AnswerDao extends BaseDao{
       $query .= " AND a.status = :status";
       $params["status"] = $status;
     }
-    $query .= " ORDER BY ${order_column} ${order_direction}";
 
-    if(isset($limit)) {
-      $query .= "  LIMIT ${limit} ";
+    if ($total){
+      return $this->query_unique($query, $params);
+    }else{
+      $query .=" ORDER BY ${order_column} ${order_direction} ";
+      $query .="LIMIT ${limit} OFFSET ${offset}";
+
+      return $this->query($query, $params);
     }
-
-    $query .= " OFFSET ${offset}";
-
-    return $this->query($query,$params);
     }
 
 }

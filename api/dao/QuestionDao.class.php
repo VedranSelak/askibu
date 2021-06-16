@@ -36,10 +36,17 @@ class QuestionDao extends BaseDao{
     return $this->query_unique("SELECT COUNT(*) AS count FROM questions WHERE user_id = :user_id",["user_id" => $user_id]);
   }
 
-  public function get_questions($user_id, $offset, $limit, $search, $order = "-id") {
+  public function get_questions($user_id, $offset, $limit, $search, $order = "-id", $total = FALSE) {
     list($order_column,$order_direction) = self::parse_order($order);
+
     $params = [];
-    $query = "SELECT * FROM questions WHERE 1=1";
+    if ($total){
+      $query = "SELECT COUNT(*) AS total ";
+    }else{
+      $query = "SELECT * ";
+    }
+    $query .= "FROM questions
+               WHERE 1 = 1";
 
     if(isset($user_id)){
       $query .= " AND user_id = :user_id";
@@ -50,8 +57,14 @@ class QuestionDao extends BaseDao{
                   OR LOWER(body) LIKE CONCAT('%', :search, '%')";
       $params["search"] = strtolower($search);
     }
-    $query .= " ORDER BY ${order_column} ${order_direction} LIMIT ${limit} OFFSET ${offset}";
-    return $this->query($query,$params);
+    if ($total){
+      return $this->query_unique($query, $params);
+    }else{
+      $query .=" ORDER BY ${order_column} ${order_direction} ";
+      $query .="LIMIT ${limit} OFFSET ${offset}";
+
+      return $this->query($query, $params);
+    }
   }
 
 }

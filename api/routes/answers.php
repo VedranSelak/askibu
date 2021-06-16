@@ -19,9 +19,9 @@ Flight::route("GET /user/answer", function(){
 });
 
 /**
- * @OA\Get(path="/asmin/answers",tags={"x-admin","answer"},security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/admin/answers",tags={"x-admin","answer"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),
- *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", description="Limit for pagination"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25,description="Limit for pagination"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="user_id", description="id of user"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", description="Search by status"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for questions. Case insensitive search"),
@@ -31,11 +31,13 @@ Flight::route("GET /user/answer", function(){
  */
 Flight::route("GET /admin/answers", function(){
   $offset = Flight::query("offset",0);
-  $limit = Flight::query("limit", 1000);
+  $limit = Flight::query("limit", 25);
   $user_id = Flight::query("user_id");
   $status = Flight::query("status");
   $search = Flight::query('search');
   $order = urldecode(Flight::query('order','-id'));
+  $total = Flight::answerService()->get_answers($user_id, $offset, $limit, $status, $search, $order, TRUE);
+  header("total-records: ".$total["total"]);
   Flight::json(Flight::answerService()->get_answers($user_id, $offset, $limit, $status, $search, $order));
 });
 

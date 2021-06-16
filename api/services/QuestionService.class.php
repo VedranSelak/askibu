@@ -15,8 +15,8 @@ class QuestionService extends BaseService {
     return $this->dao->get_question_count($user_id);
   }
 
-  public function get_questions($user_id, $offset, $limit, $search, $order){
-    return $this->dao->get_questions($user_id, $offset, $limit, $search, $order);
+  public function get_questions($user_id, $offset, $limit, $search, $order, $total = FALSE){
+    return $this->dao->get_questions($user_id, $offset, $limit, $search, $order, $total);
   }
 
   public function get_questions_for_departments($order, $department_id, $semester_id, $course_id){
