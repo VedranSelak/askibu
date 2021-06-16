@@ -27,35 +27,99 @@ class UserProfile {
       $("#users-role").html("Users role: " + data.role);
     });
 
-    $.ajax({
-            url: "api/admin/question/",
-            type: "GET",
-            data: {
-              "user_id" : user_id,
-              "order" : "+posted_at"
-            },
-            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-            success: function(data) {
-              let html = "";
-              for(var i=0; i<data.length; i++){
-                html += `<div class='col-lg-12'>
-                            <div class='card bg-grey card-padding card-style' style='height: auto;'>
-                              <div class='card-body p-1'>
-                                <h3 class='card-title'>${data[i].subject}</h3>
-                                <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
-                                <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                                <p class='card-text panel p-1'>${data[i].body}</p>
-                              </div>
-                            </div>
-                          </div>`;
-              }
-             $("#users-questions").html(html);
-            },
-            error: function(jqXHR, textStatus, errorThrown ){
-              toastr.error(jqXHR.responseJSON.message);
-              console.log(jqXHR);
-            }
-         });
+    $("#user-question-table").dataTable({
+      processing: true,
+      serverSide: true,
+      bDestroy: true,
+      preDrawCallback: function( settings ) {
+        settings._iRecordsTotal = 100;
+        settings._iRecordsDisplay = 100;
+      },
+      paginationType: "simple",
+      ajax: {
+        url: "api/admin/question",
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        dataSrc: function (response) {
+
+          return response;
+        },
+        data: function ( d ) {
+            d.user_id = user_id;
+            d.offset = d.start;
+            d.limit = d.length;
+            d.search = d.search.value;
+            d.order = encodeURIComponent((d.order[0].dir == 'asc' ? "-" : "+")+d.columns[d.order[0].column].data);
+
+            delete d.start;
+            delete d.lenght;
+            delete d.columns;
+            delete d.draw;
+            console.log(d);
+        },
+
+      },
+      columns: [
+        {"data" : "id",
+        "render": function ( data, type, row, meta ) {
+                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="Questions.preEdit('+data+')"><i class="fa fa-edit"></i></a>';
+                }},
+        {"data" : "subject"},
+        {"data" : "body"},
+        {"data" : "department_id"},
+        {"data" : "course_id"},
+        {"data" : "posted_at"},
+        {"data" : "user_id"},
+        {"data" : "year_id"}
+      ]
+    });
+
+    $("#user-answers-table").dataTable({
+      processing: true,
+      serverSide: true,
+      bDestroy: true,
+      preDrawCallback: function( settings ) {
+        settings._iRecordsTotal = 100;
+        settings._iRecordsDisplay = 100;
+      },
+      paginationType: "simple",
+      ajax: {
+        url: "api/admin/answers",
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        dataSrc: function (response) {
+
+          return response;
+        },
+        data: function ( d ) {
+            d.user_id = user_id;
+            d.offset = d.start;
+            d.limit = d.length;
+            d.search = d.search.value;
+            d.order = encodeURIComponent((d.order[0].dir == 'asc' ? "-" : "+")+d.columns[d.order[0].column].data);
+
+            delete d.start;
+            delete d.lenght;
+            delete d.columns;
+            delete d.draw;
+            console.log(d);
+        },
+
+      },
+      columns: [
+        {"data" : "id",
+        "render": function ( data, type, row, meta ) {
+                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="Questions.preEdit('+data+')"><i class="fa fa-edit"></i></a>';
+                }},
+        {"data" : "body"},
+        {"data" : "is_pinned"},
+        {"data" : "user_id"},
+        {"data" : "question_id"},
+        {"data" : "posted_at"},
+        {"data" : "status"}
+      ]
+    });
+
   }
 
 }

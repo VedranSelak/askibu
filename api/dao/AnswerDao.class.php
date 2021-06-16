@@ -47,7 +47,14 @@ class AnswerDao extends BaseDao{
       $query .= " AND a.status = :status";
       $params["status"] = $status;
     }
-    $query .= " ORDER BY ${order_column} ${order_direction} LIMIT ${limit} OFFSET ${offset}";
+    $query .= " ORDER BY ${order_column} ${order_direction}";
+
+    if(isset($limit)) {
+      $query .= "  LIMIT ${limit} ";
+    }
+
+    $query .= " OFFSET ${offset}";
+
     return $this->query($query,$params);
     }
 

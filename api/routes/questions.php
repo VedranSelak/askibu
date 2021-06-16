@@ -67,7 +67,7 @@ Flight::route("GET /admin/question", function(){
   $offset = Flight::query("offset",0);
   $limit = Flight::query("limit",1000);
   $search = Flight::query('search');
-  $order = Flight::query('order','-id');
+  $order = urldecode(Flight::query('order','-id'));
   Flight::json(Flight::questionService()->get_questions($user_id, $offset, $limit, $search, $order));
 });
 
