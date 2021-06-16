@@ -40,7 +40,7 @@ class Users {
       columns: [
         {"data" : "id",
         "render": function ( data, type, row, meta ) {
-                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="Questions.preEdit('+data+')"><i class="fa fa-edit"></i></a>';
+                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" href="#user" onclick="Users.openProfile('+data+')"><i class="fa fa-eye"></i></a>';
                 }},
         {"data" : "name"},
         {"data" : "email"},
@@ -52,6 +52,12 @@ class Users {
         {"data" : "role"}
       ]
     });
+  }
+
+  static openProfile(data){
+    const url = new URL(window.location);
+    url.searchParams.set('user', data);
+    window.history.pushState({},'', url);
   }
 
 }

@@ -16,11 +16,15 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
         $query .= "AND LOWER(name) LIKE CONCAT('%', :search, '%')";
         $params['search'] = strtolower($search);
       }
-      
+
       $query .= " ORDER BY ${order_column} ${order_direction}";
       $query .= " LIMIT ${limit} OFFSET ${offset}";
 
       return $this->query($query,$params);
+    }
+
+    public function get_deparment_and_faculty($id){
+      return $this->query_unique("SELECT departments.name, faculties.name AS faculty FROM departments JOIN faculties ON departments.faculty_id=faculties.id WHERE departments.id = :id",["id" => $id]);
     }
 
   }

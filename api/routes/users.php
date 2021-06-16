@@ -33,7 +33,6 @@ Flight::route('GET /admin/user', function(){
  * )
  */
 Flight::route('GET /admin/user/@id', function($id){
-  if(Flight::get("user")["id"] != $id) throw new Exception("This account is not for you!",403);
     Flight::json(Flight::userService()->get_by_id($id));
 });
 
