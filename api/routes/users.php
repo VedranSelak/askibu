@@ -10,7 +10,7 @@
 
 
 /**
- * @OA\Get(path="/admin/users", tags={"x-admin","user"},security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/admin/user", tags={"x-admin","user"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for users. Case insensitive search"),
@@ -22,7 +22,7 @@ Flight::route('GET /admin/user', function(){
     $offset = Flight::query("offset",0);
     $limit = Flight::query("limit",10);
     $search = Flight::query('search');
-    $order = Flight::query('order','-id');
+    $order = urldecode(Flight::query('order','-id'));
     Flight::json(Flight::userService()->get_users($search, $offset, $limit, $order));
 });
 
