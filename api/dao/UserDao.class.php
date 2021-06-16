@@ -14,13 +14,31 @@ class UserDao extends BaseDao {
     $this->update_by_other_id ($email, $user, "email");
   }
 
-  public function get_users($search, $offset, $limit, $order = '-id'){
+  public function get_users($search, $offset, $limit, $order = '-id', $total = FALSE){
     list($order_column,$order_direction) = self::parse_order($order);
 
-    return $this->query("SELECT * FROM users
-                         WHERE LOWER(name) LIKE CONCAT('%', :name, '%')
-                         ORDER BY ${order_column} ${order_direction}
-                         LIMIT ${limit} OFFSET ${offset}",["name" => strtolower($search)]);
+    $params = [];
+    if ($total){
+      $query = "SELECT COUNT(*) AS total ";
+    }else{
+      $query = "SELECT * ";
+    }
+    $query .= "FROM users
+               WHERE 1 = 1 ";
+
+    if (isset($search)){
+      $query .= "AND  LOWER(name) LIKE CONCAT('%', :search, '%') ";
+      $params['search'] = strtolower($search);
+    }
+
+    if ($total){
+      return $this->query_unique($query, $params);
+    }else{
+      $query .="ORDER BY ${order_column} ${order_direction} ";
+      $query .="LIMIT ${limit} OFFSET ${offset}";
+
+      return $this->query($query, $params);
+    }
   }
 
   public function get_user_by_token($token){

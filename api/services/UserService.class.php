@@ -14,12 +14,8 @@ class UserService extends BaseService {
     $this->smtpClient = new SMTPClient();
   }
 
-  public function get_users($search, $offset, $limit, $order){
-    if($search) {
-        return $this->dao->get_users($search, $offset, $limit, $order);
-    } else {
-        return $this->dao->get_all($offset, $limit, $order);
-    }
+  public function get_users($search, $offset, $limit, $order, $total = FALSE){
+      return $this->dao->get_users($search, $offset, $limit, $order, $total);
   }
 
   public function reset($user){

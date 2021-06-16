@@ -23,6 +23,8 @@ Flight::route('GET /admin/user', function(){
     $limit = Flight::query("limit",10);
     $search = Flight::query('search');
     $order = urldecode(Flight::query('order','-id'));
+    $total = Flight::userService()->get_users($search, $offset, $limit, $order, TRUE);
+    header('total-records: '.$total['total']);
     Flight::json(Flight::userService()->get_users($search, $offset, $limit, $order));
 });
 
