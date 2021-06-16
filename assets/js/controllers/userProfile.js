@@ -13,10 +13,9 @@ class UserProfile {
     let query = window.location.search;
     const urlParams = new URLSearchParams(query);
     let user_id = urlParams.get("user");
-    console.log(user_id);
+
     RestClient.get("api/admin/user/"+user_id, null, function (data){
       RestClient.get("api/admin/department-faculty/"+data.department_id, null, function(data) {
-        console.log(data);
         $("#users-faculty").html("Users faculty: " + data.faculty);
         $("#users-department").html("Users department: " + data.name);
       });
@@ -27,6 +26,36 @@ class UserProfile {
       $("#users-status").html("Users status: " + data.status);
       $("#users-role").html("Users role: " + data.role);
     });
+
+    $.ajax({
+            url: "api/admin/question/",
+            type: "GET",
+            data: {
+              "user_id" : user_id,
+              "order" : "+posted_at"
+            },
+            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+            success: function(data) {
+              let html = "";
+              for(var i=0; i<data.length; i++){
+                html += `<div class='col-lg-12'>
+                            <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                              <div class='card-body p-1'>
+                                <h3 class='card-title'>${data[i].subject}</h3>
+                                <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
+                                <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
+                                <p class='card-text panel p-1'>${data[i].body}</p>
+                              </div>
+                            </div>
+                          </div>`;
+              }
+             $("#users-questions").html(html);
+            },
+            error: function(jqXHR, textStatus, errorThrown ){
+              toastr.error(jqXHR.responseJSON.message);
+              console.log(jqXHR);
+            }
+         });
   }
 
 }
