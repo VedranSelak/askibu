@@ -12,7 +12,7 @@ class AnswerDao extends BaseDao{
   }
 
   public function get_answer_count($user_id){
-    return $this->query_unique("SELECT COUNT(*) AS count FROM answers WHERE user_id = :user_id",["user_id" => $user_id]);
+    return $this->query_unique("SELECT COUNT(*) AS count, (SELECT COUNT(*) FROM answers WHERE user_id = :user_id AND is_pinned = 1) AS pins FROM answers WHERE user_id = :user_id",["user_id" => $user_id]);
   }
 
   public function get_answer_by_question_id($id, $order){

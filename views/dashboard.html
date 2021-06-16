@@ -578,24 +578,13 @@
            type: "GET",
            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
            success: function(data) {
+             $("#pin-count").html(data.pins);
              $("#answer-count").html(data.count);
            },
            error: function(jqXHR, textStatus, errorThrown ){
              console.log(jqXHR);
            }
         });
-
-        $.ajax({
-             url: "api/questions/pins",
-             type: "GET",
-             beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-             success: function(data) {
-               $("#pin-count").html(data.pins);
-             },
-             error: function(jqXHR, textStatus, errorThrown ){
-               console.log(jqXHR);
-             }
-          });
 
   });
 

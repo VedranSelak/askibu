@@ -99,10 +99,6 @@ class UserService extends BaseService {
     return $user;
   }
 
-  public function get_pins($user_id){
-    return $this->dao->get_pins($user_id);
-  }
-
 }
 
  ?>

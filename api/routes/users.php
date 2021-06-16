@@ -47,15 +47,6 @@ Flight::route('GET /user/account', function(){
 });
 
 /**
- * @OA\Get(path="/user/pins",tags={"x-user","user"},security={{"ApiKeyAuth": {}}},
- *     @OA\Response(response="200", description="Get number of users pins")
- * )
- */
-Flight::route('GET /user/pins', function(){
-    Flight::json(Flight::userService()->get_pins(Flight::get("user")["id"]));
-});
-
-/**
  * @OA\Post(path="/register",tags={"login"},
  * @OA\RequestBody(description="Basic user info", required=true,
  *    @OA\MediaType(
