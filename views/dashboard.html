@@ -586,7 +586,7 @@
         });
 
         $.ajax({
-             url: "api/user/pins",
+             url: "api/questions/pins",
              type: "GET",
              beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
              success: function(data) {

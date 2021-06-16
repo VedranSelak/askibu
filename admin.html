@@ -61,12 +61,7 @@
                             <i class="fa fa-gear fa-fw"></i> Setting <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="admin-panel hidden">
-                              <a href="admin.html"><i class="fa fa-unlock fa-fw"></i> Admin Panel</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                              <a onclick="doLogout()" class="pointer"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            <li><a href="index.html" class="pointer"><i class="fa fa-arrow-left fa-fw"></i> Back</a>
                             </li>
                         </ul>
                     </li>
@@ -102,9 +97,7 @@
                                 <ul id="faculty-list" class="nav nav-second-level">
                                 </ul>
                             </li>
-                            <li class="admin-panel hidden">
-                              <a href="#users"><i class="fa fa-users fa-fw"></i> Users</a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
@@ -116,7 +109,6 @@
               <section id="notifications" data-load="notifications.html" ></section>
               <section id="questions" data-load="questions.html" ></section>
               <section id="departments" data-load="departments.html" ></section>
-              <section id="users" data-load="users.html" ></section>
             </main>
         </div>
         <!-- /#wrapper -->
@@ -169,10 +161,6 @@
               window.location = "login.html";
             }else {
               $("body").show();
-              let userInfo = AskIbuUtils.parseJWT(window.localStorage.getItem("token"));
-              if(userInfo.r == "ADMIN"){
-                $(".admin-panel").removeClass("hidden");
-              }
             }
 
             $.ajax({
