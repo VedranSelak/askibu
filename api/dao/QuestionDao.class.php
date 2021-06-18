@@ -54,35 +54,45 @@ class QuestionDao extends BaseDao{
     return $this->query_unique("SELECT COUNT(*) AS count FROM questions WHERE user_id = :user_id",["user_id" => $user_id]);
   }
 
-  public function get_questions($user_id, $offset, $limit, $search, $order = "-id", $status, $total = FALSE) {
+  public function get_questions($user_id, $offset, $limit, $search, $order = "-id", $status, $answer_id, $total = FALSE) {
     list($order_column,$order_direction) = self::parse_order($order);
 
     $params = [];
     if ($total){
       $query = "SELECT COUNT(*) AS total ";
     }else{
-      $query = "SELECT * ";
+      $query = "SELECT questions.* ";
     }
-    $query .= "FROM questions
-               WHERE 1 = 1";
+
+    if(isset($answer_id)){
+      $query .= "FROM questions
+                 JOIN answers ON answers.question_id = questions.id
+                 WHERE answers.id = :answer_id";
+      $params["answer_id"] = $answer_id ;
+    } else {
+      $query .= "FROM questions
+                 WHERE 1 = 1";
+    }
+
 
     if(isset($user_id)){
-      $query .= " AND user_id = :user_id";
+      $query .= " AND questions.user_id = :user_id";
       $params["user_id"] = $user_id;
     }
     if(isset($search)){
-      $query .= " AND LOWER(subject) LIKE CONCAT('%', :search, '%')
-                  OR LOWER(body) LIKE CONCAT('%', :search, '%')";
+      $query .= " AND LOWER(questions.subject) LIKE CONCAT('%', :search, '%')
+                  OR LOWER(questions.body) LIKE CONCAT('%', :search, '%')";
       $params["search"] = strtolower($search);
     }
     if(isset($status) && $status != "ALL") {
-      $query .= " AND status = :status";
+      $query .= " AND questions.status = :status";
       $params["status"] = $status;
     }
+
     if ($total){
       return $this->query_unique($query, $params);
     }else{
-      $query .=" ORDER BY ${order_column} ${order_direction} ";
+      $query .=" ORDER BY questions.${order_column} ${order_direction} ";
       $query .="LIMIT ${limit} OFFSET ${offset}";
 
       return $this->query($query, $params);

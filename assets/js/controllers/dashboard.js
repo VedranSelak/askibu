@@ -13,6 +13,7 @@ class Dashboard {
     });
 
     Dashboard.loadLatestQuestions();
+    Dashboard.loadLatestAnswers();
   }
 
   static loadLatestQuestions(){
@@ -65,6 +66,94 @@ class Dashboard {
 
       $("#latest-questions").html(text);
     });
+  }
+
+  static loadLatestAnswers(){
+    RestClient.get("api/user/answer", { "limit" : 3, "order": "+id" }, function(answers) {
+      for(var i=0; i<answers.length; i++){
+        let answer = answers[i];
+        $.ajax({
+           url: "api/user/question",
+           type: "GET",
+           beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+           data: { "answer_id" : answers[i].id },
+           success: function(data) {
+             let text = `<div class='col-lg-12 col-md-12 col-sm-12'>
+                          <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                            <div class='card-body p-1 ${data[0].id}-question-part hidden'>
+                              <h3 class='card-title'>${data[0].subject}</h3>
+                              <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[0].posted_at}</h6>
+                              <p class='card-text panel p-1'>${data[0].body}</p>
+                            </div>
+                            <div class="container-fluid p-1 ${data[0].id}-question-part hidden">
+                              <div class="row">
+                                <div class="col-md-6 col-sm-6">
+                                  <a onclick='Dashboard.loadAnswers(${data[0].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                  <a onclick="Dashboard.showAnswerForm(${data[0].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                </div>
+                              </div>
+                            </div>
+                            <div id='dash-answers-container-${data[0].id}' class="container-fluid">
+                              <div class="row" id='dash-answers-list-${data[0].id}'>
+                                <div class='col-lg-12'>
+                                  <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                                   <div class="card-header">
+                                     <h6 class='card-subtitle mb-2 text-muted'>${answer.posted_at}</h6>
+                                   </div>
+                                    <div class='card-body'>
+                                      <div class="container-fluid">
+                                         <div class="row">
+                                           <div class="col-md-10">
+                                             <p class='card-text'>${answer.body}</p>
+                                           </div>`;
+                                           if(answer.is_pinned == 1){
+                                                text += `<div id="dash-pin-${answer.id}" class="col-md-2 green">
+                                                <i onclick='Dashboard.pinned(${answer.id}, ${answer.question_id})' class="fa fa-map-pin pointer pull-right"></i>
+                                              </div>`;
+                                            } else {
+                                              text += `<div id="dash-pin-${answer.id}" class="col-md-2">
+                                              <i onclick='Dashboard.pinned(${answer.id}, ${data[0].id})' class="fa fa-map-pin pointer pull-right"></i>
+                                            </div>`;
+                                            }
+                                            text += `
+                                         </div>
+                                          <div class="row">
+                                            <a onclick="Dashboard.loadTheQuestion(${data[0].id})">Load question</a>
+                                          </div>
+                                       </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div id="dash-add-answer-${data[0].id}" class="container-fluid hidden">
+
+                               <input name="question_id" type="hidden" value="${data[0].id}">
+                               <div class="row m-1">
+                                  <textarea name="body" type="text" class="form-control"></textarea>
+                               </div>
+                                <div class="row m-1">
+                                  <button onclick="Dashboard.addAnswer('#dash-add-answer-${data[0].id}')" class="btn btn-success" type="button">Send</button>
+                                </div>
+
+                            </div>
+                          </div>
+                        </div>`;
+              $("#latest-answers").append(text);
+           },
+           error: function(jqXHR, textStatus, errorThrown ){
+             toastr.error(jqXHR.responseJSON.message);
+             console.log(jqXHR);
+           }
+        });
+      }
+    });
+  }
+
+  static loadTheQuestion(question_id){
+    $("."+question_id+"-question-part").toggleClass("hidden");
   }
 
   static loadAnswers(questionId){
