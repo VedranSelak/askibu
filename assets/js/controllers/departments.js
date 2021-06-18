@@ -323,7 +323,7 @@ class Departments {
     $("#ask-question-modal").modal("show");
   }
 
-  static showAnswerForm(question_id){
+  showAnswerForm(question_id){
     $("#add-answer-"+question_id).toggleClass("hidden");
   }
 
@@ -373,9 +373,6 @@ class Departments {
            console.log(jqXHR);
          }
       });
-
-
-
   }
 
 }
