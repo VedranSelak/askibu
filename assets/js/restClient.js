@@ -4,7 +4,7 @@ class RestClient {
     $.ajax({
          url: endpoint,
          type: method,
-         data: JSON.stringify(body),
+         data: body,
          contentType: "application/json",
          beforeSend: function(xhr){
            if(localStorage.getItem("token")){
@@ -25,11 +25,11 @@ class RestClient {
   }
 
   static post(endpoint, body, success, error){
-    RestClient.request(endpoint, "POST", body, success, error);
+    RestClient.request(endpoint, "POST", JSON.stringify(body), success, error);
   }
 
   static put(endpoint, body, success, error){
-    RestClient.request(endpoint, "PUT", body, success, error);
+    RestClient.request(endpoint, "PUT", JSON.stringify(body), success, error);
   }
 
   static get(endpoint, body, success, error){

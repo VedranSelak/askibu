@@ -56,36 +56,14 @@
         </div>
         <!-- /.row -->
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                        data-toggle="dropdown">
-                                    Actions
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#">Action</a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        <i class="fa fa-question fa-fw"></i> Three latest questions
                     </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div id="morris-area-chart"></div>
+                    <div class="panel-body container-fluid">
+                        <div id="latest-questions" class="row"></div>
                     </div>
-                    <!-- /.panel-body -->
                 </div>
                 <!-- /.panel -->
                 <div class="panel panel-default">
@@ -560,32 +538,7 @@
 <!-- /#page-wrapper -->
 
 <script type="text/javascript">
-  $(document).ready(function() {
-    $.ajax({
-         url: "api/user/question-count",
-         type: "GET",
-         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-         success: function(data) {
-           $("#question-count").html(data.count);
-         },
-         error: function(jqXHR, textStatus, errorThrown ){
-           console.log(jqXHR);
-         }
-      });
 
-      $.ajax({
-           url: "api/user/answer-count",
-           type: "GET",
-           beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-           success: function(data) {
-             $("#pin-count").html(data.pins);
-             $("#answer-count").html(data.count);
-           },
-           error: function(jqXHR, textStatus, errorThrown ){
-             console.log(jqXHR);
-           }
-        });
-
-  });
+  Dashboard.init();
 
 </script>

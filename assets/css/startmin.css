@@ -20,10 +20,6 @@ body {
   color: #fa141c;
 }
 
-.text-green {
-  color: #fa141c;
-}
-
 .label {
   font-size: 1.5rem;
 }
@@ -92,6 +88,10 @@ body {
 
 .card-padding {
   padding: 0 2rem 2rem 2rem;
+}
+
+.card-padding-s {
+  padding: 0 1rem 1rem 1rem;
 }
 
 .error {

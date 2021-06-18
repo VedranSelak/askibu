@@ -229,11 +229,10 @@ class Departments {
        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
        data: { "order" : "+is_pinned" },
        success: function(data) {
-         console.log(data);
          let text = "";
          for(var i=0; i<data.length; i++){
            text += `<div class='col-lg-12'>
-                       <div class='card bg-info card-padding card-style' style='height: auto;'>
+                       <div class='card bg-info card-padding-s card-style' style='height: auto;'>
                         <div class="card-header">
                           <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
                           <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
@@ -324,7 +323,7 @@ class Departments {
     $("#ask-question-modal").modal("show");
   }
 
-  showAnswerForm(question_id){
+  static showAnswerForm(question_id){
     $("#add-answer-"+question_id).toggleClass("hidden");
   }
 
