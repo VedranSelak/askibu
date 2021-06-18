@@ -52,6 +52,16 @@ Flight::route("PUT /admin/remove/answer/@id", function($id){
 });
 
 /**
+ * @OA\Put(path="/admin/retrieve/answer/{id}",tags={"x-admin","answer"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of an answer"),
+ *     @OA\Response(response="200", description="Retrieve a question")
+ * )
+ */
+Flight::route("PUT /admin/retrieve/answer/@id", function($id){
+  Flight::json(Flight::answerService()->retrieve_answer($id));
+});
+
+/**
  * @OA\Get(path="/user/answer-count",tags={"x-user","answer"},security={{"ApiKeyAuth": {}}},
  *     @OA\Response(response="200", description="Get your answer count")
  * )

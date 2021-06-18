@@ -63,6 +63,9 @@ class UserProfile {
       columns: [
         {"data" : "id",
         "render": function ( data, type, row, meta ) {
+                  if (row.status == "REMOVED"){
+                    return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.retrieveQuestion('+data+')"><i class="fa fa-check text-success"></i></a>';
+                  }
                   return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.removeQuestion('+data+')"><i class="fa fa-minus-circle text-red"></i></a>';
                 }},
         {"data" : "subject"},
@@ -113,6 +116,9 @@ class UserProfile {
       columns: [
         {"data" : "id",
         "render": function ( data, type, row, meta ) {
+                  if (row.status == "REMOVED"){
+                    return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.retrieveAnswer('+data+')"><i class="fa fa-check text-success"></i></a>';
+                  }
                   return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.removeAnswer('+data+')"><i class="fa fa-minus-circle text-red"></i></a>';
                 }},
         {"data" : "body"},
@@ -133,9 +139,23 @@ class UserProfile {
     UserProfile.loadData();
   }
 
+  static retrieveQuestion(question_id){
+    RestClient.put("api/admin/retrieve/question/"+question_id, null, function() {
+      toastr.success("Question retrieved successfuly!");
+    });
+    UserProfile.loadData();
+  }
+
   static removeAnswer(answer_id){
     RestClient.put("api/admin/remove/answer/"+answer_id, null, function() {
       toastr.success("Answer removed successfuly!");
+    });
+    UserProfile.loadData();
+  }
+
+  static retrieveAnswer(answer_id){
+    RestClient.put("api/admin/retrieve/answer/"+answer_id, null, function() {
+      toastr.success("Answer retrieved successfuly!");
     });
     UserProfile.loadData();
   }

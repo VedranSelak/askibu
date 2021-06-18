@@ -15,6 +15,10 @@ class QuestionService extends BaseService {
     return  $this->dao->remove_question($id);
   }
 
+  public function retrieve_question($id){
+    return  $this->dao->retrieve_question($id);
+  }
+
   public function get_question_count($user_id){
     return $this->dao->get_question_count($user_id);
   }

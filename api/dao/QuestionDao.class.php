@@ -43,6 +43,13 @@ class QuestionDao extends BaseDao{
     return $this->update($id, $entity);
   }
 
+  public function retrieve_question($id){
+    $entity = [
+      "status" => "ACTIVE"
+    ];
+    return $this->update($id, $entity);
+  }
+
   public function get_question_count($user_id){
     return $this->query_unique("SELECT COUNT(*) AS count FROM questions WHERE user_id = :user_id",["user_id" => $user_id]);
   }

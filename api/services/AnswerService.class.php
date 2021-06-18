@@ -20,6 +20,10 @@ class AnswerService extends BaseService {
     return  $this->dao->remove_answer($id);
   }
 
+  public function retrieve_answer($id){
+    return  $this->dao->retrieve_answer($id);
+  }
+
   public function get_answer_count($user_id){
     return $this->dao->get_answer_count($user_id);
   }

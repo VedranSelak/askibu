@@ -92,6 +92,16 @@ Flight::route("PUT /admin/remove/question/@id", function($id){
 });
 
 /**
+ * @OA\Put(path="/admin/retrieve/question/{id}",tags={"x-admin","question"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of a question"),
+ *     @OA\Response(response="200", description="Retrieve a question")
+ * )
+ */
+Flight::route("PUT /admin/retrieve/question/@id", function($id){
+  Flight::json(Flight::questionService()->retrieve_question($id));
+});
+
+/**
  * @OA\Post(path="/user/question",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
  * @OA\RequestBody(description="Question info", required=true,
  *    @OA\MediaType(

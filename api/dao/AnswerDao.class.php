@@ -41,6 +41,13 @@ class AnswerDao extends BaseDao{
     return $this->update($id, $entity);
   }
 
+  public function retrieve_answer($id){
+    $entity = [
+      "status" => "ACTIVE"
+    ];
+    return $this->update($id, $entity);
+  }
+
   public function pin_answer($id, $value){
     $entity = [
       "is_pinned" => $value
