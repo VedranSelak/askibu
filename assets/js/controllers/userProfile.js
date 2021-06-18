@@ -46,6 +46,7 @@ class UserProfile {
           return response;
         },
         data: function ( d ) {
+            d.status = "ALL";
             d.user_id = user_id;
             d.offset = d.start;
             d.limit = d.length;
@@ -62,7 +63,7 @@ class UserProfile {
       columns: [
         {"data" : "id",
         "render": function ( data, type, row, meta ) {
-                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="Questions.preEdit('+data+')"><i class="fa fa-edit"></i></a>';
+                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.removeQuestion('+data+')"><i class="fa fa-minus-circle text-red"></i></a>';
                 }},
         {"data" : "subject"},
         {"data" : "body"},
@@ -70,7 +71,8 @@ class UserProfile {
         {"data" : "course_id"},
         {"data" : "posted_at"},
         {"data" : "user_id"},
-        {"data" : "year_id"}
+        {"data" : "year_id"},
+        {"data" : "status"}
       ]
     });
 
@@ -110,7 +112,7 @@ class UserProfile {
       columns: [
         {"data" : "id",
         "render": function ( data, type, row, meta ) {
-                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="Questions.preEdit('+data+')"><i class="fa fa-edit"></i></a>';
+                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.removeAnswer('+data+')"><i class="fa fa-minus-circle text-red"></i></a>';
                 }},
         {"data" : "body"},
         {"data" : "is_pinned"},
@@ -121,6 +123,16 @@ class UserProfile {
       ]
     });
 
+  }
+
+  static removeQuestion(question_id){
+    let body = {
+      "status" : "ALL"
+    };
+    RestClient.put("api/admin/remove/question/"+question_id, body, function() {
+      toastr.success("Question removed successfuly!");
+    });
+    UserProfile.loadData();
   }
 
 }

@@ -4,6 +4,7 @@
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for questions. Case insensitive search"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
  *     @OA\Response(response="200", description="Get questions by users id")
  * )
@@ -13,9 +14,10 @@ Flight::route("GET /user/question", function(){
   $limit = Flight::query("limit",25);
   $search = Flight::query('search');
   $order = urldecode(Flight::query('order','-id'));
-  $total = Flight::questionService()->get_questions(Flight::get("user")["id"], $offset, $limit, $search, $order, TRUE);
+  $status = Flight::query('status','ACTIVE');
+  $total = Flight::questionService()->get_questions(Flight::get("user")["id"], $offset, $limit, $search, $order, $status, TRUE);
   header('total-records: '.$total['total']);
-  Flight::json(Flight::questionService()->get_questions(Flight::get("user")["id"],$offset, $limit, $search, $order));
+  Flight::json(Flight::questionService()->get_questions(Flight::get("user")["id"],$offset, $limit, $search, $order, $status));
 });
 
 /**
@@ -43,6 +45,7 @@ Flight::route("GET /user/question/@id", function($id){
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="department_id", description="id of department"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="semester_id", description="id of semester"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="course_id", description="id of course"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
  *     @OA\Response(response="200", description="Get questions by department id")
  * )
  */
@@ -51,7 +54,8 @@ Flight::route("GET /questions", function(){
   $semester_id = Flight::query('semester_id', 1);
   $course_id = Flight::query('course_id');
   $order = urldecode(Flight::query('order','-id'));
-  Flight::json(Flight::questionService()->get_questions_for_departments($order, $department_id, $semester_id, $course_id));
+  $status = Flight::query('status','ACTIVE');
+  Flight::json(Flight::questionService()->get_questions_for_departments($order, $department_id, $semester_id, $course_id, $status));
 });
 
 /**
@@ -60,6 +64,7 @@ Flight::route("GET /questions", function(){
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for questions. Case insensitive search"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
  *     @OA\Response(response="200", description="Get questions from database")
  * )
@@ -70,9 +75,20 @@ Flight::route("GET /admin/question", function(){
   $limit = Flight::query("limit",25);
   $search = Flight::query('search');
   $order = urldecode(Flight::query('order','-id'));
-  $total = Flight::questionService()->get_questions($user_id, $offset, $limit, $search, $order, TRUE);
+  $status = Flight::query('status','ACTIVE');
+  $total = Flight::questionService()->get_questions($user_id, $offset, $limit, $search, $order, $status, TRUE);
   header('total-records: '.$total['total']);
-  Flight::json(Flight::questionService()->get_questions($user_id, $offset, $limit, $search, $order));
+  Flight::json(Flight::questionService()->get_questions($user_id, $offset, $limit, $search, $order, $status));
+});
+
+/**
+ * @OA\Put(path="/admin/remove/question/{id}",tags={"x-admin","question"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of a question"),
+ *     @OA\Response(response="200", description="Remove a question")
+ * )
+ */
+Flight::route("PUT /admin/remove/question/@id", function($id){
+  Flight::json(Flight::questionService()->remove_question($id));
 });
 
 /**

@@ -16,6 +16,10 @@ body {
   color: #000000;
 }
 
+.text-red {
+  color: #fa141c;
+}
+
 .label {
   font-size: 1.5rem;
 }

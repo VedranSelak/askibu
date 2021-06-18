@@ -7,7 +7,7 @@ class QuestionDao extends BaseDao{
     parent::__construct("questions");
   }
 
-  public function get_questions_for_departments($order = "-id", $department_id, $semester_id, $course_id) {
+  public function get_questions_for_departments($order = "-id", $department_id, $semester_id, $course_id, $status) {
     list($order_column,$order_direction) = self::parse_order($order);
     $params = [];
     $query = "SELECT questions.*, users.name FROM questions JOIN users ON questions.user_id=users.id WHERE 1=1";
@@ -24,6 +24,10 @@ class QuestionDao extends BaseDao{
       $query .= " AND questions.course_id = :course_id";
       $params["course_id"] = $course_id;
     }
+    if(isset($status) && $status != "ALL"){
+      $query .= " AND questions.status = :status";
+      $params["status"] = $status;
+    }
     $query .= " ORDER BY ${order_column} ${order_direction}";
     return $this->query($query, $params);
   }
@@ -32,11 +36,18 @@ class QuestionDao extends BaseDao{
     return $this->query_unique("SELECT * FROM questions WHERE id = :id AND user_id = :user_id",["id" => $id, "user_id" => $user_id]);
   }
 
+  public function remove_question($id){
+    $entity = [
+      "status" => "REMOVED"
+    ];
+    return $this->update($id, $entity);
+  }
+
   public function get_question_count($user_id){
     return $this->query_unique("SELECT COUNT(*) AS count FROM questions WHERE user_id = :user_id",["user_id" => $user_id]);
   }
 
-  public function get_questions($user_id, $offset, $limit, $search, $order = "-id", $total = FALSE) {
+  public function get_questions($user_id, $offset, $limit, $search, $order = "-id", $status, $total = FALSE) {
     list($order_column,$order_direction) = self::parse_order($order);
 
     $params = [];
@@ -56,6 +67,10 @@ class QuestionDao extends BaseDao{
       $query .= " AND LOWER(subject) LIKE CONCAT('%', :search, '%')
                   OR LOWER(body) LIKE CONCAT('%', :search, '%')";
       $params["search"] = strtolower($search);
+    }
+    if(isset($status) && $status != "ALL") {
+      $query .= " AND status = :status";
+      $params["status"] = $status;
     }
     if ($total){
       return $this->query_unique($query, $params);
