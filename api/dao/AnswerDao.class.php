@@ -25,7 +25,7 @@ class AnswerDao extends BaseDao{
               WHERE 1=1";
 
     if(isset($status)){
-      $query .= " AND a.status = :status";
+      $query .= " AND answers.status = :status";
       $params["status"] = $status;
     }
 
