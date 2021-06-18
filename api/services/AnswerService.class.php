@@ -16,6 +16,10 @@ class AnswerService extends BaseService {
     return  $this->dao->get_answer_by_answer_id($user_id, $id);
   }
 
+  public function remove_answer($id){
+    return  $this->dao->remove_answer($id);
+  }
+
   public function get_answer_count($user_id){
     return $this->dao->get_answer_count($user_id);
   }
@@ -24,8 +28,8 @@ class AnswerService extends BaseService {
     return $this->dao->get_answers($user_id, $offset, $limit, $status, $search, $order, $total);
   }
 
-  public function get_answer_by_question_id($id, $order){
-    return $this->dao->get_answer_by_question_id($id, $order);
+  public function get_answer_by_question_id($id, $order, $status){
+    return $this->dao->get_answer_by_question_id($id, $order, $status);
   }
 
   public function pin_answer($user_id, $id, $question_id, $value){

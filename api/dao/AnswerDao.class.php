@@ -15,10 +15,30 @@ class AnswerDao extends BaseDao{
     return $this->query_unique("SELECT COUNT(*) AS count, (SELECT COUNT(*) FROM answers WHERE user_id = :user_id AND is_pinned = 1) AS pins FROM answers WHERE user_id = :user_id",["user_id" => $user_id]);
   }
 
-  public function get_answer_by_question_id($id, $order){
+  public function get_answer_by_question_id($id, $order, $status){
     list($order_column,$order_direction) = self::parse_order($order);
+    $params = [];
 
-    return $this->query("SELECT answers.*, users.name FROM answers JOIN users ON answers.user_id = users.id WHERE question_id = :question_id ORDER BY answers.${order_column} ${order_direction}, answers.posted_at ${order_direction}",["question_id" => $id]);
+    $query = "SELECT answers.*, users.name
+              FROM answers
+              JOIN users ON answers.user_id = users.id
+              WHERE 1=1";
+
+    if(isset($status)){
+      $query .= " AND a.status = :status";
+      $params["status"] = $status;
+    }
+
+    $query .= " AND question_id = :question_id ORDER BY answers.${order_column} ${order_direction}, answers.posted_at ${order_direction}";
+    $params["question_id"] = $id;
+    return $this->query($query, $params);
+  }
+
+  public function remove_answer($id){
+    $entity = [
+      "status" => "REMOVED"
+    ];
+    return $this->update($id, $entity);
   }
 
   public function pin_answer($id, $value){
@@ -50,7 +70,7 @@ class AnswerDao extends BaseDao{
       $query .= " AND LOWER(a.body) LIKE CONCAT('%', :body, '%')";
       $params["body"] = strtolower($search);
     }
-    if(isset($status)){
+    if(isset($status) && $status != "ALL"){
       $query .= " AND a.status = :status";
       $params["status"] = $status;
     }
