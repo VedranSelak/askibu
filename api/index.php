@@ -30,7 +30,7 @@ Flight::map('header', function($name){
 });
 
 Flight::map('jwt', function($user){
-  $jwt = Firebase\JWT\JWT::encode(["exp" => (time() + Config::JWT_TOKEN_TIME),"id"=>$user["id"], "r"=>$user["role"]],Config::JWT_SECRET);
+  $jwt = Firebase\JWT\JWT::encode(["exp" => (time() + Config::JWT_TOKEN_TIME),"id"=>$user["id"], "r"=>$user["role"], "d_id"=>$user["department_id"]],Config::JWT_SECRET);
   return ["token"=>$jwt];
 });
 
