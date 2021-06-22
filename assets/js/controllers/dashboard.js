@@ -37,7 +37,7 @@ class Dashboard {
                                       <a onclick='Dashboard.loadAnswers(${data[i].id}, "#latest-questions")' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
                                     </div>
                                     <div class="col-md-6 col-sm-6">
-                                      <a onclick="Dashboard.showAnswerForm(${data[i].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                      <a onclick="Dashboard.showAnswerForm(${data[i].id}, '#latest-questions')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
                                     </div>
                                   </div>
                                 </div>
@@ -56,7 +56,7 @@ class Dashboard {
                                       <textarea name="body" type="text" class="form-control"></textarea>
                                    </div>
                                     <div class="row m-1">
-                                      <button onclick="Dashboard.addAnswer('#latest-questions-add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
+                                      <button onclick="Dashboard.addAnswer('#latest-questions-add-answer-${data[i].id}', '#latest-questions')" class="btn btn-success" type="button">Send</button>
                                     </div>
 
                                 </div>
@@ -69,12 +69,14 @@ class Dashboard {
   }
 
   static loadLatestAnswers(){
-    RestClient.get("api/user/answer", { "limit" : 3, "order": "+id" }, function(answers) {
+    $("#latest-answers").html("");
+    RestClient.get("api/user/answer", { "limit" : 3, "order": "+posted_at" }, function(answers) {
       for(var i=0; i<answers.length; i++){
         let answer = answers[i];
         $.ajax({
            url: "api/user/question",
            type: "GET",
+           async: false,
            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
            data: { "answer_id" : answers[i].id },
            success: function(data) {
@@ -88,10 +90,10 @@ class Dashboard {
                             <div class="container-fluid p-1 ${data[0].id}-${answer.id}-question-part hidden">
                               <div class="row">
                                 <div class="col-md-6 col-sm-6">
-                                  <a onclick='Dashboard.loadAnswers(${data[0].id}, "#"+${answer.id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                  <a onclick='Dashboard.loadAnswers(${data[0].id}, "#${answer.id}")' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
                                 </div>
                                 <div class="col-md-6 col-sm-6">
-                                  <a onclick="Dashboard.showAnswerForm(${data[0].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                  <a onclick="Dashboard.showAnswerForm(${data[0].id},'#${answer.id}')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
                                 </div>
                               </div>
                             </div>
@@ -128,14 +130,14 @@ class Dashboard {
                                 </div>
                               </div>
                             </div>
-                            <div id="latest-add-answer-${data[0].id}" class="container-fluid hidden">
+                            <div id="${answer.id}-add-answer-${data[0].id}" class="container-fluid hidden">
 
                                <input name="question_id" type="hidden" value="${data[0].id}">
                                <div class="row m-1">
                                   <textarea name="body" type="text" class="form-control"></textarea>
                                </div>
                                 <div class="row m-1">
-                                  <button onclick="Dashboard.addAnswer('#latest-add-answer-${data[0].id}')" class="btn btn-success" type="button">Send</button>
+                                  <button onclick="Dashboard.addAnswer('#${answer.id}-add-answer-${data[0].id}', '#${answer.id}')" class="btn btn-success" type="button">Send</button>
                                 </div>
 
                             </div>
@@ -188,7 +190,13 @@ class Dashboard {
           }
           text += `            </div>
                             </div>
-                         </div>
+                         </div>`
+                         if(data[i].id == selector.substring(1)){
+                           text += `<div class="row">
+                                     <a onclick="Dashboard.loadLatestAnswers()">Load question</a>
+                                   </div>`;
+                         }
+        text +=`
                        </div>
                      </div>`;
          }
@@ -207,9 +215,11 @@ class Dashboard {
 
   }
 
-  static addAnswer(selector){
+  static addAnswer(selector, load_selector){
     let question_id = $(selector+" *[name='question_id']").val();
     let body = $(selector+" *[name='body']").val();
+    console.log(question_id);
+    console.log(body);
     $(selector+" *[name='body']").val("");
     $.ajax({
          url: "api/user/answer",
@@ -222,11 +232,11 @@ class Dashboard {
          contentType: "application/json",
          success: function(data) {
            toastr.success("Answer added successfuly!");
-           Dashboard.showAnswerForm(question_id);
-           Dashboard.loadAnswers(question_id);
+           Dashboard.showAnswerForm(question_id, load_selector);
+           Dashboard.loadAnswers(question_id, load_selector);
          },
          error: function(jqXHR, textStatus, errorThrown ){
-           toastr.error(jqXHR.responseJSON.message);
+          // toastr.error(jqXHR.responseJSON.message);
            console.log(jqXHR);
          }
       });
@@ -253,8 +263,8 @@ class Dashboard {
       });
   }
 
-  static showAnswerForm(question_id){
-    $("#latest-questions-add-answer-"+question_id).toggleClass("hidden");
+  static showAnswerForm(question_id, selector){
+    $(selector+"-add-answer-"+question_id).toggleClass("hidden");
   }
 
   static hideAnswers(questionId){
