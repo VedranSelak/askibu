@@ -37,7 +37,7 @@ class QuestionDao extends BaseDao{
   }
 
   public function get_weeks_hottest_questions($status, $department_id){
-    return $this->query("SELECT * FROM questions WHERE posted_at > NOW() - INTERVAL 7 DAY AND status = :status AND department_id = :department_id",["status" => $status, "department_id" => $department_id]);
+    return $this->query("SELECT questions.*, users.name AS name FROM questions JOIN users ON questions.user_id=users.id WHERE questions.posted_at > NOW() - INTERVAL 7 DAY AND questions.status = :status AND questions.department_id = :department_id",["status" => $status, "department_id" => $department_id]);
   }
 
   public function remove_question($id){

@@ -59,7 +59,7 @@ class Departments {
                                           <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
                                           <p class='card-text panel p-1'>${data[i].body}</p>
                                         </div>
-                                        <div class="container p-1">
+                                        <div class="container-fluid p-1">
                                           <div class="row">
                                             <div class="col-md-6">
                                               <a onclick='departments.loadAnswers(${data[i].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
