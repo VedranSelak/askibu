@@ -10,6 +10,10 @@ class Dashboard {
         $("#pin-count").html(data.pins);
         $("#answer-count").html(data.count);
       });
+
+      RestClient.get("api/user/question/hot/"+AskIbuUtils.parseJWT(window.localStorage.getItem("token")).d_id, null, function(data) {
+        console.log(data);
+      });
     });
 
     Dashboard.loadLatestQuestions();

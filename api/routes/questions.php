@@ -23,6 +23,17 @@ Flight::route("GET /user/question", function(){
 });
 
 /**
+ * @OA\Get(path="/user/question/hot/{department_id}",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
+ *     @OA\Response(response="200", description="Get questions by users id")
+ * )
+ */
+Flight::route("GET /user/question/hot/@department_id", function($department_id){
+  $status = Flight::query('status','ACTIVE');
+  Flight::json(Flight::questionService()->get_weeks_hottest_questions($status, $department_id));
+});
+
+/**
  * @OA\Get(path="/user/question-count",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
  *     @OA\Response(response="200", description="Get your question count")
  * )

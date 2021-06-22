@@ -4,11 +4,43 @@ require_once dirname(__FILE__) . '/../dao/QuestionDao.class.php';
 
 class QuestionService extends BaseService {
 
+  private $answerDao;
+
   public function __construct(){
     $this->dao = new QuestionDao();
+    $this->answerDao = new AnswerDao();
   }
   public function get_questions_by_question_id($user_id, $id){
     return  $this->dao->get_questions_by_question_id($user_id, $id);
+  }
+
+  public function get_weeks_hottest_questions($status, $department_id){
+    $questions =  $this->dao->get_weeks_hottest_questions($status, $department_id);
+    $answers = $this->answerDao->get_all(0, 1000000000);
+
+    $entries = [];
+
+    foreach ($questions as $key => $question) {
+      $entries[$question["id"]] = 0;
+      foreach ($answers as $key => $answer) {
+        if($answer["question_id"] == $question["id"]){
+          $entries[$question["id"]] += 1;
+        }
+      }
+    }
+
+    arsort($entries);
+    $back = [];
+    foreach ($entries as $yeah => $entry) {
+      foreach ($questions as $key => $question) {
+        if($yeah == $question["id"]){
+          array_push($back, $question);
+        }
+      }
+    }
+
+    return array_slice($back, 0, 5);
+
   }
 
   public function remove_question($id){

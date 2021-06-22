@@ -36,6 +36,10 @@ class QuestionDao extends BaseDao{
     return $this->query_unique("SELECT * FROM questions WHERE id = :id AND user_id = :user_id",["id" => $id, "user_id" => $user_id]);
   }
 
+  public function get_weeks_hottest_questions($status, $department_id){
+    return $this->query("SELECT * FROM questions WHERE posted_at > NOW() - INTERVAL 7 DAY AND status = :status AND department_id = :department_id",["status" => $status, "department_id" => $department_id]);
+  }
+
   public function remove_question($id){
     $entity = [
       "status" => "REMOVED"
