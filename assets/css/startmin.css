@@ -16,6 +16,10 @@ body {
   color: #000000;
 }
 
+.bg-white {
+  background-color: #ffffff;
+}
+
 .text-red {
   color: #fa141c;
 }
@@ -25,6 +29,11 @@ body {
 }
 
 .border-dark {
+  border: 2px black solid;
+}
+
+.border-dark-round {
+  border-radius: 10px;
   border: 2px black solid;
 }
 
@@ -60,6 +69,10 @@ body {
   margin-right: 1rem;
 }
 
+.ml-1 {
+  margin-left: 1rem;
+}
+
 .p-1 {
   padding: 1rem;
 }
@@ -67,6 +80,7 @@ body {
 .card-style {
   border-radius: 5px;
   margin-bottom: 2rem;
+  margin-top: 2rem;
 }
 
 .ask-button {
@@ -91,7 +105,7 @@ body {
 }
 
 .card-padding-s {
-  padding: 0 1rem 1rem 1rem;
+  padding: 1rem 1rem 1rem 1rem;
 }
 
 .error {

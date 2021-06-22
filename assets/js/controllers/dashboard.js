@@ -81,7 +81,7 @@ class Dashboard {
            data: { "answer_id" : answers[i].id },
            success: function(data) {
              let text = `<div class='col-lg-12 col-md-12 col-sm-12'>
-                          <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                          <div id="${data[0].id}-${answer.id}" class='card card-padding card-style' style='height: auto;'>
                             <div class='card-body p-1 ${data[0].id}-${answer.id}-question-part hidden'>
                               <h3 class='card-title'>${data[0].subject}</h3>
                               <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[0].posted_at}</h6>
@@ -100,7 +100,7 @@ class Dashboard {
                             <div id='${answer.id}-answers-container-${data[0].id}' class="container-fluid">
                               <div class="row" id='${answer.id}-answers-list-${data[0].id}'>
                                 <div class='col-lg-12'>
-                                  <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                                  <div class='card bg-white card-padding-s border-dark-round' style='height: auto;'>
                                    <div class="card-header">
                                      <h6 class='card-subtitle mb-2 text-muted'>${answer.posted_at}</h6>
                                    </div>
@@ -155,6 +155,7 @@ class Dashboard {
   }
 
   static loadTheQuestion(question_id, answer_id){
+    $("#"+question_id+"-"+answer_id).toggleClass("bg-grey");
     $("."+question_id+"-"+answer_id+"-question-part").toggleClass("hidden");
   }
 
@@ -168,7 +169,7 @@ class Dashboard {
          let text = "";
          for(var i=0; i<data.length; i++){
            text += `<div class='col-lg-12'>
-                       <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                       <div class='card bg-white card-padding-s card-style' style='height: auto;'>
                         <div class="card-header">
                           <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
                           <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
@@ -192,7 +193,7 @@ class Dashboard {
                             </div>
                          </div>`
                          if(data[i].id == selector.substring(1)){
-                           text += `<div class="row">
+                           text += `<div class="ml-1">
                                      <a onclick="Dashboard.loadLatestAnswers()">Load question</a>
                                    </div>`;
                          }
@@ -236,7 +237,7 @@ class Dashboard {
            Dashboard.loadAnswers(question_id, load_selector);
          },
          error: function(jqXHR, textStatus, errorThrown ){
-          // toastr.error(jqXHR.responseJSON.message);
+           toastr.error(jqXHR.responseJSON.message);
            console.log(jqXHR);
          }
       });
