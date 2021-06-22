@@ -34,29 +34,29 @@ class Dashboard {
                                 <div class="container-fluid p-1">
                                   <div class="row">
                                     <div class="col-md-6 col-sm-6">
-                                      <a onclick='Dashboard.loadAnswers(${data[i].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                      <a onclick='Dashboard.loadAnswers(${data[i].id}, "#latest-questions")' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
                                     </div>
                                     <div class="col-md-6 col-sm-6">
                                       <a onclick="Dashboard.showAnswerForm(${data[i].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
                                     </div>
                                   </div>
                                 </div>
-                                <div id='dash-answers-container-${data[i].id}' class="container-fluid hidden">
-                                  <div class="row" id='dash-answers-list-${data[i].id}'>
+                                <div id='latest-questions-answers-container-${data[i].id}' class="container-fluid hidden">
+                                  <div class="row" id='latest-questions-answers-list-${data[i].id}'>
 
                                   </div>
                                   <div class='row text-center'>
                                     <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='Dashboard.hideAnswers(${data[i].id})'></i></div>
                                   </div>
                                 </div>
-                                <div id="dash-add-answer-${data[i].id}" class="container-fluid hidden">
+                                <div id="latest-questions-add-answer-${data[i].id}" class="container-fluid hidden">
 
                                    <input name="question_id" type="hidden" value="${data[i].id}">
                                    <div class="row m-1">
                                       <textarea name="body" type="text" class="form-control"></textarea>
                                    </div>
                                     <div class="row m-1">
-                                      <button onclick="Dashboard.addAnswer('#dash-add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
+                                      <button onclick="Dashboard.addAnswer('#latest-questions-add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
                                     </div>
 
                                 </div>
@@ -80,23 +80,23 @@ class Dashboard {
            success: function(data) {
              let text = `<div class='col-lg-12 col-md-12 col-sm-12'>
                           <div class='card bg-grey card-padding card-style' style='height: auto;'>
-                            <div class='card-body p-1 ${data[0].id}-question-part hidden'>
+                            <div class='card-body p-1 ${data[0].id}-${answer.id}-question-part hidden'>
                               <h3 class='card-title'>${data[0].subject}</h3>
                               <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[0].posted_at}</h6>
                               <p class='card-text panel p-1'>${data[0].body}</p>
                             </div>
-                            <div class="container-fluid p-1 ${data[0].id}-question-part hidden">
+                            <div class="container-fluid p-1 ${data[0].id}-${answer.id}-question-part hidden">
                               <div class="row">
                                 <div class="col-md-6 col-sm-6">
-                                  <a onclick='Dashboard.loadAnswers(${data[0].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                  <a onclick='Dashboard.loadAnswers(${data[0].id}, "#"+${answer.id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
                                 </div>
                                 <div class="col-md-6 col-sm-6">
                                   <a onclick="Dashboard.showAnswerForm(${data[0].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
                                 </div>
                               </div>
                             </div>
-                            <div id='dash-answers-container-${data[0].id}' class="container-fluid">
-                              <div class="row" id='dash-answers-list-${data[0].id}'>
+                            <div id='${answer.id}-answers-container-${data[0].id}' class="container-fluid">
+                              <div class="row" id='${answer.id}-answers-list-${data[0].id}'>
                                 <div class='col-lg-12'>
                                   <div class='card bg-info card-padding-s card-style' style='height: auto;'>
                                    <div class="card-header">
@@ -120,7 +120,7 @@ class Dashboard {
                                             text += `
                                          </div>
                                           <div class="row">
-                                            <a onclick="Dashboard.loadTheQuestion(${data[0].id})">Load question</a>
+                                            <a onclick="Dashboard.loadTheQuestion(${data[0].id}, ${answer.id})">Load question</a>
                                           </div>
                                        </div>
                                     </div>
@@ -128,14 +128,14 @@ class Dashboard {
                                 </div>
                               </div>
                             </div>
-                            <div id="dash-add-answer-${data[0].id}" class="container-fluid hidden">
+                            <div id="latest-add-answer-${data[0].id}" class="container-fluid hidden">
 
                                <input name="question_id" type="hidden" value="${data[0].id}">
                                <div class="row m-1">
                                   <textarea name="body" type="text" class="form-control"></textarea>
                                </div>
                                 <div class="row m-1">
-                                  <button onclick="Dashboard.addAnswer('#dash-add-answer-${data[0].id}')" class="btn btn-success" type="button">Send</button>
+                                  <button onclick="Dashboard.addAnswer('#latest-add-answer-${data[0].id}')" class="btn btn-success" type="button">Send</button>
                                 </div>
 
                             </div>
@@ -152,11 +152,11 @@ class Dashboard {
     });
   }
 
-  static loadTheQuestion(question_id){
-    $("."+question_id+"-question-part").toggleClass("hidden");
+  static loadTheQuestion(question_id, answer_id){
+    $("."+question_id+"-"+answer_id+"-question-part").toggleClass("hidden");
   }
 
-  static loadAnswers(questionId){
+  static loadAnswers(questionId, selector){
     $.ajax({
        url: "api/user/answers-by-question/"+questionId,
        type: "GET",
@@ -193,8 +193,8 @@ class Dashboard {
                      </div>`;
          }
          try {
-           $("#dash-answers-list-"+data[0].question_id).html(text);
-           $("#dash-answers-container-"+data[0].question_id).removeClass("hidden");
+           $(selector+"-answers-list-"+data[0].question_id).html(text);
+           $(selector+"-answers-container-"+data[0].question_id).removeClass("hidden");
          } catch(e){
            toastr.error("There is no answers for this question!");
          }
@@ -254,11 +254,11 @@ class Dashboard {
   }
 
   static showAnswerForm(question_id){
-    $("#dash-add-answer-"+question_id).toggleClass("hidden");
+    $("#latest-questions-add-answer-"+question_id).toggleClass("hidden");
   }
 
   static hideAnswers(questionId){
-    $("#dash-answers-container-"+questionId).addClass("hidden");
+    $("#latest-questions-answers-container-"+questionId).addClass("hidden");
   }
 
 }
