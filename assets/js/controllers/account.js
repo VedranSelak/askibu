@@ -13,11 +13,12 @@ class Account {
   init(){
     let me = this;
     $(document).ready(function() {
-      me.loadQuestions();
+      me.loadYourQuestions();
+      me.loadYourAnswers();
     });
   }
 
-  loadQuestions(){
+  loadYourQuestions(){
     let me = this;
     $.ajax({
             url: "api/user/question",
@@ -85,6 +86,60 @@ class Account {
          });
   }
 
+  loadYourAnswers(){
+    let me = this;
+    $.ajax({
+            url: "api/user/answer",
+            type: "GET",
+            data: {
+              "order":"+id",
+              "limit":100000000
+            },
+            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+            success: function(data) {
+              for(var i=0; i<data.length; i++){
+                me.yourAnswersList[i] = `<div class='col-lg-12'>
+                            <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                             <div class="card-header">
+                               <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
+                               <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                             </div>
+                              <div class='card-body'>
+                                <div class="container-fluid">
+                                   <div class="row">
+                                     <div class="col-md-10">
+                                       <p class='card-text'>${data[i].body}</p>
+                                     </div>`;
+               if(data[i].is_pinned == 1){
+                   me.yourAnswersList[i] += `<div id="pin-${data[i].id}" class="col-md-2 green">
+                   <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+                 </div>`;
+               } else {
+                 me.yourAnswersList[i] += `<div id="pin-${data[i].id}" class="col-md-2">
+                 <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+               </div>`;
+               }
+               me.yourAnswersList[i] += `            </div>
+                                 </div>
+                              </div>
+                            </div>
+                          </div>`;
+              }
+              if(me.yourAnswersList.length%me.rows == 0) {
+                me.maxPageAnswers = me.yourAnswersList.length/me.rows;
+              } else {
+                me.maxPageAnswers = Math.floor(me.yourAnswersList.length/me.rows) + 1;
+              }
+              me.currentPageAnswers = 1;
+             me.displayAnswers(me.yourAnswersList, "#account-answers-list",me.rows, me.currentPageAnswers);
+            },
+            error: function(jqXHR, textStatus, errorThrown ){
+              toastr.error(jqXHR.responseJSON.message);
+              console.log(jqXHR);
+            }
+         });
+  }
+
   displayQuestions(items, wrapper, rowsPerPage, page){
     $(wrapper).html("");
     page--;
@@ -110,17 +165,52 @@ class Account {
     }
   }
 
+  displayAnswers(items, wrapper, rowsPerPage, page){
+    $(wrapper).html("");
+    page--;
+
+    if(this.maxPageAnswers == 0) {
+      $(".account-answers-pagination-nav").addClass("hidden");
+      $("#account-no-answers-alert").removeClass("hidden");
+      return;
+    } else {
+      $(".account-answers-pagination-nav").removeClass("hidden");
+    }
+
+    $("#account-answers-page-number").html("Page " + (page + 1) + " out of " + this.maxPageAnswers);
+
+    let start = rowsPerPage * page;
+    let end = start + rowsPerPage
+    let paginatedItems = items.slice(start, end);
+
+    for(let i=0; i<paginatedItems.length; i++){
+      let item = paginatedItems[i];
+
+       $(wrapper).append(item);
+    }
+  }
+
   paginate(element){
     let id = element.id;
-    if (id == "next"){
+    if (id == "next-questions"){
       if (this.maxPageQuestions >= this.currentPageQuestions + 1){
         this.currentPageQuestions++;
         this.displayQuestions(this.yourQuestionsList, "#account-question-list", this.rows, this.currentPageQuestions);
       }
-    } else if (id == "previous"){
+    } else if (id == "previous-questions"){
       if (this.currentPageQuestions - 1 > 0){
         this.currentPageQuestions--;
         this.displayQuestions(this.yourQuestionsList, "#account-question-list", this.rows, this.currentPageQuestions);
+      }
+    } else if (id == "next-answers"){
+      if (this.maxPageAnswers >= this.currentPageAnswers + 1){
+        this.currentPageAnswers++;
+        this.displayAnswers(this.yourAnswersList, "#account-answers-list", this.rows, this.currentPageAnswers);
+      }
+    } else if (id == "previous-answers"){
+      if (this.currentPageAnswers - 1 > 0){
+        this.currentPageAnswers--;
+        this.displayAnswers(this.yourAnswersList, "#account-answers-list", this.rows, this.currentPageAnswers);
       }
     }
   }

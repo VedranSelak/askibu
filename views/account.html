@@ -25,8 +25,33 @@
     </div>
     <nav aria-label="Page navigation example" class="pagination-nav">
       <ul class="pagination pull-right">
-        <li class="page-item"><button id="previous" onclick="account.paginate(this)" class="button-pag" href="#">Previous</button></li>
-        <li class="page-item"><button id="next" onclick="account.paginate(this)" class="button-pag" href="#">Next</button></li>
+        <li class="page-item"><button id="previous-questions" onclick="account.paginate(this)" class="button-pag" href="#">Previous</button></li>
+        <li class="page-item"><button id="next-questions" onclick="account.paginate(this)" class="button-pag" href="#">Next</button></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="container">
+    <div id="account-answers-list" class="row panel panel-info">
+    </div>
+    <div id="account-no-answers-alert" class="row hidden">
+      <div class="page-wrap d-flex flex-row align-items-center">
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-md-12 text-center">
+                      <span class="display-1 d-block m-1"><i class="fa fa-5x fa-folder-open"></i></span>
+                      <div class="mb-4 lead">You haven't given any answers yet!</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="row account-answers-pagination-nav">
+      <h6 id="account-answers-page-number" class="pagination-header"></h6>
+    </div>
+    <nav aria-label="Page navigation example" class="pagination-nav">
+      <ul class="pagination pull-right">
+        <li class="page-item"><button id="previous-answers" onclick="account.paginate(this)" class="button-pag" href="#">Previous</button></li>
+        <li class="page-item"><button id="next-answers" onclick="account.paginate(this)" class="button-pag" href="#">Next</button></li>
       </ul>
     </nav>
   </div>
