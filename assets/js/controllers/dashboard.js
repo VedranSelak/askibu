@@ -19,7 +19,6 @@ class Dashboard {
 
   static loadHottestQuestions(){
     RestClient.get("api/user/question/hot/"+AskIbuUtils.parseJWT(window.localStorage.getItem("token")).d_id, null, function(data) {
-      console.log(data);
       let html = "";
       for(var i=0; i<data.length; i++){
         html += `<div class='col-lg-12'>
@@ -33,30 +32,30 @@ class Dashboard {
                                 <div class="container-fluid p-1">
                                   <div class="row">
                                     <div class="col-md-6">
-                                      <a onclick='departments.loadAnswers(${data[i].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                      <a onclick='Dashboard.loadAnswers(${data[i].id}, "#hottest")' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
                                     </div>
                                     <div class="col-md-6">
-                                      <a onclick="departments.showAnswerForm(${data[i].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                      <a onclick="Dashboard.showAnswerForm(${data[i].id}, '#hottest')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
                                     </div>
                                   </div>
                                 </div>
 
-                                <div id='answers-container-${data[i].id}' class="container-fluid hidden">
-                                  <div class="row" id='answers-list-${data[i].id}'>
+                                <div id='hottest-answers-container-${data[i].id}' class="container-fluid hidden">
+                                  <div class="row" id='hottest-answers-list-${data[i].id}'>
 
                                   </div>
                                   <div class='row text-center'>
-                                    <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='departments.hideAnswers(${data[i].id})'></i></div>
+                                    <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='Dashboard.hideAnswers(${data[i].id}, "#hottest")'></i></div>
                                   </div>
                                 </div>
-                                <div id="add-answer-${data[i].id}" class="container hidden">
+                                <div id="hottest-add-answer-${data[i].id}" class="container hidden">
 
                                    <input name="question_id" type="hidden" value="${data[i].id}">
                                    <div class="row m-1">
                                       <textarea name="body" type="text" class="form-control"></textarea>
                                    </div>
                                     <div class="row m-1">
-                                      <button onclick="departments.addAnswer('#add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
+                                      <button onclick="Dashboard.addAnswer('#hottest-add-answer-${data[i].id}', '#hottest')" class="btn btn-success" type="button">Send</button>
                                     </div>
 
                                 </div>
@@ -74,6 +73,11 @@ class Dashboard {
       "order": "%2Bid"
     };
     RestClient.get("api/user/question", body, function(data) {
+      if(data.length === 0){
+        $("#no-latest-questions-alert").removeClass("hidden");
+      } else {
+        $("#no-latest-questions-alert").addClass("hidden");
+      }
       let text = "";
       for(var i=0; i<data.length; i++){
         text += `<div class='col-lg-12 col-md-12 col-sm-12'>
@@ -98,7 +102,7 @@ class Dashboard {
 
                                   </div>
                                   <div class='row text-center'>
-                                    <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='Dashboard.hideAnswers(${data[i].id})'></i></div>
+                                    <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='Dashboard.hideAnswers(${data[i].id}, "#latest-questions")'></i></div>
                                   </div>
                                 </div>
                                 <div id="latest-questions-add-answer-${data[i].id}" class="container-fluid hidden">
@@ -115,14 +119,19 @@ class Dashboard {
                               </div>
                             </div>`;
       }
-
       $("#latest-questions").html(text);
+
     });
   }
 
   static loadLatestAnswers(){
     $("#latest-answers").html("");
     RestClient.get("api/user/answer", { "limit" : 3, "order": "+posted_at" }, function(answers) {
+      if(answers.length === 0){
+        $("#no-latest-answers-alert").removeClass("hidden");
+      } else {
+        $("#no-latest-answers-alert").addClass("hidden");
+      }
       for(var i=0; i<answers.length; i++){
         let answer = answers[i];
         $.ajax({
@@ -320,8 +329,8 @@ class Dashboard {
     $(selector+"-add-answer-"+question_id).toggleClass("hidden");
   }
 
-  static hideAnswers(questionId){
-    $("#latest-questions-answers-container-"+questionId).addClass("hidden");
+  static hideAnswers(questionId, selector){
+    $(selector+"-answers-container-"+questionId).addClass("hidden");
   }
 
 }

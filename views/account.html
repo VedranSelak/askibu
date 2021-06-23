@@ -1,0 +1,64 @@
+
+<div id="page-wrapper">
+  <div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 id="title" class="page-header"></h1>
+        </div>
+    </div>
+    <div class="row">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="dropdown ask-button">
+              <button id="semester-dropdown" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Semester
+              </button>
+              <div class="dropdown-menu" id="dropdown-menu-semesters" aria-labelledby="dropdownMenuButton">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <button class="btn pull-right ask-button btn-success" onclick="departments.openAskQuestionModal()">Ask question</button>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <h2>Courses</h2>
+        </div>
+        <div class="row mb-1" id="courses-labels">
+        </div>
+        <div class="row">
+          <h2 id="course-header"></h2>
+        </div>
+      </div>
+    </div>
+    <div id="question-list" class="row">
+    </div>
+    <div id="no-questions-alert" class="row hidden">
+      <div class="page-wrap d-flex flex-row align-items-center">
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-md-12 text-center">
+                      <span class="display-1 d-block m-1"><i class="fa fa-5x fa-folder-open"></i></span>
+                      <div class="mb-4 lead">There is no questions in this section. Be the first one to ask.</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="row pagination-nav">
+      <h6 id="page-number" class="pagination-header"></h6>
+    </div>
+    <nav aria-label="Page navigation example" class="pagination-nav">
+      <ul class="pagination pull-right">
+        <li class="page-item"><button id="previous" onclick="departments.paginate(this)" class="button-pag" href="#">Previous</button></li>
+        <li class="page-item"><button id="next" onclick="departments.paginate(this)" class="button-pag" href="#">Next</button></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+
+</script>
