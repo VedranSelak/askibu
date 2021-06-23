@@ -163,6 +163,11 @@ class Departments {
       console.log("change");
       me.loadPage();
     });
+
+    $(window).on('popstate', function(e){
+      console.log("change");
+      me.loadPage();
+    });
   }
 
   displayQuestions(items, wrapper, rowsPerPage, page){
@@ -214,7 +219,8 @@ class Departments {
       url.searchParams.append("course", course_id);
     }
 
-    window.history.replaceState(null, null, url.search+"#departments");
+    window.history.pushState({},'', url);
+
     this.loadPage();
   }
 
@@ -295,19 +301,18 @@ class Departments {
   }
 
   semesterClicked(semester_id){
-    let query = window.location.search;
-    const urlParams = new URLSearchParams(query);
-    if(urlParams.has("semester")){
-      urlParams.set("semester", semester_id);
+    var url = new URL(window.location);
+    if(url.searchParams.has("semester")){
+      url.searchParams.set("semester", semester_id);
     } else {
-      urlParams.append("semester", semester_id);
+      url.searchParams.append("semester", semester_id);
     }
 
-    if(urlParams.has("course")){
-      urlParams.delete("course");
+    if(url.searchParams.has("course")){
+      url.searchParams.delete("course");
     }
 
-    window.history.replaceState(null, null, "?"+urlParams.toString()+"#departments");
+    window.history.pushState({},'', url);
     this.loadPage();
   }
 
