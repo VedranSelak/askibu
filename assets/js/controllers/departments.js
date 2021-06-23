@@ -78,7 +78,7 @@ class Departments {
                                             <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='departments.hideAnswers(${data[i].id})'></i></div>
                                           </div>
                                         </div>
-                                        <div id="add-answer-${data[i].id}" class="container hidden">
+                                        <div id="add-answer-${data[i].id}" class="container-fluid hidden">
 
                                            <input name="question_id" type="hidden" value="${data[i].id}">
                                            <div class="row m-1">

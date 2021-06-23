@@ -35,7 +35,6 @@ class Account {
                                         <div class='card-body p-1'>
                                           <h3 class='card-title'>${data[i].subject}</h3>
                                           <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
-                                          <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
                                           <p class='card-text panel p-1'>${data[i].body}</p>
                                         </div>
                                         <div class="container-fluid p-1">
@@ -49,22 +48,22 @@ class Account {
                                           </div>
                                         </div>
 
-                                        <div id='answers-container-${data[i].id}' class="container-fluid hidden">
-                                          <div class="row" id='answers-list-${data[i].id}'>
+                                        <div id='account-answers-container-${data[i].id}' class="container-fluid hidden">
+                                          <div class="row" id='account-answers-list-${data[i].id}'>
 
                                           </div>
                                           <div class='row text-center'>
                                             <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='account.hideAnswers(${data[i].id})'></i></div>
                                           </div>
                                         </div>
-                                        <div id="add-answer-${data[i].id}" class="container hidden">
+                                        <div id="account-add-answer-${data[i].id}" class="container-fluid hidden">
 
                                            <input name="question_id" type="hidden" value="${data[i].id}">
                                            <div class="row m-1">
                                               <textarea name="body" type="text" class="form-control"></textarea>
                                            </div>
                                             <div class="row m-1">
-                                              <button onclick="account.addAnswer('#add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
+                                              <button onclick="account.addAnswer('#account-add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
                                             </div>
 
                                         </div>
@@ -140,16 +139,102 @@ class Account {
          });
   }
 
+  loadAnswers(questionId){
+    $.ajax({
+       url: "api/user/answers-by-question/"+questionId,
+       type: "GET",
+       beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+       data: { "order" : "+is_pinned" },
+       success: function(data) {
+         let text = "";
+         for(var i=0; i<data.length; i++){
+           text += `<div class='col-lg-12'>
+                       <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                        <div class="card-header">
+                          <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
+                          <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                        </div>
+                         <div class='card-body'>
+                           <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-md-10">
+                                  <p class='card-text'>${data[i].body}</p>
+                                </div>`;
+          if(data[i].is_pinned == 1){
+              text += `<div id="pin-${data[i].id}" class="col-md-2 green">
+              <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+            </div>`;
+          } else {
+            text += `<div id="pin-${data[i].id}" class="col-md-2">
+            <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+          </div>`;
+          }
+          text += `            </div>
+                            </div>
+                         </div>
+                       </div>
+                     </div>`;
+         }
+         try {
+           $("#account-answers-list-"+data[0].question_id).html(text);
+           $("#account-answers-container-"+data[0].question_id).removeClass("hidden");
+         } catch(e){
+           toastr.error("There is no answers for this question!");
+         }
+       },
+       error: function(jqXHR, textStatus, errorThrown ){
+         toastr.error(jqXHR.responseJSON.message);
+         console.log(jqXHR);
+       }
+    });
+  }
+
+  addAnswer(selector){
+    let question_id = $(selector+" *[name='question_id']").val();
+    let body = $(selector+" *[name='body']").val();
+    $(selector+" *[name='body']").val("");
+    let me = this;
+    $.ajax({
+         url: "api/user/answer",
+         type: "POST",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         data: JSON.stringify({
+            "body" : body,
+            "question_id" : question_id
+         }),
+         contentType: "application/json",
+         success: function(data) {
+           toastr.success("Answer added successfuly!");
+           me.showAnswerForm(question_id);
+           me.loadAnswers(question_id);
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
+           console.log(jqXHR);
+         }
+      });
+  }
+
+  hideAnswers(questionId){
+    $("#account-answers-container-"+questionId).addClass("hidden");
+  }
+
+  showAnswerForm(question_id){
+    $("#account-add-answer-"+question_id).toggleClass("hidden");
+  }
+
   displayQuestions(items, wrapper, rowsPerPage, page){
     $(wrapper).html("");
     page--;
 
     if(this.maxPageQuestions == 0) {
       $(".account-questions-pagination-nav").addClass("hidden");
+      $("#account-question-list").addClass("hidden");
       $("#account-no-questions-alert").removeClass("hidden");
       return;
     } else {
       $(".account-questions-pagination-nav").removeClass("hidden");
+      $("#account-question-list").removeClass("hidden");
     }
 
     $("#account-questions-page-number").html("Page " + (page + 1) + " out of " + this.maxPageQuestions);
@@ -171,10 +256,12 @@ class Account {
 
     if(this.maxPageAnswers == 0) {
       $(".account-answers-pagination-nav").addClass("hidden");
+      $("#account-answers-list").addClass("hidden");
       $("#account-no-answers-alert").removeClass("hidden");
       return;
     } else {
       $(".account-answers-pagination-nav").removeClass("hidden");
+      $("#account-answers-list").removeClass("hidden");
     }
 
     $("#account-answers-page-number").html("Page " + (page + 1) + " out of " + this.maxPageAnswers);
