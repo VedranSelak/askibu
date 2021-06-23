@@ -216,7 +216,13 @@
           });
 
           function loadDepartment(department_id){
-            window.history.replaceState(null, null, "?department="+department_id+"&semester=1");
+            var url = new URL(window.location);
+
+            url.searchParams.set("department", department_id);
+            url.searchParams.set("semester", 1);
+
+
+            window.history.pushState({},'', url);
           }
         </script>
 

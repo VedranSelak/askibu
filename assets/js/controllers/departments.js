@@ -154,18 +154,15 @@ class Departments {
        $("#ask-question *[name='year_id']").val(semester);
 
        let data = AskIbuUtils.formToJson($(form));
-       console.log(data);
        me.askQuestion(data);
      }
     });
 
     $(window).on('hashchange', function(e){
-      console.log("change");
       me.loadPage();
     });
 
     $(window).on('popstate', function(e){
-      console.log("change");
       me.loadPage();
     });
   }
@@ -212,7 +209,7 @@ class Departments {
 
   courseClicked(course_id){
     var url = new URL(window.location);
-    console.log(url);
+
     if(url.search.includes("course")){
       url.searchParams.set("course", course_id);
     } else {
