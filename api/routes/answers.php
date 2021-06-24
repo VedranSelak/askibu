@@ -15,6 +15,8 @@ Flight::route("GET /user/answer", function(){
   $status = Flight::query("status","ACTIVE");
   $search = Flight::query('search');
   $order = Flight::query('order','-id');
+  $total = Flight::answerService()->get_answers(Flight::get("user")["id"], $offset, $limit, $status, $search, $order, TRUE);
+  header("total-records: ".$total["total"]);
   Flight::json(Flight::answerService()->get_answers(Flight::get("user")["id"], $offset, $limit, $status, $search, $order));
 });
 

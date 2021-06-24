@@ -13,6 +13,8 @@ class Account {
     this.maxPageRemovedAnswers;
     this.currentPageRemovedQuestions = 1;
     this.currentPageRemovedAnswers = 1;
+    this.offset = 0;
+    this.total;
     this.rows = 5;
   }
 
@@ -22,6 +24,7 @@ class Account {
       me.loadYourQuestions();
       me.loadYourAnswers();
       me.loadYourRemovedQuestions();
+      me.loadYourRemovedAnswers();
     });
   }
 
@@ -241,6 +244,92 @@ class Account {
               console.log(jqXHR);
             }
          });
+  }
+
+  loadYourRemovedAnswers(){
+    let me = this;
+    $.ajax({
+            url: "api/user/answer",
+            type: "GET",
+            data: {
+              "order":"+id",
+              "limit": me.rows,
+              "offset" : me.offset,
+              "status" : "REMOVED"
+            },
+            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+            success: function(data, textStatus, request) {
+              me.total = request.getResponseHeader("total-records");
+              let text = "";
+              for(var i=0; i<data.length; i++){
+                text += `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
+                            <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                             <div class="card-header">
+                               <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
+                               <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                             </div>
+                              <div class='card-body'>
+                                <div class="container-fluid">
+                                   <div class="row">
+                                     <div class="col-md-10">
+                                       <p class='card-text'>${data[i].body}</p>
+                                     </div>`;
+               if(data[i].is_pinned == 1){
+                  text += `<div id="pin-${data[i].id}" class="col-md-2 green">
+                   <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+                 </div>`;
+               } else {
+                 text += `<div id="pin-${data[i].id}" class="col-md-2">
+                 <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+               </div>`;
+               }
+               text += `            </div>
+                                    <div class="row">
+                                      <a onclick="account.loadQuestion(${data[i].question_id}, ${data[i].id})" class="pointer">Load question</a>
+                                    </div>
+                                 </div>
+                              </div>
+                            </div>
+                          </div>`;
+              }
+              $("#account-removed-answer-list").html(text);
+              if(me.offset+me.rows >= me.total ){
+                $("#next-answers-a").prop("disabled", true);
+              } else {
+                $("#next-answers-a").prop("disabled", false);
+
+              }
+
+              if(me.offset == 0){
+                $("#previous-answers-a").prop("disabled", true);
+              } else {
+                $("#previous-answers-a").prop("disabled", false);
+              }
+
+              if(me.offset+me.rows > me.total){
+                $("#account-removed-answers-page-number").html("Showing from "+(me.offset+1)+" to "+ me.total + " of " + me.total + " total entries");
+
+              } else {
+                $("#account-removed-answers-page-number").html("Showing from "+(me.offset+1)+" to "+ (me.offset+me.rows) + " of " + me.total + " total entries");
+
+              }
+            },
+            error: function(jqXHR, textStatus, errorThrown ){
+              toastr.error(jqXHR.responseJSON.message);
+              console.log(jqXHR);
+            }
+         });
+  }
+
+  paginateA(element){
+    let id = element.id;
+    if (id == "next-answers-a"){
+      this.offset += this.rows;
+      this.loadYourRemovedAnswers();
+    } else if (id == "previous-answers-a"){
+      this.offset -= this.rows;
+      this.loadYourRemovedAnswers();
+    }
   }
 
   loadAnswers(questionId, selector){
