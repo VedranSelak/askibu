@@ -7,6 +7,12 @@ class Account {
     this.maxPageAnswers;
     this.currentPageQuestions = 1;
     this.currentPageAnswers = 1;
+    this.yourRemovedQuestionsList = [];
+    this.yourRemovedAnswersList = [];
+    this.maxPageRemovedQuestions;
+    this.maxPageRemovedAnswers;
+    this.currentPageRemovedQuestions = 1;
+    this.currentPageRemovedAnswers = 1;
     this.rows = 5;
   }
 
@@ -15,6 +21,7 @@ class Account {
     $(document).ready(function() {
       me.loadYourQuestions();
       me.loadYourAnswers();
+      me.loadYourRemovedQuestions();
     });
   }
 
@@ -97,7 +104,7 @@ class Account {
             beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
             success: function(data) {
               for(var i=0; i<data.length; i++){
-                me.yourAnswersList[i] = `<div class='col-lg-12'>
+                me.yourAnswersList[i] = `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
                             <div class='card bg-info card-padding-s card-style' style='height: auto;'>
                              <div class="card-header">
                                <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
@@ -119,6 +126,9 @@ class Account {
                </div>`;
                }
                me.yourAnswersList[i] += `            </div>
+                                    <div class="row">
+                                      <a onclick="account.loadQuestion(${data[i].question_id}, ${data[i].id})" class="pointer">Load question</a>
+                                    </div>
                                  </div>
                               </div>
                             </div>
@@ -131,6 +141,98 @@ class Account {
               }
               me.currentPageAnswers = 1;
              me.displayAnswers(me.yourAnswersList, "#account-answers-list",me.rows, me.currentPageAnswers);
+            },
+            error: function(jqXHR, textStatus, errorThrown ){
+              toastr.error(jqXHR.responseJSON.message);
+              console.log(jqXHR);
+            }
+         });
+  }
+
+  loadQuestion(question_id, answer_id){
+    $.ajax({
+       url: "api/user/question/",
+       type: "GET",
+       beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+       data: { "answer_id" : answer_id },
+       success: function(data) {
+         $("#"+answer_id+"-your-answer-"+question_id).html(`<div class='col-lg-12'>
+                               <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                                 <div class='card-body p-1'>
+                                   <h3 class='card-title'>${data[0].subject}</h3>
+                                   <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[0].posted_at}</h6>
+                                   <p class='card-text panel p-1'>${data[0].body}</p>
+                                 </div>
+                                 <div class="container-fluid p-1">
+                                   <div class="row">
+                                     <div class="col-md-6">
+                                       <a onclick='account.loadAnswers(${data[0].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                     </div>
+                                     <div class="col-md-6">
+                                       <a onclick="account.showAnswerForm(${data[0].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                     </div>
+                                   </div>
+                                 </div>
+
+                                 <div id='account-answers-container-${data[0].id}' class="container-fluid hidden">
+                                   <div class="row" id='account-answers-list-${data[0].id}'>
+
+                                   </div>
+                                   <div class='row text-center'>
+                                     <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='account.hideAnswers(${data[0].id})'></i></div>
+                                   </div>
+                                 </div>
+                                 <div id="account-add-answer-${data[0].id}" class="container-fluid hidden">
+
+                                    <input name="question_id" type="hidden" value="${data[0].id}">
+                                    <div class="row m-1">
+                                       <textarea name="body" type="text" class="form-control"></textarea>
+                                    </div>
+                                     <div class="row m-1">
+                                       <button onclick="account.addAnswer('#account-add-answer-${data[0].id}')" class="btn btn-success" type="button">Send</button>
+                                     </div>
+
+                                 </div>
+                               </div>
+                             </div>`);
+       },
+       error: function(jqXHR, textStatus, errorThrown ){
+         toastr.error(jqXHR.responseJSON.message);
+         console.log(jqXHR);
+       }
+    });
+  }
+
+  loadYourRemovedQuestions(){
+    let me = this;
+    $.ajax({
+            url: "api/user/question",
+            type: "GET",
+            data: {
+              "order":"%2Bid",
+              "limit":100000000,
+              "status" : "REMOVED"
+            },
+            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+            success: function(data) {
+              for(var i=0; i<data.length; i++){
+                me.yourRemovedQuestionsList[i] = `<div class='col-lg-12'>
+                                      <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                                        <div class='card-body p-1'>
+                                          <h3 class='card-title'>${data[i].subject}</h3>
+                                          <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
+                                          <p class='card-text panel p-1'>${data[i].body}</p>
+                                        </div>
+                                      </div>
+                                    </div>`;
+              }
+              if(me.yourRemovedQuestionsList.length%me.rows == 0) {
+                me.maxPageRemovedQuestions = me.yourRemovedQuestionsList.length/me.rows;
+              } else {
+                me.maxPageRemovedQuestions = Math.floor(me.yourRemovedQuestionsList.length/me.rows) + 1;
+              }
+              me.currentPageRemovedQuestions = 1;
+             me.displayRemovedQuestions(me.yourRemovedQuestionsList, "#account-removed-question-list",me.rows, me.currentPageRemovedQuestions);
             },
             error: function(jqXHR, textStatus, errorThrown ){
               toastr.error(jqXHR.responseJSON.message);
@@ -238,6 +340,33 @@ class Account {
     }
 
     $("#account-questions-page-number").html("Page " + (page + 1) + " out of " + this.maxPageQuestions);
+
+    let start = rowsPerPage * page;
+    let end = start + rowsPerPage
+    let paginatedItems = items.slice(start, end);
+
+    for(let i=0; i<paginatedItems.length; i++){
+      let item = paginatedItems[i];
+
+       $(wrapper).append(item);
+    }
+  }
+
+  displayRemovedQuestions(items, wrapper, rowsPerPage, page){
+    $(wrapper).html("");
+    page--;
+
+    if(this.maxPageRemovedQuestions == 0) {
+      $(".account-removed-question-pagination-nav").addClass("hidden");
+      $("#account-removed-question-list").addClass("hidden");
+      $("#account-no-removed-question-alert").removeClass("hidden");
+      return;
+    } else {
+      $(".account-removed-question-pagination-nav").removeClass("hidden");
+      $("#account-removed-question-list").removeClass("hidden");
+    }
+
+    $("#account-removed-question-page-number").html("Page " + (page + 1) + " out of " + this.maxPageRemovedQuestions);
 
     let start = rowsPerPage * page;
     let end = start + rowsPerPage
