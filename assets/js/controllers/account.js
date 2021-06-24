@@ -39,6 +39,16 @@ class Account {
             success: function(data, textStatus, request) {
               let text = "";
               me.totalYourQuestions = request.getResponseHeader("total-records");
+              if(request.getResponseHeader("total-records") == 0){
+                $(".account-questions-pagination-nav").addClass("hidden");
+                $("#account-questions-list").addClass("hidden");
+                $("#account-no-questions-alert").removeClass("hidden");
+                return;
+              } else {
+                $(".account-questions-pagination-nav").removeClass("hidden");
+                $("#aaccount-questions-list").removeClass("hidden");
+              }
+
               for(var i=0; i<data.length; i++){
                 text += `<div class='col-lg-12'>
                                       <div class='card bg-grey card-padding card-style' style='height: auto;'>
@@ -53,7 +63,7 @@ class Account {
                                               <a onclick='account.loadAnswers(${data[i].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
                                             </div>
                                             <div class="col-md-6">
-                                              <a onclick="account.showAnswerForm(${data[i].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                              <a onclick="account.showAnswerForm(${data[i].id}, '#account-add-answer-')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
                                             </div>
                                           </div>
                                         </div>
@@ -121,6 +131,15 @@ class Account {
             success: function(data, textStatus, request) {
               let text = "";
               me.totalYourAnswers = request.getResponseHeader("total-records");
+              if(request.getResponseHeader("total-records") == 0){
+                $(".account-answers-pagination-nav").addClass("hidden");
+                $("#account-answers-list").addClass("hidden");
+                $("#account-no-answers-alert").removeClass("hidden");
+                return;
+              } else {
+                $(".account-answers-pagination-nav").removeClass("hidden");
+                $("#aaccount-answers-list").removeClass("hidden");
+              }
               for(var i=0; i<data.length; i++){
                 text += `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
                             <div class='card bg-info card-padding-s card-style' style='height: auto;'>
@@ -205,7 +224,7 @@ class Account {
                                            <a onclick='account.loadAnswers(${data[0].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
                                          </div>
                                          <div class="col-md-4 text-center">
-                                           <a onclick="account.loadAnswer(${answer_id})" class="pointer" style='text-decoration: none; color:black;'>Load answer</a>
+                                           <a onclick="account.loadAnswer(${answer_id}, true)" class="pointer" style='text-decoration: none; color:black;'>Load answer</a>
                                          </div>
                                          <div class="col-md-4">
                                            <a onclick="account.showAnswerForm(${data[0].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
@@ -219,7 +238,7 @@ class Account {
                                            <a onclick='account.loadAnswers(${data[0].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
                                          </div>
                                          <div class="col-md-6">
-                                           <a onclick="account.showAnswerForm(${data[0].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                           <a onclick="account.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
                                          </div>
                                        </div>
                                      </div>`;
@@ -228,19 +247,25 @@ class Account {
                     text += `      <div id='account-${answer_id}-answers-container-${data[0].id}' class="container-fluid hidden">
                                      <div class="row" id='account-${answer_id}-answers-list-${data[0].id}'>
 
-                                     </div>
-                                     <div class='row text-center'>
-                                       <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='account.hideAnswers(${data[0].id})'></i></div>
-                                     </div>
-                                   </div>
-                                   <div id="account-add-answer-${data[0].id}" class="container-fluid hidden">
+                                     </div>`;
+                                     if(check){
+                                       text += `<div class="row text-center">
+                                         <a onclick="account.loadAnswer(${answer_id}, true)">Load answer</a>
+                                       </div>`;
+                                     } else {
+                                       text += `<div class="row text-center">
+                                         <a onclick="account.loadAnswer(${answer_id})">Load answer</a>
+                                       </div>`;
+                                     }
+                text += `          </div>
+                                   <div id="account-answers-add-answer-${data[0].id}" class="container-fluid hidden">
 
                                       <input name="question_id" type="hidden" value="${data[0].id}">
                                       <div class="row m-1">
                                          <textarea name="body" type="text" class="form-control"></textarea>
                                       </div>
                                        <div class="row m-1">
-                                         <button onclick="account.addAnswer('#account-add-answer-${data[0].id}')" class="btn btn-success" type="button">Send</button>
+                                         <button onclick="account.addAnswer('#account-answers-add-answer-${data[0].id}', '-${answer_id}')" class="btn btn-success" type="button">Send</button>
                                        </div>
                                    </div>
                                  </div>
@@ -271,6 +296,15 @@ class Account {
             success: function(data, textStatus, request) {
               let text = "";
               me.totalRemovedQuestions = request.getResponseHeader("total-records");
+              if(request.getResponseHeader("total-records") == 0){
+                $(".account-removed-question-pagination-nav").addClass("hidden");
+                $("#account-removed-question-list").addClass("hidden");
+                $("#account-no-removed-question-alert").removeClass("hidden");
+                return;
+              } else {
+                $(".account-removed-question-pagination-nav").removeClass("hidden");
+                $("#aaccount-removed-question-list").removeClass("hidden");
+              }
               for(var i=0; i<data.length; i++){
                 text += `<div class='col-lg-12'>
                             <div class='card bg-grey card-padding card-style' style='height: auto;'>
@@ -324,6 +358,15 @@ class Account {
             beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
             success: function(data, textStatus, request) {
               me.totalRemovedAnswers = request.getResponseHeader("total-records");
+              if(request.getResponseHeader("total-records") == 0){
+                $(".account-removed-answers-pagination-nav").addClass("hidden");
+                $("#account-removed-answer-list").addClass("hidden");
+                $("#account-no-removed-answers-alert").removeClass("hidden");
+                return;
+              } else {
+                $(".account-removed-answers-pagination-nav").removeClass("hidden");
+                $("#account-removed-answer-list").removeClass("hidden");
+              }
               let text = "";
               for(var i=0; i<data.length; i++){
                 text += `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
@@ -482,7 +525,7 @@ class Account {
     });
   }
 
-  loadAnswer(answer_id){
+  loadAnswer(answer_id, check = false){
     $.ajax({
        url: "api/user/answer/"+answer_id,
        type: "GET",
@@ -510,11 +553,18 @@ class Account {
           <i class="fa fa-map-pin pointer pull-right"></i>
         </div>`;
         }
-        text += `            </div>
-                             <div class="row">
-                               <a onclick="account.loadQuestion(${data.question_id}, ${data.id})" class="pointer">Load question</a>
-                             </div>
-                          </div>
+        text += `            </div>`;
+        if(check){
+          text += `<div class="row">
+            <a onclick="account.loadQuestion(${data.question_id}, ${data.id}, true)" class="pointer">Load question</a>
+          </div>`;
+        } else {
+          text += `<div class="row">
+            <a onclick="account.loadQuestion(${data.question_id}, ${data.id})" class="pointer">Load question</a>
+          </div>`;
+        }
+
+        text += `        </div>
                        </div>
                      </div>`;
          $(`#${data.id}-your-answer-${data.question_id}`).html(text);
@@ -578,35 +628,8 @@ class Account {
     $("#account-answers-container-"+questionId).addClass("hidden");
   }
 
-  showAnswerForm(question_id){
-    $("#account-add-answer-"+question_id).toggleClass("hidden");
-  }
-
-  displayQuestions(items, wrapper, rowsPerPage, page){
-    $(wrapper).html("");
-    page--;
-
-    if(this.maxPageQuestions == 0) {
-      $(".account-questions-pagination-nav").addClass("hidden");
-      $("#account-question-list").addClass("hidden");
-      $("#account-no-questions-alert").removeClass("hidden");
-      return;
-    } else {
-      $(".account-questions-pagination-nav").removeClass("hidden");
-      $("#account-question-list").removeClass("hidden");
-    }
-
-    $("#account-questions-page-number").html("Page " + (page + 1) + " out of " + this.maxPageQuestions);
-
-    let start = rowsPerPage * page;
-    let end = start + rowsPerPage
-    let paginatedItems = items.slice(start, end);
-
-    for(let i=0; i<paginatedItems.length; i++){
-      let item = paginatedItems[i];
-
-       $(wrapper).append(item);
-    }
+  showAnswerForm(question_id, selector){
+    $(selector+question_id).toggleClass("hidden");
   }
 
 }
