@@ -23,6 +23,14 @@ class Account {
       me.loadYourRemovedQuestions();
       me.loadYourRemovedAnswers();
     });
+
+    $("#edit-question").validate({
+     submitHandler: function(form, event) {
+       event.preventDefault();
+       let data = AskIbuUtils.formToJson($(form));
+       me.update(data);
+     }
+    });
   }
 
   loadYourQuestions(){
@@ -53,7 +61,16 @@ class Account {
                 text += `<div class='col-lg-12'>
                                       <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                         <div class='card-body p-1'>
-                                          <h3 class='card-title'>${data[i].subject}</h3>
+                                        <div class="container-fluid p-1">
+                                          <div class="row">
+                                            <div class="col-md-6">
+                                              <h3 class='card-title'>${data[i].subject}</h3>
+                                            </div>
+                                            <div class="col-md-6">
+                                              <a onclick="account.preEdit(${data[i].id})" class="pull-right pointer" style='text-decoration: none; color:black;'><i class='fa fa-edit fa-2x'></i></a>
+                                            </div>
+                                          </div>
+                                        </div>
                                           <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
                                           <p class='card-text panel p-1'>${data[i].body}</p>
                                         </div>
@@ -601,6 +618,38 @@ class Account {
          }
       });
   }
+
+  preEdit(id){
+    RestClient.get("api/user/question/"+id, null, function(data){
+        AskIbuUtils.dataToForm("#edit-question", data);
+        $("#edit-question-modal").modal("show");
+    });
+  }
+
+  update(question){
+    let me = this;
+    $.ajax({
+            url: "api/user/question/"+question.id,
+            type: "PUT",
+            data: JSON.stringify(question),
+            contentType: "application/json",
+            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+            success: function(data) {
+              toastr.success("Question was updated!");
+              $("#edit-question").trigger("reset");
+              $("#edit-question *[name='id']").val("");
+              $('#edit-question-modal').modal("hide");
+              me.loadYourQuestions();
+              me.loadYourAnswers();
+              me.loadYourRemovedQuestions();
+              me.loadYourRemovedAnswers();
+              },
+            error: function(jqXHR, textStatus, errorThrown ){
+              toastr.error(jqXHR.responseJSON.message);
+              console.log(jqXHR);
+            }
+         });
+ }
 
   pinned(answer_id, question_id, selector = ""){
     let value = 0;
