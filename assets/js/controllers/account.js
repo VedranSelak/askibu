@@ -237,13 +237,10 @@ class Account {
                                    if(check){
                                      text += `<div class="container-fluid p-1">
                                        <div class="row">
-                                         <div class="col-md-4">
-                                           <a onclick='account.loadAnswers(${data[0].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
-                                         </div>
-                                         <div class="col-md-4 text-center">
+                                         <div class="col-md-6">
                                            <a onclick="account.loadAnswer(${answer_id}, true)" class="pointer" style='text-decoration: none; color:black;'>Load answer</a>
                                          </div>
-                                         <div class="col-md-4">
+                                         <div class="col-md-6">
                                            <a onclick="account.showAnswerForm(${data[0].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
                                          </div>
                                        </div>
@@ -251,10 +248,7 @@ class Account {
                                    } else {
                                      text += `<div class="container-fluid p-1">
                                        <div class="row">
-                                         <div class="col-md-6">
-                                           <a onclick='account.loadAnswers(${data[0].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
-                                         </div>
-                                         <div class="col-md-6">
+                                         <div class="col-md-12">
                                            <a onclick="account.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
                                          </div>
                                        </div>
