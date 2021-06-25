@@ -30,7 +30,7 @@ class SMTPClient {
     $message = (new Swift_Message('Reset you password'))
       ->setFrom([Config::SMTP_USER() => 'askIBU'])
       ->setTo($user['email'])
-      ->setBody('Here is the recovery token: '.$user["token"]);
+      ->setBody('Here is the recovery link: '.$_SERVER["HTTP_REFERER"]."?token=".$user["token"]);
       ;
 
     $result = $this->mailer->send($message);
