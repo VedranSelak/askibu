@@ -29,6 +29,31 @@ class Login {
   static showRegiterForm(){
     $("#login-form-container").addClass("hidden");
     $("#register-form-container").removeClass("hidden");
+    RestClient.get("api/faculties", null, function(data){
+      let text = "";
+      for(let i=0; i<data.length; i++){
+        text += `<li class="pointer"><a onclick="Login.facultyClicked(${data[i].id}, '${data[i].name}')">${data[i].name}</a></li>`;
+      }
+      $("#dropdown-menu-faculty").html(text);
+    });
+  }
+
+  static facultyClicked(faculty_id, faculty_name){
+    $("#department-form-item").removeClass("hidden");
+    $("#register-form *[name='faculty_id']").val(faculty_id);
+    $("#faculty-dropdown").html(faculty_name);
+    RestClient.get("api/departments/"+faculty_id, null, function(data){
+      let text = "";
+      for(let i=0; i<data.length; i++){
+        text += `<li class="pointer"><a onclick="Login.departmentClicked(${data[i].id}, '${data[i].name}')">${data[i].name}</a></li>`;
+      }
+      $("#dropdown-menu-department").html(text);
+    });
+  }
+
+  static departmentClicked(department_id, department_name){
+    $("#register-form *[name='department_id']").val(department_id);
+    $("#department-dropdown").html(department_name);
   }
 
   static showLoginForm(){

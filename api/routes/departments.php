@@ -29,6 +29,16 @@ Flight::route('GET /user/departments/@id', function($id){
 });
 
 /**
+ * @OA\Get(path="/departments/{id}",tags={"department"},
+ *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of faculty"),
+ *     @OA\Response(response="200", description="Get department by id")
+ * )
+ */
+Flight::route('GET /departments/@id', function($id){
+    Flight::json(Flight::departmentService()->get_departments($id, 0, 100, null, "-id"));
+});
+
+/**
  * @OA\Get(path="/admin/department-faculty/{id}",tags={"admin", "department"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of department"),
  *     @OA\Response(response="200", description="Get department by id")

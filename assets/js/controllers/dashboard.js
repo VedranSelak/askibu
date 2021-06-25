@@ -126,6 +126,11 @@ class Dashboard {
 
   static loadLatestAnswers(){
     RestClient.get("api/user/answer", { "limit" : 3, "order": "+posted_at" }, function(data){
+      if(data.length === 0){
+        $("#no-latest-answers-alert").removeClass("hidden");
+      } else {
+        $("#no-latest-answers-alert").addClass("hidden");
+      }
       let text = "";
       for(var i=0; i<data.length; i++){
         text += `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
