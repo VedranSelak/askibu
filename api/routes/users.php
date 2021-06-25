@@ -123,6 +123,7 @@ Flight::route('PUT /user/account', function(){
 
 Flight::route('GET /confirm/@token', function($token){
   Flight::json(Flight::jwt(Flight::userService()->confirm($token)));
+  header("LOCATION: //localhost/web-programming-project/login.html");
 });
 
 /**
