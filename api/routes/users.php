@@ -123,7 +123,7 @@ Flight::route('PUT /user/account', function(){
 
 Flight::route('GET /confirm/@token', function($token){
   Flight::json(Flight::jwt(Flight::userService()->confirm($token)));
-  header("LOCATION: ".$_SERVER["REQUEST_SCHEME"].'://'.$_SERVER["SERVER_NAME"].str_replace("/api/index.php","/login.html",$_SERVER["SCRIPT_NAME"]));
+  header("Location: ".'//'.$_SERVER["SERVER_NAME"].str_replace("/api/index.php","/login.html",$_SERVER["SCRIPT_NAME"]));
 });
 
 /**
