@@ -36,13 +36,6 @@
       return Config::get_env("SMTP_PASSWORD","");
     }
 
-
-    // const SMTP_HOST = "smtp.gmail.com";
-    // const SMTP_PORT = 587;
-    // const SMTP_ENCRYPT = "tls";
-    // const SMTP_USER = "selakvedran@gmail.com";
-    // const SMTP_PASSWORD = "";
-
     const JWT_SECRET = "8234854794";
     const JWT_TOKEN_TIME = 604800;
 
