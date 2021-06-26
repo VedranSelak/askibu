@@ -8,7 +8,7 @@ class AnswerDao extends BaseDao{
   }
 
   public function get_answer_by_answer_id($user_id, $id){
-      return $this->query_unique("SELECT * FROM answers WHERE id = :id AND user_id = :user_id",["id" => $id, "user_id" => $user_id]);
+      return $this->query_unique("SELECT answers.*, users.name FROM answers JOIN users ON answers.user_id=users.id WHERE answers.id = :id AND answers.user_id = :user_id",["id" => $id, "user_id" => $user_id]);
   }
 
   public function get_answer_count($user_id){

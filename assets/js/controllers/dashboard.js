@@ -25,17 +25,16 @@ class Dashboard {
                               <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                 <div class='card-body p-1'>
                                   <h3 class='card-title question-subject'>${data[i].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data[i].posted_at)}</h6>
-                                  <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
+                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${Dashboard.time(data[i].posted_at)}</h6>
                                   <p class='card-text panel p-1'>${data[i].body}</p>
                                 </div>
                                 <div class="container-fluid p-1">
                                   <div class="row">
                                     <div class="col-md-6">
-                                      <a onclick='Dashboard.loadAnswers(${data[i].id}, "#hottest")' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                      <a onclick='Dashboard.loadAnswers(${data[i].id}, "#hottest")' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
                                     </div>
                                     <div class="col-md-6">
-                                      <a onclick="Dashboard.showAnswerForm(${data[i].id}, '#hottest')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                      <a id="hottest-show-answer-form-${data[i].id}" onclick="Dashboard.showAnswerForm(${data[i].id}, '#hottest')" class="pull-right pointer add-answer">+ Add answer</a>
                                     </div>
                                   </div>
                                 </div>
@@ -45,7 +44,7 @@ class Dashboard {
 
                                   </div>
                                   <div class='row text-center'>
-                                    <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='Dashboard.hideAnswers(${data[i].id}, "#hottest")'></i></div>
+                                    <div class="card-footer"><i class="fa fa-chevron-up pointer load-hide-answers" onclick='Dashboard.hideAnswers(${data[i].id}, "#hottest")'></i></div>
                                   </div>
                                 </div>
                                 <div id="hottest-add-answer-${data[i].id}" class="container-fluid hidden">
@@ -83,8 +82,8 @@ class Dashboard {
         text += `<div class='col-lg-12 col-md-12 col-sm-12'>
                               <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                 <div class='card-body p-1'>
-                                  <h3 class='card-title'>${data[i].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data[i].posted_at)}</h6>
+                                  <h3 class='card-title question-subject '>${data[i].subject}</h3>
+                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${Dashboard.time(data[i].posted_at)}</h6>
                                   <p class='card-text panel p-1'>${data[i].body}</p>
                                 </div>
                                 <div class="container-fluid p-1">
@@ -93,7 +92,7 @@ class Dashboard {
                                       <a onclick='Dashboard.loadAnswers(${data[i].id}, "#latest-questions")' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
                                     </div>
                                     <div class="col-md-6 col-sm-6">
-                                      <a onclick="Dashboard.showAnswerForm(${data[i].id}, '#latest-questions')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                      <a id="latest-questions-show-answer-form-${data[i].id}" onclick="Dashboard.showAnswerForm(${data[i].id}, '#latest-questions')" class="pull-right pointer add-answer">+ Add answer</a>
                                     </div>
                                   </div>
                                 </div>
@@ -136,8 +135,7 @@ class Dashboard {
         text += `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
                     <div class='card bg-info card-padding-s card-style' style='height: auto;'>
                      <div class="card-header">
-                       <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                       <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data[i].posted_at)}</h6>
+                       <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${Dashboard.time(data[i].posted_at)}</h6>
                      </div>
                       <div class='card-body'>
                         <div class="container-fluid">
@@ -176,15 +174,15 @@ class Dashboard {
         let text = `<div class='col-lg-12'>
                               <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                 <div class='card-body p-1'>
-                                  <h3 class='card-title'>${data[0].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data[0].posted_at)}</h6>
+                                  <h3 class='card-title question-subject '>${data[0].subject}</h3>
+                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${Dashboard.time(data[0].posted_at)}</h6>
                                   <p class='card-text panel p-1'>${data[0].body}</p>
                                 </div>
 
                                 <div class="container-fluid p-1">
                                     <div class="row">
                                       <div class="col-md-12">
-                                        <a onclick="Dashboard.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                        <a onclick="Dashboard.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
                                       </div>
                                     </div>
                                   </div>
@@ -228,7 +226,7 @@ class Dashboard {
                     <div class="row">
                       <div class="col-md-10">
                        <div class="card-header">
-                         <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data.posted_at)}</h6>
+                         <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data.name} ${Dashboard.time(data.posted_at)}</h6>
                        </div>
                         <div class='card-body'>
                           <div class="container-fluid">
@@ -268,13 +266,13 @@ class Dashboard {
        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
        data: { "order" : "+is_pinned" },
        success: function(data) {
+         console.log(data);
          let text = "";
          for(var i=0; i<data.length; i++){
            text += `<div class='col-lg-12'>
                        <div class='card bg-white card-padding-s card-style' style='height: auto;'>
                         <div class="card-header">
-                          <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data[i].posted_at)}</h6>
-                          <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${Dashboard.time(data[i].posted_at)}</h6>
                         </div>
                          <div class='card-body'>
                            <div class="container-fluid">
@@ -368,6 +366,12 @@ class Dashboard {
 
   static showAnswerForm(question_id, selector){
     $(selector+"-add-answer-"+question_id).toggleClass("hidden");
+    $(selector+"-show-answer-form-"+question_id).toggleClass("active");
+    if($(selector+"-show-answer-form-"+question_id).hasClass("active")){
+      $(selector+"-show-answer-form-"+question_id).html("Hide answer form");
+    } else {
+      $(selector+"-show-answer-form-"+question_id).html("+ Add answer");
+    }
   }
 
   static hideAnswers(questionId, selector){
@@ -382,12 +386,11 @@ class Dashboard {
     var days = Math.floor(diff / 86400);
     var hours = Math.floor(diff / 3600) % 24;
     var minutes = Math.floor(diff / 60) % 60;
-    var seconds = diff % 60;
 
     if(days == 0){
       if(hours == 0){
         if(minutes == 0){
-          return seconds+"s ago";
+          return "just now";
         } else {
           return minutes+"min ago";
         }

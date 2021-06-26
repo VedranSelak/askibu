@@ -6,6 +6,11 @@
 
 body {
     background-color: #f8f8f8;
+    font-family: 'Roboto Mono', monospace;
+}
+
+textarea {
+  resize: vertical;
 }
 
 #side-menu li a{
@@ -22,6 +27,36 @@ body {
 
 .question-subject {
   font-weight: bold;
+}
+
+.add-answer {
+    text-decoration: none;
+    color: #00c43e;
+}
+
+.add-answer:hover {
+    text-decoration: none;
+    color: #45e670;
+}
+
+.add-answer:befor {
+  content: "Hide answer form";
+    text-decoration: none;
+    color: #45e670;
+}
+
+.load-hide-answers {
+  text-decoration: none;
+  color: #035796;
+}
+
+.load-hide-answers i {
+  padding-right: 5px;
+}
+
+.load-hide-answers:hover {
+  text-decoration: none;
+  color: #0074cc;
 }
 
 .pin {
