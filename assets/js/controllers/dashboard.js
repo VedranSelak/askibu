@@ -89,7 +89,7 @@ class Dashboard {
                                 <div class="container-fluid p-1">
                                   <div class="row">
                                     <div class="col-md-6 col-sm-6">
-                                      <a onclick='Dashboard.loadAnswers(${data[i].id}, "#latest-questions")' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                      <a onclick='Dashboard.loadAnswers(${data[i].id}, "#latest-questions")' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
                                     </div>
                                     <div class="col-md-6 col-sm-6">
                                       <a id="latest-questions-show-answer-form-${data[i].id}" onclick="Dashboard.showAnswerForm(${data[i].id}, '#latest-questions')" class="pull-right pointer add-answer">+ Add answer</a>
@@ -101,7 +101,7 @@ class Dashboard {
 
                                   </div>
                                   <div class='row text-center'>
-                                    <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='Dashboard.hideAnswers(${data[i].id}, "#latest-questions")'></i></div>
+                                    <div class="card-footer"><i class="fa fa-chevron-up pointer load-hide-answers" onclick='Dashboard.hideAnswers(${data[i].id}, "#latest-questions")'></i></div>
                                   </div>
                                 </div>
                                 <div id="latest-questions-add-answer-${data[i].id}" class="container-fluid hidden">
@@ -133,7 +133,7 @@ class Dashboard {
       let text = "";
       for(var i=0; i<data.length; i++){
         text += `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
-                    <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                    <div class='card bg-white border-blue card-padding-s card-style' style='height: auto;'>
                      <div class="card-header">
                        <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${Dashboard.time(data[i].posted_at)}</h6>
                      </div>
@@ -145,16 +145,16 @@ class Dashboard {
                              </div>`;
        if(data[i].is_pinned == 1){
            text += `<div id="account-pin-${data[i].id}" class="col-md-2 green">
-           <i class="fa fa-map-pin pull-right"></i>
+           <i class="fa fa-map-pin fa-2x pull-right"></i>
          </div>`;
        } else {
          text += `<div id="pin-${data[i].id}" class="col-md-2">
-         <i class="fa fa-map-pin pull-right"></i>
+         <i class="fa fa-map-pin fa-2x pull-right"></i>
        </div>`;
        }
        text += `            </div>
                             <div class="row">
-                              <a onclick="Dashboard.loadQuestion(${data[i].question_id}, ${data[i].id})" class="pointer">Load question</a>
+                              <a onclick="Dashboard.loadQuestion(${data[i].question_id}, ${data[i].id})" class="pointer pl-1 toggling-link">Load question</a>
                             </div>
                          </div>
                       </div>
@@ -182,7 +182,7 @@ class Dashboard {
                                 <div class="container-fluid p-1">
                                     <div class="row">
                                       <div class="col-md-12">
-                                        <a onclick="Dashboard.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
+                                        <a id="account-answers-show-answer-form-${data[0].id}" onclick="Dashboard.showAnswerForm(${data[0].id}, '#account-answers')" class="pull-right pointer add-answer">+ Add answer</a>
                                       </div>
                                     </div>
                                   </div>
@@ -192,7 +192,7 @@ class Dashboard {
 
                                   </div>
                                   <div class="row text-center">
-                                      <a onclick="Dashboard.loadAnswer(${answer_id})">Load answer</a>
+                                      <a onclick="Dashboard.loadAnswer(${answer_id})" class="pointer toggling-link">Load answer</a>
                                     </div>
                                 </div>
                                 <div id="account-answers-add-answer-${data[0].id}" class="container-fluid hidden">
@@ -202,7 +202,7 @@ class Dashboard {
                                       <textarea name="body" type="text" class="form-control"></textarea>
                                    </div>
                                     <div class="row m-1">
-                                      <button onclick="Dashboard.addAnswer('#account-answers-add-answer-${data[0].id}', '-${answer_id}')" class="btn btn-success" type="button">Send</button>
+                                      <button onclick="Dashboard.addAnswer('#account-answers-add-answer-${data[0].id}', '#${answer_id}')" class="btn btn-success" type="button">Send</button>
                                     </div>
                                 </div>
                               </div>
@@ -221,10 +221,7 @@ class Dashboard {
   static loadAnswer(answer_id){
     RestClient.get("api/user/answer/"+answer_id, null, function(data){
       console.log(data)
-      let text = `<div class='card bg-info card-padding-s card-style' style='height: auto;'>
-                  <div class="container-fluid">
-                    <div class="row">
-                      <div class="col-md-10">
+      let text = `<div class='card bg-white border-blue card-padding-s card-style' style='height: auto;'>
                        <div class="card-header">
                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data.name} ${Dashboard.time(data.posted_at)}</h6>
                        </div>
@@ -233,12 +230,7 @@ class Dashboard {
                              <div class="row">
                                <div class="col-md-10">
                                  <p class='card-text'>${data.body}</p>
-                               </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      <div class="col-md-2 pin text-center">`;
+                               </div>`;
      if(data.is_pinned == 1){
          text += `<div id="pin-${data.id}" class="col-md-2 green">
                      <i class="fa fa-map-pin fa-2x pull-right"></i>
@@ -249,9 +241,8 @@ class Dashboard {
                </div>`;
      }
     text += `  </div>
-             </div>
              <div class="row">
-              <a onclick="Dashboard.loadQuestion(${data.question_id}, ${data.id})" class="pointer">Load question</a>
+              <a onclick="Dashboard.loadQuestion(${data.question_id}, ${data.id})" class="pointer pl-1 toggling-link">Load answer</a>
             </div>
           </div>
         </div>`;
@@ -294,7 +285,7 @@ class Dashboard {
                          </div>`
                          if(data[i].id == selector.substring(1)){
                            text += `<div class="ml-1">
-                                     <a onclick="Dashboard.loadAnswer(${data[i].id})">Load question</a>
+                                     <a onclick="Dashboard.loadAnswer(${data[i].id})" class="pointer toggling-link">Load answer</a>
                                    </div>`;
                          }
         text +=`

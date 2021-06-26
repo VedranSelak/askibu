@@ -34,6 +34,16 @@ textarea {
     color: #00c43e;
 }
 
+.toggling-link {
+  text-decoration: none;
+  color: #1483e3;
+}
+
+.toggling-link:hover {
+  text-decoration: none;
+  color: #0074cc;
+}
+
 .add-answer:hover {
     text-decoration: none;
     color: #45e670;
@@ -47,7 +57,7 @@ textarea {
 
 .load-hide-answers {
   text-decoration: none;
-  color: #035796;
+  color: #1483e3;
 }
 
 .load-hide-answers i {
@@ -75,6 +85,10 @@ textarea {
 
 .border-dark {
   border: 2px black solid;
+}
+
+.border-blue {
+  border: 2px #1483e3 solid;
 }
 
 .border-dark-round {
@@ -120,6 +134,10 @@ textarea {
 
 .p-1 {
   padding: 1rem;
+}
+
+.pl-1 {
+  padding-left: 1rem;
 }
 
 .card-style {
