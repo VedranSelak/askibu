@@ -61,26 +61,26 @@ class Account {
                 text += `<div class='col-lg-12'>
                                       <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                         <div class='card-body p-1'>
-                                        <div class="container-fluid p-1">
+                                        <div class="container-fluid cut-size p-1">
                                           <div class="row">
                                             <div class="col-md-6">
-                                              <h3 class='card-title'>${data[i].subject}</h3>
+                                              <h3 class='card-title question-subject'>${data[i].subject}</h3>
                                             </div>
                                             <div class="col-md-6">
-                                              <a onclick="account.preEdit(${data[i].id})" class="pull-right pointer" style='text-decoration: none; color:black;'><i class='fa fa-edit fa-2x'></i></a>
+                                              <a onclick="account.preEdit(${data[i].id})" class="pull-right pointer edit-link"><i class="fa fa-edit fa-2x"></i></a>
                                             </div>
                                           </div>
                                         </div>
-                                          <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
+                                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[i].posted_at)}</h6>
                                           <p class='card-text panel p-1'>${data[i].body}</p>
                                         </div>
                                         <div class="container-fluid p-1">
                                           <div class="row">
                                             <div class="col-md-6">
-                                              <a onclick='account.loadAnswers(${data[i].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
+                                              <a onclick='account.loadAnswers(${data[i].id})' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
                                             </div>
                                             <div class="col-md-6">
-                                              <a onclick="account.showAnswerForm(${data[i].id}, '#account-add-answer-')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                              <a id="account-add-answer-show-form-${data[i].id}" onclick="account.showAnswerForm(${data[i].id}, '#account-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
                                             </div>
                                           </div>
                                         </div>
@@ -90,7 +90,7 @@ class Account {
 
                                           </div>
                                           <div class='row text-center'>
-                                            <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='account.hideAnswers(${data[i].id})'></i></div>
+                                            <div class="card-footer load-hide-answers"><i class="fa fa-chevron-up pointer" onclick='account.hideAnswers(${data[i].id})'></i></div>
                                           </div>
                                         </div>
                                         <div id="account-add-answer-${data[i].id}" class="container-fluid hidden">
@@ -159,10 +159,9 @@ class Account {
               }
               for(var i=0; i<data.length; i++){
                 text += `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
-                            <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                            <div class='card bg-while border-blue card-padding-s card-style' style='height: auto;'>
                              <div class="card-header">
-                               <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                               <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                               <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
                              </div>
                               <div class='card-body'>
                                 <div class="container-fluid">
@@ -172,16 +171,16 @@ class Account {
                                      </div>`;
                if(data[i].is_pinned == 1){
                    text += `<div id="account-pin-${data[i].id}" class="col-md-2 green">
-                   <i class="fa fa-map-pin pull-right"></i>
+                   <i class="fa fa-map-pin fa-2x pull-right"></i>
                  </div>`;
                } else {
                  text += `<div id="pin-${data[i].id}" class="col-md-2">
-                 <i class="fa fa-map-pin pull-right"></i>
+                 <i class="fa fa-map-pin fa-2x pull-right"></i>
                </div>`;
                }
                text += `            </div>
                                     <div class="row">
-                                      <a onclick="account.loadQuestion(${data[i].question_id}, ${data[i].id})" class="pointer">Load question</a>
+                                      <a onclick="account.loadQuestion(${data[i].question_id}, ${data[i].id})" class="pointer toggling-link pl-1">Load question</a>
                                     </div>
                                  </div>
                               </div>
@@ -230,18 +229,18 @@ class Account {
            let text = `<div class='col-lg-12'>
                                  <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                    <div class='card-body p-1'>
-                                     <h3 class='card-title'>${data[0].subject}</h3>
-                                     <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[0].posted_at}</h6>
+                                     <h3 class='card-title question-subject'>${data[0].subject}</h3>
+                                     <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[0].posted_at)}</h6>
                                      <p class='card-text panel p-1'>${data[0].body}</p>
                                    </div>`;
                                    if(check){
                                      text += `<div class="container-fluid p-1">
                                        <div class="row">
                                          <div class="col-md-6">
-                                           <a onclick="account.loadAnswer(${answer_id}, true)" class="pointer" style='text-decoration: none; color:black;'>Load answer</a>
+                                           <a onclick="account.loadAnswer(${answer_id}, true)" class="pointer toggling-link">Load answer</a>
                                          </div>
                                          <div class="col-md-6">
-                                           <a onclick="account.showAnswerForm(${data[0].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                           <a onclick="account.showAnswerForm(${data[0].id})" class="pull-right pointer add-answer">+ Add answer</a>
                                          </div>
                                        </div>
                                      </div>`;
@@ -249,7 +248,7 @@ class Account {
                                      text += `<div class="container-fluid p-1">
                                        <div class="row">
                                          <div class="col-md-12">
-                                           <a onclick="account.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
+                                           <a id="account-answers-add-answer-show-form-${data[0].id}" onclick="account.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
                                          </div>
                                        </div>
                                      </div>`;
@@ -261,11 +260,11 @@ class Account {
                                      </div>`;
                                      if(check){
                                        text += `<div class="row text-center">
-                                         <a onclick="account.loadAnswer(${answer_id}, true)">Load answer</a>
+                                         <a onclick="account.loadAnswer(${answer_id}, true)" class="toggling-link pointer">Load answer</a>
                                        </div>`;
                                      } else {
                                        text += `<div class="row text-center">
-                                         <a onclick="account.loadAnswer(${answer_id})">Load answer</a>
+                                         <a onclick="account.loadAnswer(${answer_id})" class="toggling-link pointer">Load answer</a>
                                        </div>`;
                                      }
                 text += `          </div>
@@ -320,8 +319,8 @@ class Account {
                 text += `<div class='col-lg-12'>
                             <div class='card bg-grey card-padding card-style' style='height: auto;'>
                               <div class='card-body p-1'>
-                                <h3 class='card-title'>${data[i].subject}</h3>
-                                <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
+                                <h3 class='card-title question-subject'>${data[i].subject}</h3>
+                                <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[i].posted_at)}</h6>
                                 <p class='card-text panel p-1'>${data[i].body}</p>
                               </div>
                             </div>
@@ -381,10 +380,9 @@ class Account {
               let text = "";
               for(var i=0; i<data.length; i++){
                 text += `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
-                            <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                            <div class='card bg-white border-blue card-padding-s card-style' style='height: auto;'>
                              <div class="card-header">
-                               <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                               <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                               <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
                              </div>
                               <div class='card-body'>
                                 <div class="container-fluid">
@@ -394,16 +392,16 @@ class Account {
                                      </div>`;
                if(data[i].is_pinned == 1){
                   text += `<div id="pin-${data[i].id}" class="col-md-2 green">
-                   <i class="fa fa-map-pin pointer pull-right"></i>
+                   <i class="fa fa-map-pin fa-2x pointer pull-right"></i>
                  </div>`;
                } else {
                  text += `<div id="pin-${data[i].id}" class="col-md-2">
-                 <i class="fa fa-map-pin pointer pull-right"></i>
+                 <i class="fa fa-map-pin fa-2x pointer pull-right"></i>
                </div>`;
                }
                text += `            </div>
                                     <div class="row">
-                                      <a onclick="account.loadQuestion(${data[i].question_id}, ${data[i].id}, true)" class="pointer">Load question</a>
+                                      <a onclick="account.loadQuestion(${data[i].question_id}, ${data[i].id}, true)" class="pointer toggling-link pl-1">Load question</a>
                                     </div>
                                  </div>
                               </div>
@@ -478,10 +476,9 @@ class Account {
          let text = "";
          for(var i=0; i<data.length; i++){
            text += `<div class='col-lg-12'>
-                       <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                       <div class='card bg-white card-padding-s card-style' style='height: auto;'>
                         <div class="card-header">
-                          <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                          <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
                         </div>
                          <div class='card-body'>
                            <div class="container-fluid">
@@ -493,28 +490,28 @@ class Account {
           if(selector != ""){
             if(data[i].is_pinned == 1){
                 text += `<div id="account${selector}-pin-${data[i].id}" class="col-md-2 green">
-                <i onclick='account.pinned(${data[i].id}, ${data[i].question_id}, ${selector})' class="fa fa-map-pin pointer pull-right"></i>
+                <i onclick='account.pinned(${data[i].id}, ${data[i].question_id}, ${selector})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
               </div>`;
             } else {
               text += `<div id="account${selector}-pin-${data[i].id}" class="col-md-2">
-              <i onclick='account.pinned(${data[i].id}, ${data[i].question_id}, ${selector})' class="fa fa-map-pin pointer pull-right"></i>
+              <i onclick='account.pinned(${data[i].id}, ${data[i].question_id}, ${selector})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
             </div>`;
             }
           } else {
             if(data[i].is_pinned == 1){
                 text += `<div id="account-pin-${data[i].id}" class="col-md-2 green">
-                <i onclick='account.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+                <i onclick='account.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
               </div>`;
             } else {
               text += `<div id="account-pin-${data[i].id}" class="col-md-2">
-              <i onclick='account.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+              <i onclick='account.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
             </div>`;
             }
           }
           text += `            </div>`;
           if(data[i].id == selector.substring(1)){
             text += `<div class="row">
-                      <a onclick="account.loadAnswer(${data[i].id})">Load question</a>
+                      <a onclick="account.loadAnswer(${data[i].id})" class="pointer toggling-link pl-1">Load answer</a>
                     </div>`;
           }
           text += `          </div>
@@ -673,6 +670,12 @@ class Account {
 
   showAnswerForm(question_id, selector){
     $(selector+question_id).toggleClass("hidden");
+    $(selector+"show-form-"+question_id).toggleClass("active");
+    if($(selector+"show-form-"+question_id).hasClass("active")){
+      $(selector+"show-form-"+question_id).html("Hide answer form");
+    } else {
+      $(selector+"show-form-"+question_id).html("+ Add answer");
+    }
   }
 
 }

@@ -41,7 +41,7 @@ textarea {
 
 .toggling-link:hover {
   text-decoration: none;
-  color: #0074cc;
+  color: #6bb8fa;
 }
 
 .add-answer:hover {
@@ -49,10 +49,19 @@ textarea {
     color: #45e670;
 }
 
-.add-answer:befor {
-  content: "Hide answer form";
-    text-decoration: none;
-    color: #45e670;
+.edit-link {
+  text-decoration: none;
+  padding-top: 2rem;
+  color: #1483e3;
+}
+
+.mr-8 {
+  margin-right: 8rem;
+}
+
+.cut-size {
+  margin: 0;
+  padding: 0px!important;
 }
 
 .load-hide-answers {
@@ -66,7 +75,7 @@ textarea {
 
 .load-hide-answers:hover {
   text-decoration: none;
-  color: #0074cc;
+  color: #6bb8fa;
 }
 
 .pin {
@@ -151,8 +160,21 @@ textarea {
 }
 
 .button-pag{
-  border: 1px solid #4287f5;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  font-weight: bold;
+  color: black;
+  background-color: #1483e3;
+  border: 1px solid #1483e3;
   border-radius: 5px;
+}
+
+.button-pag:hover{
+  opacity: 0.5;
+}
+
+.button-pag:disabled{
+  cursor: no-drop;
+  opacity: 1;
 }
 
 .pagination-header{

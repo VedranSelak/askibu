@@ -25,4 +25,28 @@ class AskIbuUtils {
       return JSON.parse(jsonPayload);
   }
 
+  static time(time){
+    var data = Math.abs((new Date(time).getTime() / 1000).toFixed(0));
+    var currentDate = Math.abs((new Date().getTime() / 1000).toFixed(0));
+    var diff = currentDate - data;
+
+    var days = Math.floor(diff / 86400);
+    var hours = Math.floor(diff / 3600) % 24;
+    var minutes = Math.floor(diff / 60) % 60;
+
+    if(days == 0){
+      if(hours == 0){
+        if(minutes == 0){
+          return "just now";
+        } else {
+          return minutes+"min ago";
+        }
+      } else {
+        return hours+"h ago";
+      }
+    } else {
+      return days+"d ago";
+    }
+  }
+
 }

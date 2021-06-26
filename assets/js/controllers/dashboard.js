@@ -25,7 +25,7 @@ class Dashboard {
                               <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                 <div class='card-body p-1'>
                                   <h3 class='card-title question-subject'>${data[i].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${Dashboard.time(data[i].posted_at)}</h6>
+                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
                                   <p class='card-text panel p-1'>${data[i].body}</p>
                                 </div>
                                 <div class="container-fluid p-1">
@@ -83,7 +83,7 @@ class Dashboard {
                               <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                 <div class='card-body p-1'>
                                   <h3 class='card-title question-subject '>${data[i].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${Dashboard.time(data[i].posted_at)}</h6>
+                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[i].posted_at)}</h6>
                                   <p class='card-text panel p-1'>${data[i].body}</p>
                                 </div>
                                 <div class="container-fluid p-1">
@@ -135,7 +135,7 @@ class Dashboard {
         text += `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
                     <div class='card bg-white border-blue card-padding-s card-style' style='height: auto;'>
                      <div class="card-header">
-                       <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${Dashboard.time(data[i].posted_at)}</h6>
+                       <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
                      </div>
                       <div class='card-body'>
                         <div class="container-fluid">
@@ -175,7 +175,7 @@ class Dashboard {
                               <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                 <div class='card-body p-1'>
                                   <h3 class='card-title question-subject '>${data[0].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${Dashboard.time(data[0].posted_at)}</h6>
+                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[0].posted_at)}</h6>
                                   <p class='card-text panel p-1'>${data[0].body}</p>
                                 </div>
 
@@ -223,7 +223,7 @@ class Dashboard {
       console.log(data)
       let text = `<div class='card bg-white border-blue card-padding-s card-style' style='height: auto;'>
                        <div class="card-header">
-                         <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data.name} ${Dashboard.time(data.posted_at)}</h6>
+                         <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data.name} ${AskIbuUtils.time(data.posted_at)}</h6>
                        </div>
                         <div class='card-body'>
                           <div class="container-fluid">
@@ -263,7 +263,7 @@ class Dashboard {
            text += `<div class='col-lg-12'>
                        <div class='card bg-white card-padding-s card-style' style='height: auto;'>
                         <div class="card-header">
-                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${Dashboard.time(data[i].posted_at)}</h6>
+                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
                         </div>
                          <div class='card-body'>
                            <div class="container-fluid">
@@ -367,30 +367,6 @@ class Dashboard {
 
   static hideAnswers(questionId, selector){
     $(selector+"-answers-container-"+questionId).addClass("hidden");
-  }
-
-  static time(time){
-    var data = Math.abs((new Date(time).getTime() / 1000).toFixed(0));
-    var currentDate = Math.abs((new Date().getTime() / 1000).toFixed(0));
-    var diff = currentDate - data;
-
-    var days = Math.floor(diff / 86400);
-    var hours = Math.floor(diff / 3600) % 24;
-    var minutes = Math.floor(diff / 60) % 60;
-
-    if(days == 0){
-      if(hours == 0){
-        if(minutes == 0){
-          return "just now";
-        } else {
-          return minutes+"min ago";
-        }
-      } else {
-        return hours+"h ago";
-      }
-    } else {
-      return days+"d ago";
-    }
   }
 
 }
