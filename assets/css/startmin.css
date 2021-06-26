@@ -20,6 +20,16 @@ body {
   background-color: #ffffff;
 }
 
+.question-subject {
+  font-weight: bold;
+}
+
+.pin {
+  height: 100%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+}
+
 .text-red {
   color: #fa141c;
 }

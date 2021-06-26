@@ -24,8 +24,8 @@ class Dashboard {
         html += `<div class='col-lg-12'>
                               <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                 <div class='card-body p-1'>
-                                  <h3 class='card-title'>${data[i].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
+                                  <h3 class='card-title question-subject'>${data[i].subject}</h3>
+                                  <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data[i].posted_at)}</h6>
                                   <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
                                   <p class='card-text panel p-1'>${data[i].body}</p>
                                 </div>
@@ -84,7 +84,7 @@ class Dashboard {
                               <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                 <div class='card-body p-1'>
                                   <h3 class='card-title'>${data[i].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
+                                  <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data[i].posted_at)}</h6>
                                   <p class='card-text panel p-1'>${data[i].body}</p>
                                 </div>
                                 <div class="container-fluid p-1">
@@ -137,7 +137,7 @@ class Dashboard {
                     <div class='card bg-info card-padding-s card-style' style='height: auto;'>
                      <div class="card-header">
                        <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                       <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                       <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data[i].posted_at)}</h6>
                      </div>
                       <div class='card-body'>
                         <div class="container-fluid">
@@ -177,7 +177,7 @@ class Dashboard {
                               <div class='card bg-grey card-padding card-style' style='height: auto;'>
                                 <div class='card-body p-1'>
                                   <h3 class='card-title'>${data[0].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[0].posted_at}</h6>
+                                  <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data[0].posted_at)}</h6>
                                   <p class='card-text panel p-1'>${data[0].body}</p>
                                 </div>
 
@@ -223,35 +223,40 @@ class Dashboard {
   static loadAnswer(answer_id){
     RestClient.get("api/user/answer/"+answer_id, null, function(data){
       console.log(data)
-      let text = `
-                  <div class='card bg-info card-padding-s card-style' style='height: auto;'>
-                   <div class="card-header">
-                     <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data.name}</h6>
-                     <h6 class='card-subtitle mb-2 text-muted'>${data.posted_at}</h6>
-                   </div>
-                    <div class='card-body'>
-                      <div class="container-fluid">
-                         <div class="row">
-                           <div class="col-md-10">
-                             <p class='card-text'>${data.body}</p>
-                           </div>`;
+      let text = `<div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-md-10">
+                       <div class="card-header">
+                         <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data.posted_at)}</h6>
+                       </div>
+                        <div class='card-body'>
+                          <div class="container-fluid">
+                             <div class="row">
+                               <div class="col-md-10">
+                                 <p class='card-text'>${data.body}</p>
+                               </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      <div class="col-md-2 pin text-center">`;
      if(data.is_pinned == 1){
          text += `<div id="pin-${data.id}" class="col-md-2 green">
-         <i class="fa fa-map-pin pointer pull-right"></i>
-       </div>`;
+                     <i class="fa fa-map-pin fa-2x pull-right"></i>
+                   </div>`;
      } else {
        text += `<div id="pin-${data.id}" class="col-md-2">
-       <i class="fa fa-map-pin pointer pull-right"></i>
-     </div>`;
+                 <i class="fa fa-map-pin fa-2x pull-right"></i>
+               </div>`;
      }
-     text += `            </div>
-        <div class="row">
-         <a onclick="Dashboard.loadQuestion(${data.question_id}, ${data.id})" class="pointer">Load question</a>
-       </div>
-
+    text += `  </div>
              </div>
-                    </div>
-                  </div>`;
+             <div class="row">
+              <a onclick="Dashboard.loadQuestion(${data.question_id}, ${data.id})" class="pointer">Load question</a>
+            </div>
+          </div>
+        </div>`;
       $(`#${data.id}-your-answer-${data.question_id}`).html(text);
     });
   }
@@ -268,7 +273,7 @@ class Dashboard {
            text += `<div class='col-lg-12'>
                        <div class='card bg-white card-padding-s card-style' style='height: auto;'>
                         <div class="card-header">
-                          <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
+                          <h6 class='card-subtitle mb-2 text-muted'>Posted ${Dashboard.time(data[i].posted_at)}</h6>
                           <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
                         </div>
                          <div class='card-body'>
@@ -279,11 +284,11 @@ class Dashboard {
                                 </div>`;
             if(data[i].is_pinned == 1){
                 text += `<div id="${selector.substring(1)}-pin-${data[i].id}" class="col-md-2 green">
-                <i onclick='Dashboard.pinned(${data[i].id}, ${data[i].question_id}, "${selector.substring(1)}")' class="fa fa-map-pin pointer pull-right"></i>
+                <i onclick='Dashboard.pinned(${data[i].id}, ${data[i].question_id}, "${selector.substring(1)}")' class="fa fa-map-pin fa-2x pointer pull-right"></i>
               </div>`;
             } else {
               text += `<div id="${selector.substring(1)}-pin-${data[i].id}" class="col-md-2">
-              <i onclick='Dashboard.pinned(${data[i].id}, ${data[i].question_id}, "${selector.substring(1)}")' class="fa fa-map-pin pointer pull-right"></i>
+              <i onclick='Dashboard.pinned(${data[i].id}, ${data[i].question_id}, "${selector.substring(1)}")' class="fa fa-map-pin fa-2x pointer pull-right"></i>
             </div>`;
             }
           text += `            </div>
@@ -367,6 +372,31 @@ class Dashboard {
 
   static hideAnswers(questionId, selector){
     $(selector+"-answers-container-"+questionId).addClass("hidden");
+  }
+
+  static time(time){
+    var data = Math.abs((new Date(time).getTime() / 1000).toFixed(0));
+    var currentDate = Math.abs((new Date().getTime() / 1000).toFixed(0));
+    var diff = currentDate - data;
+
+    var days = Math.floor(diff / 86400);
+    var hours = Math.floor(diff / 3600) % 24;
+    var minutes = Math.floor(diff / 60) % 60;
+    var seconds = diff % 60;
+
+    if(days == 0){
+      if(hours == 0){
+        if(minutes == 0){
+          return seconds+"s ago";
+        } else {
+          return minutes+"min ago";
+        }
+      } else {
+        return hours+"h ago";
+      }
+    } else {
+      return days+"d ago";
+    }
   }
 
 }
