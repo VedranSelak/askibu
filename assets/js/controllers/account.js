@@ -240,7 +240,7 @@ class Account {
                                            <a onclick="account.loadAnswer(${answer_id}, true)" class="pointer toggling-link">Load answer</a>
                                          </div>
                                          <div class="col-md-6">
-                                           <a onclick="account.showAnswerForm(${data[0].id})" class="pull-right pointer add-answer">+ Add answer</a>
+                                           <a id="account-answers-add-answer-show-form-${data[0].id}" onclick="account.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
                                          </div>
                                        </div>
                                      </div>`;
@@ -541,10 +541,9 @@ class Account {
        success: function(data) {
          console.log(data)
          let text = `
-                     <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                     <div class='card bg-white border-blue card-padding-s card-style' style='height: auto;'>
                       <div class="card-header">
-                        <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data.name}</h6>
-                        <h6 class='card-subtitle mb-2 text-muted'>${data.posted_at}</h6>
+                        <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data.name} ${AskIbuUtils.time(data.posted_at)}</h6>
                       </div>
                        <div class='card-body'>
                          <div class="container-fluid">
@@ -554,21 +553,21 @@ class Account {
                               </div>`;
         if(data.is_pinned == 1){
             text += `<div id="pin-${data.id}" class="col-md-2 green">
-            <i class="fa fa-map-pin pointer pull-right"></i>
+            <i class="fa fa-map-pin fa-2x pointer pull-right"></i>
           </div>`;
         } else {
           text += `<div id="pin-${data.id}" class="col-md-2">
-          <i class="fa fa-map-pin pointer pull-right"></i>
+          <i class="fa fa-map-pin fa-2x pointer pull-right"></i>
         </div>`;
         }
         text += `            </div>`;
         if(check){
           text += `<div class="row">
-            <a onclick="account.loadQuestion(${data.question_id}, ${data.id}, true)" class="pointer">Load question</a>
+            <a onclick="account.loadQuestion(${data.question_id}, ${data.id}, true)" class="pointer toggling-link pl-1">Load question</a>
           </div>`;
         } else {
           text += `<div class="row">
-            <a onclick="account.loadQuestion(${data.question_id}, ${data.id})" class="pointer">Load question</a>
+            <a onclick="account.loadQuestion(${data.question_id}, ${data.id})" class="pointer toggling-link pl-1 ">Load question</a>
           </div>`;
         }
 

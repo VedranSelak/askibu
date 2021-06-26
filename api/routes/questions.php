@@ -53,11 +53,13 @@ Flight::route("GET /user/question/@id", function($id){
 });
 
 /**
- * @OA\Get(path="/questions}",tags={"question"},
+ * @OA\Get(path="/questions",tags={"question"},
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="department_id", description="id of department"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="semester_id", description="id of semester"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="course_id", description="id of course"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", description="limit for pagination),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", description="offset for pagination"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
  *     @OA\Response(response="200", description="Get questions by department id")
  * )
@@ -65,10 +67,14 @@ Flight::route("GET /user/question/@id", function($id){
 Flight::route("GET /questions", function(){
   $department_id = Flight::query("department_id");
   $semester_id = Flight::query('semester_id', 1);
+  $limit = Flight::query('limit', 25);
+  $offset = Flight::query('offset', 0);
   $course_id = Flight::query('course_id');
   $order = urldecode(Flight::query('order','-id'));
   $status = Flight::query('status','ACTIVE');
-  Flight::json(Flight::questionService()->get_questions_for_departments($order, $department_id, $semester_id, $course_id, $status));
+  $total = Flight::questionService()->get_questions_for_departments($limit, $offset, $order, $department_id, $semester_id, $course_id, $status, TRUE);
+  header('total-records: '.$total['total']);
+  Flight::json(Flight::questionService()->get_questions_for_departments($limit, $offset, $order, $department_id, $semester_id, $course_id, $status));
 });
 
 /**

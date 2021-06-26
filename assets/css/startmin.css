@@ -59,6 +59,14 @@ textarea {
   margin-right: 8rem;
 }
 
+.title-padding {
+  padding: 2rem 1rem 1rem 1rem;
+}
+
+.pr-1{
+  padding-right: 1rem;
+}
+
 .cut-size {
   margin: 0;
   padding: 0px!important;

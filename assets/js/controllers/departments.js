@@ -1,10 +1,9 @@
 class Departments {
 
   constructor(){
-    this.questionsList = [];
-    this.maxPage;
-    this.currentPage = 1;
     this.rows = 5;
+    this.offset = 0;
+    this.total;
   }
 
   loadPage(){
@@ -16,8 +15,6 @@ class Departments {
     if(urlParams.has("course")){
       course = urlParams.get("course");
     }
-
-    this.questionsList = [];
 
     RestClient.get("api/user/departments/"+department, null, function(data) {
       $("#title").html(data.name);
@@ -33,78 +30,8 @@ class Departments {
       }
       $("#dropdown-menu-semesters").html(html);
     });
-    let me = this;
-    $.ajax({
-            url: "api/questions",
-            type: "GET",
-            data: {
-              "department_id":department,
-              "semester_id":semester,
-              "course_id" : course,
-              "order":"%2Bid"
-            },
-            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-            success: function(data) {
-              if(data == null){
-                $("#no-questions-alert").removeClass("hidden");
-              } else {
-                $("#no-questions-alert").addClass("hidden");
-              }
-              for(var i=0; i<data.length; i++){
-                me.questionsList[i] = `<div class='col-lg-12'>
-                                      <div class='card bg-grey card-padding card-style' style='height: auto;'>
-                                        <div class='card-body p-1'>
-                                          <h3 class='card-title'>${data[i].subject}</h3>
-                                          <h6 class='card-subtitle mb-2 text-muted'>Posted at: ${data[i].posted_at}</h6>
-                                          <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                                          <p class='card-text panel p-1'>${data[i].body}</p>
-                                        </div>
-                                        <div class="container-fluid p-1">
-                                          <div class="row">
-                                            <div class="col-md-6">
-                                              <a onclick='departments.loadAnswers(${data[i].id})' class="pointer" style='text-decoration: none; color:black;'><i class='fa fa-comments'></i>Anwsers</a>
-                                            </div>
-                                            <div class="col-md-6">
-                                              <a onclick="departments.showAnswerForm(${data[i].id})" class="pull-right pointer" style='text-decoration: none; color:black;'>Reply</a>
-                                            </div>
-                                          </div>
-                                        </div>
 
-                                        <div id='answers-container-${data[i].id}' class="container-fluid hidden">
-                                          <div class="row" id='answers-list-${data[i].id}'>
-
-                                          </div>
-                                          <div class='row text-center'>
-                                            <div class="card-footer"><i class="fa fa-chevron-up pointer" onclick='departments.hideAnswers(${data[i].id})'></i></div>
-                                          </div>
-                                        </div>
-                                        <div id="add-answer-${data[i].id}" class="container-fluid hidden">
-
-                                           <input name="question_id" type="hidden" value="${data[i].id}">
-                                           <div class="row m-1">
-                                              <textarea name="body" type="text" class="form-control"></textarea>
-                                           </div>
-                                            <div class="row m-1">
-                                              <button onclick="departments.addAnswer('#add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
-                                            </div>
-
-                                        </div>
-                                      </div>
-                                    </div>`;
-              }
-              if(me.questionsList.length%me.rows == 0) {
-                me.maxPage = me.questionsList.length/me.rows;
-              } else {
-                me.maxPage = Math.floor(me.questionsList.length/me.rows) + 1;
-              }
-              me.currentPage = 1;
-             me.displayQuestions(me.questionsList, "#question-list",me.rows, me.currentPage);
-            },
-            error: function(jqXHR, textStatus, errorThrown ){
-              toastr.error(jqXHR.responseJSON.message);
-              console.log(jqXHR);
-            }
-         });
+    this.loadQuestions(department, semester, course);
 
          $.ajax({
                     url: "api/courses",
@@ -167,43 +94,112 @@ class Departments {
     });
   }
 
-  displayQuestions(items, wrapper, rowsPerPage, page){
-    $(wrapper).html("");
-    page--;
+  loadQuestions(department, semester, course){
+    let me = this;
+    $.ajax({
+            url: "api/questions",
+            type: "GET",
+            data: {
+              "department_id":department,
+              "semester_id":semester,
+              "course_id" : course,
+              "order":"%2Bid",
+              "offset": me.offset,
+              "limit": me.rows
+            },
+            beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+            success: function(data, textStatus, request) {
+              if(data == null){
+                $("#no-questions-alert").removeClass("hidden");
+              } else {
+                $("#no-questions-alert").addClass("hidden");
+              }
+              me.total = request.getResponseHeader("total-records");
+              let text = "";
+              for(var i=0; i<data.length; i++){
+                text += `<div class='col-lg-12'>
+                                      <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                                        <div class='card-body p-1'>
+                                          <h3 class='card-title question-subject'>${data[i].subject}</h3>
+                                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
+                                          <p class='card-text panel p-1'>${data[i].body}</p>
+                                        </div>
+                                        <div class="container-fluid p-1">
+                                          <div class="row">
+                                            <div class="col-md-6">
+                                              <a onclick='departments.loadAnswers(${data[i].id})' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
+                                            </div>
+                                            <div class="col-md-6">
+                                              <a id="show-answer-form-${data[i].id}" onclick="departments.showAnswerForm(${data[i].id})" class="pull-right pointer add-answer">+ Add answer</a>
+                                            </div>
+                                          </div>
+                                        </div>
 
-    if(this.maxPage == 0) {
-      $(".pagination-nav").addClass("hidden");
-      $("#no-questions-alert").removeClass("hidden");
-      return;
-    } else {
-      $(".pagination-nav").removeClass("hidden");
-    }
+                                        <div id='answers-container-${data[i].id}' class="container-fluid hidden">
+                                          <div class="row" id='answers-list-${data[i].id}'>
 
-    $("#page-number").html("Page " + (page + 1) + " out of " + this.maxPage);
+                                          </div>
+                                          <div class='row text-center'>
+                                            <div class="card-footer"><i class="fa fa-chevron-up pointer  load-hide-answers" onclick='departments.hideAnswers(${data[i].id})'></i></div>
+                                          </div>
+                                        </div>
+                                        <div id="add-answer-${data[i].id}" class="container-fluid hidden">
 
-    let start = rowsPerPage * page;
-    let end = start + rowsPerPage
-    let paginatedItems = items.slice(start, end);
+                                           <input name="question_id" type="hidden" value="${data[i].id}">
+                                           <div class="row m-1">
+                                              <textarea name="body" type="text" class="form-control"></textarea>
+                                           </div>
+                                            <div class="row m-1">
+                                              <button onclick="departments.addAnswer('#add-answer-${data[i].id}')" class="btn btn-success" type="button">Send</button>
+                                            </div>
 
-    for(let i=0; i<paginatedItems.length; i++){
-      let item = paginatedItems[i];
+                                        </div>
+                                      </div>
+                                    </div>`;
+              }
+              $("#question-list").html(text);
+              if(me.offset+me.rows >= me.total ){
+                $("#next").prop("disabled", true);
+              } else {
+                $("#next").prop("disabled", false);
 
-       $(wrapper).append(item);
-    }
+              }
+
+              if(me.offset == 0){
+                $("#previous").prop("disabled", true);
+              } else {
+                $("#previous").prop("disabled", false);
+              }
+
+              if(me.offset+me.rows > me.total){
+                $("#page-number").html("Showing from "+(me.offset+1)+" to "+ me.total + " of " + me.total + " total entries");
+              } else {
+                $("#page-number").html("Showing from "+(me.offset+1)+" to "+ (me.offset+me.rows) + " of " + me.total + " total entries");
+              }
+            },
+            error: function(jqXHR, textStatus, errorThrown ){
+              toastr.error(jqXHR.responseJSON.message);
+              console.log(jqXHR);
+            }
+         });
   }
 
   paginate(element){
+    let query = window.location.search;
+    const urlParams = new URLSearchParams(query);
+    let department = urlParams.get("department");
+    let semester = urlParams.get("semester");
+    let course = null;
+    if (urlParams.has("course")){
+      course = urlParams.get("course");
+    }
     let id = element.id;
     if (id == "next"){
-      if (this.maxPage >= this.currentPage + 1){
-        this.currentPage++;
-        this.displayQuestions(this.questionsList, "#question-list", this.rows, this.currentPage);
-      }
+      this.offset += this.rows;
+      this.loadQuestions(department, semester, course);
     } else if (id == "previous"){
-      if (this.currentPage - 1 > 0){
-        this.currentPage--;
-        this.displayQuestions(this.questionsList, "#question-list", this.rows, this.currentPage);
-      }
+      this.offset -= this.rows;
+      this.loadQuestions(department, semester, course);
     }
   }
 
@@ -235,10 +231,9 @@ class Departments {
          let text = "";
          for(var i=0; i<data.length; i++){
            text += `<div class='col-lg-12'>
-                       <div class='card bg-info card-padding-s card-style' style='height: auto;'>
+                       <div class='card bg-white card-padding-s card-style' style='height: auto;'>
                         <div class="card-header">
-                          <h6 class='card-subtitle mb-2 text-muted'>Posted by: ${data[i].name}</h6>
-                          <h6 class='card-subtitle mb-2 text-muted'>${data[i].posted_at}</h6>
+                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
                         </div>
                          <div class='card-body'>
                            <div class="container-fluid">
@@ -248,11 +243,11 @@ class Departments {
                                 </div>`;
           if(data[i].is_pinned == 1){
               text += `<div id="pin-${data[i].id}" class="col-md-2 green">
-              <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+              <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
             </div>`;
           } else {
             text += `<div id="pin-${data[i].id}" class="col-md-2">
-            <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin pointer pull-right"></i>
+            <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
           </div>`;
           }
           text += `            </div>
@@ -327,6 +322,12 @@ class Departments {
 
   showAnswerForm(question_id){
     $("#add-answer-"+question_id).toggleClass("hidden");
+    $("#show-answer-form-"+question_id).toggleClass("active");
+    if($("#show-answer-form-"+question_id).hasClass("active")){
+      $("#show-answer-form-"+question_id).html("Hide answer form");
+    } else {
+      $("#show-answer-form-"+question_id).html("+ Add answer");
+    }
   }
 
   addAnswer(selector){

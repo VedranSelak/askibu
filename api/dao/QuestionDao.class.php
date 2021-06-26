@@ -7,10 +7,17 @@ class QuestionDao extends BaseDao{
     parent::__construct("questions");
   }
 
-  public function get_questions_for_departments($order = "-id", $department_id, $semester_id, $course_id, $status) {
+  public function get_questions_for_departments($limit, $offset, $order = "-id", $department_id, $semester_id, $course_id, $status, $total = FALSE) {
     list($order_column,$order_direction) = self::parse_order($order);
     $params = [];
-    $query = "SELECT questions.*, users.name FROM questions JOIN users ON questions.user_id=users.id WHERE 1=1";
+
+    if ($total){
+      $query = "SELECT COUNT(*) AS total ";
+    }else{
+      $query = "SELECT questions.*, users.name ";
+    }
+
+    $query .= "FROM questions JOIN users ON questions.user_id=users.id WHERE 1=1";
 
     if(isset($department_id)){
       $query .= " AND questions.department_id = :department_id";
@@ -28,8 +35,15 @@ class QuestionDao extends BaseDao{
       $query .= " AND questions.status = :status";
       $params["status"] = $status;
     }
-    $query .= " ORDER BY ${order_column} ${order_direction}";
-    return $this->query($query, $params);
+    
+    if ($total){
+      return $this->query_unique($query, $params);
+    }else{
+      $query .=" ORDER BY questions.${order_column} ${order_direction} ";
+      $query .="LIMIT ${limit} OFFSET ${offset}";
+
+      return $this->query($query, $params);
+    }
   }
 
   public function get_questions_by_question_id($user_id, $id) {
