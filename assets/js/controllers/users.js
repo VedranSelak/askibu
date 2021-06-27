@@ -10,6 +10,7 @@ class Users {
       serverSide: true,
       bDestroy: true,
       paginationType: "simple",
+      responsive: true,
       preDrawCallback: function( settings ) {
         if(settings.jqXHR) {
           settings._iRecordsTotal = settings.jqXHR.getResponseHeader("total-records");
@@ -39,7 +40,7 @@ class Users {
       columns: [
         {"data" : "id",
         "render": function ( data, type, row, meta ) {
-                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" href="#user" onclick="Users.openProfile('+data+')"><i class="fa fa-eye"></i></a>';
+                  return '<div style="min-width: 60px;"><span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" href="#user" onclick="Users.openProfile('+data+')"><i class="fa fa-eye"></i></a><div?';
                 }},
         {"data" : "name"},
         {"data" : "email"},

@@ -32,6 +32,7 @@ class UserProfile {
       serverSide: true,
       bDestroy: true,
       paginationType: "simple",
+      responsive: true,
       preDrawCallback: function( settings ) {
         if(settings.jqXHR) {
           settings._iRecordsTotal = settings.jqXHR.getResponseHeader("total-records");
@@ -64,9 +65,9 @@ class UserProfile {
         {"data" : "id",
         "render": function ( data, type, row, meta ) {
                   if (row.status == "REMOVED"){
-                    return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.retrieveQuestion('+data+')"><i class="fa fa-check text-success"></i></a>';
+                    return '<div style="min-width: 140px;"><span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.retrieveQuestion('+data+')"><i class="fa fa-check text-success"></i></a></div>';
                   }
-                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.removeQuestion('+data+')"><i class="fa fa-minus-circle text-red"></i></a>';
+                  return '<div style="min-width: 140px;"><span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.removeQuestion('+data+')"><i class="fa fa-minus-circle text-red"></i></a></div>';
                 }},
         {"data" : "subject"},
         {"data" : "body"},
@@ -83,6 +84,7 @@ class UserProfile {
       processing: true,
       serverSide: true,
       bDestroy: true,
+      responsive: true,
       preDrawCallback: function( settings ) {
         if(settings.jqXHR) {
           settings._iRecordsTotal = settings.jqXHR.getResponseHeader("total-records");
@@ -117,9 +119,9 @@ class UserProfile {
         {"data" : "id",
         "render": function ( data, type, row, meta ) {
                   if (row.status == "REMOVED"){
-                    return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.retrieveAnswer('+data+')"><i class="fa fa-check text-success"></i></a>';
+                    return '<div style="min-width: 60px;"><span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.retrieveAnswer('+data+')"><i class="fa fa-check text-success"></i></a></div>';
                   }
-                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.removeAnswer('+data+')"><i class="fa fa-minus-circle text-red"></i></a>';
+                  return '<div style="min-width: 60px;"><span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="UserProfile.removeAnswer('+data+')"><i class="fa fa-minus-circle text-red"></i></a></div>';
                 }},
         {"data" : "body"},
         {"data" : "is_pinned"},

@@ -392,11 +392,11 @@ class Account {
                                      </div>`;
                if(data[i].is_pinned == 1){
                   text += `<div id="pin-${data[i].id}" class="col-md-2 green">
-                   <i class="fa fa-map-pin fa-2x pointer pull-right"></i>
+                   <i class="fa fa-map-pin fa-2x pull-right"></i>
                  </div>`;
                } else {
                  text += `<div id="pin-${data[i].id}" class="col-md-2">
-                 <i class="fa fa-map-pin fa-2x pointer pull-right"></i>
+                 <i class="fa fa-map-pin fa-2x pull-right"></i>
                </div>`;
                }
                text += `            </div>
@@ -553,11 +553,11 @@ class Account {
                               </div>`;
         if(data.is_pinned == 1){
             text += `<div id="pin-${data.id}" class="col-md-2 green">
-            <i class="fa fa-map-pin fa-2x pointer pull-right"></i>
+            <i class="fa fa-map-pin fa-2x pull-right"></i>
           </div>`;
         } else {
           text += `<div id="pin-${data.id}" class="col-md-2">
-          <i class="fa fa-map-pin fa-2x pointer pull-right"></i>
+          <i class="fa fa-map-pin fa-2x pull-right"></i>
         </div>`;
         }
         text += `            </div>`;
