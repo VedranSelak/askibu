@@ -36,7 +36,10 @@
       return Config::get_env("SMTP_PASSWORD","");
     }
 
-    const JWT_SECRET = "8234854794";
+    public static function JWT_SECRET(){
+      return Config::get_env("JWT_SECRET","8234854794");
+    }
+
     const JWT_TOKEN_TIME = 604800;
 
 

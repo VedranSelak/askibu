@@ -13,7 +13,7 @@ class CourseDao extends BaseDao{
     $query = "SELECT * FROM courses WHERE 1=1";
 
     if(isset($semester_id)){
-      $query .= " AND year_id = :semester_id";
+      $query .= " AND semester_id = :semester_id";
       $params["semester_id"] = $semester_id;
     }
     if(isset($department_id)){
@@ -21,7 +21,7 @@ class CourseDao extends BaseDao{
       $params["department_id"] = $department_id;
     }
     if(isset($search)){
-      $query .= " AND LOWER(level) LIKE CONCAT('%', :search, '%')";
+      $query .= " AND LOWER(name) LIKE CONCAT('%', :search, '%')";
       $params["search"] = strtolower($search);
     }
     $query .= " ORDER BY ${order_column} ${order_direction}";

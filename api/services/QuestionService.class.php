@@ -17,7 +17,6 @@ class QuestionService extends BaseService {
   public function get_weeks_hottest_questions($status, $department_id){
     $questions =  $this->dao->get_weeks_hottest_questions($status, $department_id);
     $answers = $this->answerDao->get_answers(null, 0, 1000000000, $status, null, "-id", null);
-    //$user_id, $offset, $limit, $status, $search, $order = "-id", $total = FALSE
 
     $entries = [];
 
@@ -75,7 +74,7 @@ class QuestionService extends BaseService {
         "body" => $question["body"],
         "department_id" => $question["department_id"],
         "course_id" => $question["course_id"],
-        "year_id" => $question["year_id"],
+        "semester_id" => $question["semester_id"],
         "user_id" => $user["id"],
         "posted_at" => date(Config::DATE_FORMAT),
         "status" => "ACTIVE"

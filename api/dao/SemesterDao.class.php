@@ -2,14 +2,14 @@
 
 require_once dirname(__FILE__)."/BaseDao.class.php";
 
-class YearDao extends BaseDao{
+class SemesterDao extends BaseDao{
 
   public function __construct(){
-    parent::__construct("years");
+    parent::__construct("semesters");
   }
 
   public function get_semesters(){
-    return $this->query("SELECT * FROM years",[]);
+    return $this->query("SELECT * FROM semesters",[]);
   }
 
 }

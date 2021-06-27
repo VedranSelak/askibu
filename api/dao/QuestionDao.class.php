@@ -24,7 +24,7 @@ class QuestionDao extends BaseDao{
       $params["department_id"] = $department_id;
     }
     if(isset($semester_id)){
-      $query .= " AND questions.year_id = :semester_id";
+      $query .= " AND questions.semester_id = :semester_id";
       $params["semester_id"] = $semester_id;
     }
     if($course_id != NULL){
@@ -35,7 +35,7 @@ class QuestionDao extends BaseDao{
       $query .= " AND questions.status = :status";
       $params["status"] = $status;
     }
-    
+
     if ($total){
       return $this->query_unique($query, $params);
     }else{

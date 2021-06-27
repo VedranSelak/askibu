@@ -22,44 +22,44 @@ class Dashboard {
       let html = "";
       for(var i=0; i<data.length; i++){
         html += `<div class='col-lg-12'>
-                              <div class='card bg-grey card-padding card-style' style='height: auto;'>
-                                <div class='card-body p-1'>
-                                  <h3 class='card-title question-subject'>${data[i].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
-                                  <p class='card-text panel p-1'>${data[i].body}</p>
-                                </div>
-                                <div class="container-fluid p-1">
-                                  <div class="row">
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                      <a onclick='Dashboard.loadAnswers(${data[i].id}, "#hottest")' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                      <a id="hottest-show-answer-form-${data[i].id}" onclick="Dashboard.showAnswerForm(${data[i].id}, '#hottest')" class="pull-right pointer add-answer">+ Add answer</a>
-                                    </div>
-                                  </div>
-                                </div>
+                    <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                      <div class='card-body p-1'>
+                        <h3 class='card-title question-subject'>${data[i].subject}</h3>
+                        <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
+                        <p class='card-text panel p-1'>${data[i].body}</p>
+                      </div>
+                      <div class="container-fluid p-1">
+                        <div class="row">
+                          <div class="col-md-6 col-sm-6 col-xs-6">
+                            <a onclick='Dashboard.loadAnswers(${data[i].id}, "#hottest")' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
+                          </div>
+                          <div class="col-md-6 col-sm-6 col-xs-6">
+                            <a id="hottest-show-answer-form-${data[i].id}" onclick="Dashboard.showAnswerForm(${data[i].id}, '#hottest')" class="pull-right pointer add-answer">+ Add answer</a>
+                          </div>
+                        </div>
+                      </div>
 
-                                <div id='hottest-answers-container-${data[i].id}' class="container-fluid hidden">
-                                  <div class="row" id='hottest-answers-list-${data[i].id}'>
+                      <div id='hottest-answers-container-${data[i].id}' class="container-fluid hidden">
+                        <div class="row" id='hottest-answers-list-${data[i].id}'>
 
-                                  </div>
-                                  <div class='row text-center'>
-                                    <div class="card-footer"><i class="fa fa-chevron-up pointer load-hide-answers" onclick='Dashboard.hideAnswers(${data[i].id}, "#hottest")'></i></div>
-                                  </div>
-                                </div>
-                                <div id="hottest-add-answer-${data[i].id}" class="container-fluid hidden">
+                        </div>
+                        <div class='row text-center'>
+                          <div class="card-footer"><i class="fa fa-chevron-up pointer load-hide-answers" onclick='Dashboard.hideAnswers(${data[i].id}, "#hottest")'></i></div>
+                        </div>
+                      </div>
+                      <div id="hottest-add-answer-${data[i].id}" class="container-fluid hidden">
 
-                                   <input name="question_id" type="hidden" value="${data[i].id}">
-                                   <div class="row m-1">
-                                      <textarea name="body" type="text" class="form-control"></textarea>
-                                   </div>
-                                    <div class="row m-1">
-                                      <button onclick="Dashboard.addAnswer('#hottest-add-answer-${data[i].id}', '#hottest')" class="btn btn-success" type="button">Send</button>
-                                    </div>
+                         <input name="question_id" type="hidden" value="${data[i].id}">
+                         <div class="row m-1">
+                            <textarea name="body" type="text" class="form-control"></textarea>
+                         </div>
+                          <div class="row m-1">
+                            <button onclick="Dashboard.addAnswer('#hottest-add-answer-${data[i].id}', '#hottest')" class="btn btn-success" type="button">Send</button>
+                          </div>
 
-                                </div>
-                              </div>
-                            </div>`;
+                      </div>
+                    </div>
+                  </div>`;
       }
 
        $("#dash-question-list").html(html);
@@ -80,43 +80,43 @@ class Dashboard {
       let text = "";
       for(var i=0; i<data.length; i++){
         text += `<div class='col-lg-12 col-md-12 col-sm-12'>
-                              <div class='card bg-grey card-padding card-style' style='height: auto;'>
-                                <div class='card-body p-1'>
-                                  <h3 class='card-title question-subject '>${data[i].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[i].posted_at)}</h6>
-                                  <p class='card-text panel p-1'>${data[i].body}</p>
-                                </div>
-                                <div class="container-fluid p-1">
-                                  <div class="row">
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                      <a onclick='Dashboard.loadAnswers(${data[i].id}, "#latest-questions")' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                      <a id="latest-questions-show-answer-form-${data[i].id}" onclick="Dashboard.showAnswerForm(${data[i].id}, '#latest-questions')" class="pull-right pointer add-answer">+ Add answer</a>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div id='latest-questions-answers-container-${data[i].id}' class="container-fluid hidden">
-                                  <div class="row" id='latest-questions-answers-list-${data[i].id}'>
+                    <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                      <div class='card-body p-1'>
+                        <h3 class='card-title question-subject '>${data[i].subject}</h3>
+                        <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[i].posted_at)}</h6>
+                        <p class='card-text panel p-1'>${data[i].body}</p>
+                      </div>
+                      <div class="container-fluid p-1">
+                        <div class="row">
+                          <div class="col-md-6 col-sm-6 col-xs-6">
+                            <a onclick='Dashboard.loadAnswers(${data[i].id}, "#latest-questions")' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
+                          </div>
+                          <div class="col-md-6 col-sm-6 col-xs-6">
+                            <a id="latest-questions-show-answer-form-${data[i].id}" onclick="Dashboard.showAnswerForm(${data[i].id}, '#latest-questions')" class="pull-right pointer add-answer">+ Add answer</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div id='latest-questions-answers-container-${data[i].id}' class="container-fluid hidden">
+                        <div class="row" id='latest-questions-answers-list-${data[i].id}'>
 
-                                  </div>
-                                  <div class='row text-center'>
-                                    <div class="card-footer"><i class="fa fa-chevron-up pointer load-hide-answers" onclick='Dashboard.hideAnswers(${data[i].id}, "#latest-questions")'></i></div>
-                                  </div>
-                                </div>
-                                <div id="latest-questions-add-answer-${data[i].id}" class="container-fluid hidden">
+                        </div>
+                        <div class='row text-center'>
+                          <div class="card-footer"><i class="fa fa-chevron-up pointer load-hide-answers" onclick='Dashboard.hideAnswers(${data[i].id}, "#latest-questions")'></i></div>
+                        </div>
+                      </div>
+                      <div id="latest-questions-add-answer-${data[i].id}" class="container-fluid hidden">
 
-                                   <input name="question_id" type="hidden" value="${data[i].id}">
-                                   <div class="row m-1">
-                                      <textarea name="body" type="text" class="form-control"></textarea>
-                                   </div>
-                                    <div class="row m-1">
-                                      <button onclick="Dashboard.addAnswer('#latest-questions-add-answer-${data[i].id}', '#latest-questions')" class="btn btn-success" type="button">Send</button>
-                                    </div>
+                         <input name="question_id" type="hidden" value="${data[i].id}">
+                         <div class="row m-1">
+                            <textarea name="body" type="text" class="form-control"></textarea>
+                         </div>
+                          <div class="row m-1">
+                            <button onclick="Dashboard.addAnswer('#latest-questions-add-answer-${data[i].id}', '#latest-questions')" class="btn btn-success" type="button">Send</button>
+                          </div>
 
-                                </div>
-                              </div>
-                            </div>`;
+                      </div>
+                    </div>
+                  </div>`;
       }
       $("#latest-questions").html(text);
 
@@ -172,41 +172,41 @@ class Dashboard {
         toastr.error("Question of this answer has been removed!");
       } else {
         let text = `<div class='col-lg-12'>
-                              <div class='card bg-grey card-padding card-style' style='height: auto;'>
-                                <div class='card-body p-1'>
-                                  <h3 class='card-title question-subject '>${data[0].subject}</h3>
-                                  <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[0].posted_at)}</h6>
-                                  <p class='card-text panel p-1'>${data[0].body}</p>
-                                </div>
+                      <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                        <div class='card-body p-1'>
+                          <h3 class='card-title question-subject '>${data[0].subject}</h3>
+                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[0].posted_at)}</h6>
+                          <p class='card-text panel p-1'>${data[0].body}</p>
+                        </div>
 
-                                <div class="container-fluid p-1">
-                                    <div class="row">
-                                      <div class="col-md-12">
-                                        <a id="account-answers-show-answer-form-${data[0].id}" onclick="Dashboard.showAnswerForm(${data[0].id}, '#account-answers')" class="pull-right pointer add-answer">+ Add answer</a>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                <div id='${answer_id}-answers-container-${data[0].id}' class="container-fluid hidden">
-                                  <div class="row" id='${answer_id}-answers-list-${data[0].id}'>
-
-                                  </div>
-                                  <div class="row text-center">
-                                      <a onclick="Dashboard.loadAnswer(${answer_id})" class="pointer toggling-link">Load answer</a>
-                                    </div>
-                                </div>
-                                <div id="account-answers-add-answer-${data[0].id}" class="container-fluid hidden">
-
-                                   <input name="question_id" type="hidden" value="${data[0].id}">
-                                   <div class="row m-1">
-                                      <textarea name="body" type="text" class="form-control"></textarea>
-                                   </div>
-                                    <div class="row m-1">
-                                      <button onclick="Dashboard.addAnswer('#account-answers-add-answer-${data[0].id}', '#${answer_id}')" class="btn btn-success" type="button">Send</button>
-                                    </div>
-                                </div>
+                        <div class="container-fluid p-1">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <a id="account-answers-show-answer-form-${data[0].id}" onclick="Dashboard.showAnswerForm(${data[0].id}, '#account-answers')" class="pull-right pointer add-answer">+ Add answer</a>
                               </div>
-                            </div>`;
+                            </div>
+                          </div>
+
+                        <div id='${answer_id}-answers-container-${data[0].id}' class="container-fluid hidden">
+                          <div class="row" id='${answer_id}-answers-list-${data[0].id}'>
+
+                          </div>
+                          <div class="row text-center">
+                              <a onclick="Dashboard.loadAnswer(${answer_id})" class="pointer toggling-link">Load answer</a>
+                            </div>
+                        </div>
+                        <div id="account-answers-add-answer-${data[0].id}" class="container-fluid hidden">
+
+                           <input name="question_id" type="hidden" value="${data[0].id}">
+                           <div class="row m-1">
+                              <textarea name="body" type="text" class="form-control"></textarea>
+                           </div>
+                            <div class="row m-1">
+                              <button onclick="Dashboard.addAnswer('#account-answers-add-answer-${data[0].id}', '#${answer_id}')" class="btn btn-success" type="button">Send</button>
+                            </div>
+                        </div>
+                      </div>
+                    </div>`;
                $("#"+answer_id+"-your-answer-"+question_id).html(text);
                Dashboard.loadAnswers(question_id, `#${answer_id}`);
       }

@@ -75,7 +75,7 @@ class UserProfile {
         {"data" : "course_id"},
         {"data" : "posted_at"},
         {"data" : "user_id"},
-        {"data" : "year_id"},
+        {"data" : "semester_id"},
         {"data" : "status"}
       ]
     });

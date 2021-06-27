@@ -24,9 +24,9 @@ class Departments {
       let html = "";
       for(let i=0; i<data.length; i++){
         if (data[i].id == semester) {
-          $("#semester-dropdown").html(data[i].level);
+          $("#semester-dropdown").html(data[i].name);
         }
-        html += `<li><a href="javascript:departments.semesterClicked(${data[i].id})">${data[i].level}</a></li>`;
+        html += `<li><a href="javascript:departments.semesterClicked(${data[i].id})">${data[i].name}</a></li>`;
       }
       $("#dropdown-menu-semesters").html(html);
     });
@@ -85,7 +85,7 @@ class Departments {
          $("#ask-question *[name='course_id']").val(course);
        }
        $("#ask-question *[name='department_id']").val(department);
-       $("#ask-question *[name='year_id']").val(semester);
+       $("#ask-question *[name='semester_id']").val(semester);
 
        let data = AskIbuUtils.formToJson($(form));
        me.askQuestion(data);
