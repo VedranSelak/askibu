@@ -221,6 +221,11 @@
             url.searchParams.set("semester", 1);
 
 
+            if(url.searchParams.has("course")){
+              url.searchParams.delete("course");
+            }
+
+
             window.history.pushState({},'', url);
           }
         </script>

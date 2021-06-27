@@ -63,10 +63,10 @@ class Account {
                                         <div class='card-body p-1'>
                                         <div class="container-fluid cut-size p-1">
                                           <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
                                               <h3 class='card-title question-subject'>${data[i].subject}</h3>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
                                               <a onclick="account.preEdit(${data[i].id})" class="pull-right pointer edit-link"><i class="fa fa-edit fa-2x"></i></a>
                                             </div>
                                           </div>
@@ -76,10 +76,10 @@ class Account {
                                         </div>
                                         <div class="container-fluid p-1">
                                           <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
                                               <a onclick='account.loadAnswers(${data[i].id})' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
                                               <a id="account-add-answer-show-form-${data[i].id}" onclick="account.showAnswerForm(${data[i].id}, '#account-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
                                             </div>
                                           </div>
@@ -166,15 +166,15 @@ class Account {
                               <div class='card-body'>
                                 <div class="container-fluid">
                                    <div class="row">
-                                     <div class="col-md-10">
+                                     <div class="col-md-10 col-sm-10 col-xs-10">
                                        <p class='card-text'>${data[i].body}</p>
                                      </div>`;
                if(data[i].is_pinned == 1){
-                   text += `<div id="account-pin-${data[i].id}" class="col-md-2 green">
+                   text += `<div id="account-pin-${data[i].id}" class="col-md-2 col-sm-2 col-xs-2 green">
                    <i class="fa fa-map-pin fa-2x pull-right"></i>
                  </div>`;
                } else {
-                 text += `<div id="pin-${data[i].id}" class="col-md-2">
+                 text += `<div id="pin-${data[i].id}" class="col-md-2 col-sm-2 col-xs-2">
                  <i class="fa fa-map-pin fa-2x pull-right"></i>
                </div>`;
                }
@@ -236,10 +236,10 @@ class Account {
                                    if(check){
                                      text += `<div class="container-fluid p-1">
                                        <div class="row">
-                                         <div class="col-md-6">
+                                         <div class="col-md-6 col-sm-6 col-xs-6">
                                            <a onclick="account.loadAnswer(${answer_id}, true)" class="pointer toggling-link">Load answer</a>
                                          </div>
-                                         <div class="col-md-6">
+                                         <div class="col-md-6 col-sm-6 col-xs-6">
                                            <a id="account-answers-add-answer-show-form-${data[0].id}" onclick="account.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
                                          </div>
                                        </div>
@@ -387,15 +387,15 @@ class Account {
                               <div class='card-body'>
                                 <div class="container-fluid">
                                    <div class="row">
-                                     <div class="col-md-10">
+                                     <div class="col-md-10 col-sm-10 col-xs-10">
                                        <p class='card-text'>${data[i].body}</p>
                                      </div>`;
                if(data[i].is_pinned == 1){
-                  text += `<div id="pin-${data[i].id}" class="col-md-2 green">
+                  text += `<div id="pin-${data[i].id}" class="col-md-2 col-sm-2 col-xs-2 green">
                    <i class="fa fa-map-pin fa-2x pull-right"></i>
                  </div>`;
                } else {
-                 text += `<div id="pin-${data[i].id}" class="col-md-2">
+                 text += `<div id="pin-${data[i].id}" class="col-md-2 col-sm-2 col-xs-2">
                  <i class="fa fa-map-pin fa-2x pull-right"></i>
                </div>`;
                }
@@ -483,27 +483,27 @@ class Account {
                          <div class='card-body'>
                            <div class="container-fluid">
                               <div class="row">
-                                <div class="col-md-10">
+                                <div class="col-md-10 col-sm-10 col-xs-10">
                                   <p class='card-text'>${data[i].body}</p>
                                 </div>`;
 
           if(selector != ""){
             if(data[i].is_pinned == 1){
-                text += `<div id="account${selector}-pin-${data[i].id}" class="col-md-2 green">
+                text += `<div id="account${selector}-pin-${data[i].id}" class="col-md-2 col-sm-2 col-xs-2 green">
                 <i onclick='account.pinned(${data[i].id}, ${data[i].question_id}, ${selector})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
               </div>`;
             } else {
-              text += `<div id="account${selector}-pin-${data[i].id}" class="col-md-2">
+              text += `<div id="account${selector}-pin-${data[i].id}" class="col-md-2 col-sm-2 col-xs-2">
               <i onclick='account.pinned(${data[i].id}, ${data[i].question_id}, ${selector})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
             </div>`;
             }
           } else {
             if(data[i].is_pinned == 1){
-                text += `<div id="account-pin-${data[i].id}" class="col-md-2 green">
+                text += `<div id="account-pin-${data[i].id}" class="col-md-2 col-sm-2 col-xs-2 green">
                 <i onclick='account.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
               </div>`;
             } else {
-              text += `<div id="account-pin-${data[i].id}" class="col-md-2">
+              text += `<div id="account-pin-${data[i].id}" class="col-md-2 col-sm-2 col-xs-2">
               <i onclick='account.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
             </div>`;
             }
@@ -548,15 +548,15 @@ class Account {
                        <div class='card-body'>
                          <div class="container-fluid">
                             <div class="row">
-                              <div class="col-md-10">
+                              <div class="col-md-10 col-sm-10 col-xs-10">
                                 <p class='card-text'>${data.body}</p>
                               </div>`;
         if(data.is_pinned == 1){
-            text += `<div id="pin-${data.id}" class="col-md-2 green">
+            text += `<div id="pin-${data.id}" class="col-md-2 col-sm-2 col-xs-2 green">
             <i class="fa fa-map-pin fa-2x pull-right"></i>
           </div>`;
         } else {
-          text += `<div id="pin-${data.id}" class="col-md-2">
+          text += `<div id="pin-${data.id}" class="col-md-2 col-sm-2 col-xs-2">
           <i class="fa fa-map-pin fa-2x pull-right"></i>
         </div>`;
         }

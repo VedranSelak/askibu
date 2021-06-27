@@ -33,29 +33,36 @@ class Departments {
 
     this.loadQuestions(department, semester, course);
 
-         $.ajax({
-                    url: "api/courses",
-                    type: "GET",
-                    data: {
-                      "semester_id" : semester,
-                      "department_id" : department
-                    },
-                    success: function(data) {
-                      let html = "";
-                      for(let i=0; i<data.length; i++){
-                        if(data[i].id == course){
-                          html += `<span class="label label-info mr-1 pointer border-dark" onclick="departments.courseClicked(${data[i].id})">${data[i].name}</span>`;
-                        } else {
-                          html += `<span class="label label-info mr-1 pointer" onclick="departments.courseClicked(${data[i].id})">${data[i].name}</span>`;
-                        }
-                      }
-                      $("#courses-labels").html(html);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown ){
-                      toastr.error(jqXHR.responseJSON.message);
-                      console.log(jqXHR);
-                    }
-                 });
+   $.ajax({
+              url: "api/courses",
+              type: "GET",
+              data: {
+                "semester_id" : semester,
+                "department_id" : department
+              },
+              success: function(data) {
+                if(data.length === 0){
+                  $("#courses-header").addClass("hidden");
+                  $("courses-labels").addClass("hidden");
+                } else {
+                  $("#courses-header").removeClass("hidden");
+                  $("courses-labels").removeClass("hidden");
+                }
+                let html = "";
+                for(let i=0; i<data.length; i++){
+                  if(data[i].id == course){
+                    html += `<div style="display: inline-block;" class="label label-info m-1 pointer border-dark" onclick="departments.courseClicked(${data[i].id})">${data[i].name}</div>`;
+                  } else {
+                    html += `<div style="display: inline-block;" class="label label-info m-1 pointer" onclick="departments.courseClicked(${data[i].id})">${data[i].name}</div>`;
+                  }
+                }
+                $("#courses-labels").html(html);
+              },
+              error: function(jqXHR, textStatus, errorThrown ){
+                toastr.error(jqXHR.responseJSON.message);
+                console.log(jqXHR);
+              }
+           });
   }
 
   init(){
@@ -109,9 +116,11 @@ class Departments {
             },
             beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
             success: function(data, textStatus, request) {
-              if(data == null){
+              if(data.length === 0){
                 $("#no-questions-alert").removeClass("hidden");
+                $(".pagination-nav").addClass("hidden");
               } else {
+                $(".pagination-nav").removeClass("hidden");
                 $("#no-questions-alert").addClass("hidden");
               }
               me.total = request.getResponseHeader("total-records");
@@ -126,10 +135,10 @@ class Departments {
                                         </div>
                                         <div class="container-fluid p-1">
                                           <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
                                               <a onclick='departments.loadAnswers(${data[i].id})' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
                                               <a id="show-answer-form-${data[i].id}" onclick="departments.showAnswerForm(${data[i].id})" class="pull-right pointer add-answer">+ Add answer</a>
                                             </div>
                                           </div>
@@ -238,15 +247,15 @@ class Departments {
                          <div class='card-body'>
                            <div class="container-fluid">
                               <div class="row">
-                                <div class="col-md-10">
+                                <div class="col-md-10 col-sm-10 col-xs-10">
                                   <p class='card-text'>${data[i].body}</p>
                                 </div>`;
           if(data[i].is_pinned == 1){
-              text += `<div id="pin-${data[i].id}" class="col-md-2 green">
+              text += `<div id="pin-${data[i].id}" class="col-md-2 col-sm-2 col-xs-2 green">
               <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
             </div>`;
           } else {
-            text += `<div id="pin-${data[i].id}" class="col-md-2">
+            text += `<div id="pin-${data[i].id}" class="col-md-2 col-sm-2 col-xs-2">
             <i onclick='departments.pinned(${data[i].id}, ${data[i].question_id})' class="fa fa-map-pin fa-2x pointer pull-right"></i>
           </div>`;
           }
