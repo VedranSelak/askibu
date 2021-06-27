@@ -19,6 +19,13 @@ class Dashboard {
 
   static loadHottestQuestions(){
     RestClient.get("api/user/question/hot/"+AskIbuUtils.parseJWT(window.localStorage.getItem("token")).d_id, null, function(data) {
+      if(data.length === 0){
+          $("#dash-question-list").addClass("hidden");
+          $("#no-hottest-questions-alert").removeClass("hidden");
+      } else {
+        $("#dash-question-list").removeClass("hidden");
+        $("#no-hottest-questions-alert").addClass("hidden");
+      }
       let html = "";
       for(var i=0; i<data.length; i++){
         html += `<div class='col-lg-12'>

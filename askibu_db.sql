@@ -22,27 +22,62 @@ DROP TABLE IF EXISTS `answers`;
 
 CREATE TABLE `answers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `is_pinned` tinyint(1) NOT NULL,
-  `body` varchar(256) COLLATE utf8_bin NOT NULL,
+  `is_pinned` int(10) NOT NULL,
+  `body` varchar(4096) COLLATE utf8_bin NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `question_id` int(10) unsigned NOT NULL,
-  `posted_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `posted_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` varchar(32) COLLATE utf8_bin NOT NULL DEFAULT 'ACTIVE',
   PRIMARY KEY (`id`),
   KEY `fk_answer_user` (`user_id`),
   KEY `fk_answer_question` (`question_id`),
   CONSTRAINT `fk_answer_question` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`),
   CONSTRAINT `fk_answer_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `answers` */
 
-insert  into `answers`(`id`,`is_pinned`,`body`,`user_id`,`question_id`,`posted_at`,`status`) values 
-(1,1,'Go to the git page and click install',7,1,'2021-04-03 13:55:34','ACTIVE'),
-(2,0,'Google it bro',5,1,'2021-04-03 13:55:34','ACTIVE'),
-(3,0,'we did some updates',92,3,'2021-04-03 15:01:33','UPDATED'),
-(4,0,'i like this questions',92,3,'2021-04-03 14:01:22','ACTIVE'),
-(5,0,'vekas answer',92,5,'2021-04-03 14:59:39','UPDATED');
+insert  into `answers`(`id`,`is_pinned`,`body`,`user_id`,`question_id`,`posted_at`,`status`) values
+(3,0,'we did some updates',92,3,'2021-06-24 16:35:29','REMOVED'),
+(4,0,'i like this questions',92,3,'2021-06-24 16:35:31','REMOVED'),
+(5,0,'vekas answer',92,5,'2021-06-24 16:35:32','ACTIVE'),
+(6,0,'google it bro',92,34,'2021-06-24 16:35:33','REMOVED'),
+(7,0,'wrong section bro',92,26,'2021-06-24 16:35:34','REMOVED'),
+(9,0,'I study 3 to 4 hours a day.',92,30,'2021-06-24 16:35:36','REMOVED'),
+(10,0,'Ask the professor',92,34,'2021-06-24 21:11:06','ACTIVE'),
+(11,1,'I want to know this as well',92,34,'2021-06-24 21:11:07','ACTIVE'),
+(12,1,'print(\"print something\")',92,36,'2021-06-18 16:08:08','ACTIVE'),
+(13,1,'it does',92,39,'2021-06-15 15:39:24','ACTIVE'),
+(14,1,'does this really work',92,39,'2021-06-15 15:49:02','ACTIVE'),
+(15,0,'class Name extends ParentName {}',92,27,'2021-06-14 20:39:41','ACTIVE'),
+(17,0,'i think 3',92,42,'2021-06-14 20:46:36','ACTIVE'),
+(18,0,'elmida won\'t help',92,40,'2021-06-15 17:39:29','ACTIVE'),
+(19,1,'i can help, contact me',92,40,'2021-06-16 14:23:24','ACTIVE'),
+(20,1,'who doesn\'t',92,14,'2021-06-14 23:17:17','ACTIVE'),
+(21,1,'i love it as well',92,14,'2021-06-14 23:17:36','ACTIVE'),
+(23,0,'how about now',92,39,'2021-06-15 15:49:21','ACTIVE'),
+(26,1,'google it bro',92,43,'2021-06-15 18:30:17','ACTIVE'),
+(27,0,'JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can ',92,44,'2021-06-15 18:31:27','ACTIVE'),
+(28,1,'JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can ',92,44,'2021-06-18 16:45:34','ACTIVE'),
+(29,0,'what he said',92,36,'2021-06-15 21:19:04','ACTIVE'),
+(30,1,'nice job',92,44,'2021-06-18 16:42:46','ACTIVE'),
+(32,0,'All from week 7 till week 13. I think.',92,45,'2021-06-15 22:03:27','ACTIVE'),
+(33,1,'yeah she wont',92,40,'2021-06-18 22:37:55','ACTIVE'),
+(34,0,'yeah lets do it',92,50,'2021-06-18 23:42:50','ACTIVE'),
+(37,0,'I think its from 8 till 13',92,45,'2021-06-18 22:40:04','ACTIVE'),
+(39,0,'testing',92,50,'2021-06-22 15:31:01','ACTIVE'),
+(41,0,'it works',92,46,'2021-06-22 15:45:38','ACTIVE'),
+(44,0,'no, do it yourself',92,51,'2021-06-23 17:52:52','ACTIVE'),
+(58,0,'I dont want to',92,53,'2021-06-26 20:34:44','ACTIVE'),
+(60,1,'I emailed the professor and she said that it\'s going to be on the exam',92,53,'2021-06-26 19:54:42','ACTIVE'),
+(61,1,'5 hours',92,30,'2021-06-26 20:08:27','ACTIVE'),
+(65,0,'I think it work great',92,3,'2021-06-27 16:33:53','ACTIVE'),
+(66,0,'I emailed and got a different response',92,53,'2021-06-27 16:36:53','ACTIVE'),
+(67,0,'2 hours max, I\'m lazy',92,30,'2021-06-27 16:45:49','ACTIVE'),
+(68,0,'Is this encrypted?',92,52,'2021-06-27 17:09:52','ACTIVE'),
+(69,0,'It\'s cool tbh',92,14,'2021-06-27 17:10:52','ACTIVE'),
+(70,1,'It is hahaha',92,52,'2021-06-27 17:21:38','ACTIVE'),
+(71,0,'I study for 4 hours',92,30,'2021-06-27 17:22:12','ACTIVE');
 
 /*Table structure for table `courses` */
 
@@ -52,19 +87,29 @@ CREATE TABLE `courses` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(256) COLLATE utf8_bin NOT NULL,
   `department_id` int(10) unsigned NOT NULL,
-  `year_id` int(10) unsigned NOT NULL,
+  `semester_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_course_department` (`department_id`),
-  KEY `fk_course_year` (`year_id`),
+  KEY `fk_course_year` (`semester_id`),
   CONSTRAINT `fk_course_department` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`),
-  CONSTRAINT `fk_course_year` FOREIGN KEY (`year_id`) REFERENCES `years` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  CONSTRAINT `fk_course_semester` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `courses` */
 
-insert  into `courses`(`id`,`name`,`department_id`,`year_id`) values 
-(1,'Object Oriented Programming',1,2),
-(2,'Programming II',1,1);
+insert  into `courses`(`id`,`name`,`department_id`,`semester_id`) values
+(1,'Object Oriented Programming',1,3),
+(2,'Programming II',1,2),
+(3,'Programming I',1,1),
+(4,'German Language I',1,1),
+(6,'Introduction to Web Development',1,4),
+(7,'Computer Networks',1,3),
+(8,'Calculus I',1,1),
+(9,'Calculus II',1,2),
+(10,'General Physics I',1,1),
+(11,'General Physics II ',1,2),
+(12,'Introduction to Mobile Development',1,4),
+(13,'Discret Math',1,3);
 
 /*Table structure for table `departments` */
 
@@ -82,7 +127,7 @@ CREATE TABLE `departments` (
 
 /*Data for the table `departments` */
 
-insert  into `departments`(`id`,`name`,`faculty_id`,`created_at`) values 
+insert  into `departments`(`id`,`name`,`faculty_id`,`created_at`) values
 (1,'Information Technology',1,'2021-03-19 16:43:23'),
 (2,'Electrical Engineering & Robotics',1,'2021-03-19 16:43:24'),
 (3,'Architecture',1,'2021-03-19 17:43:23'),
@@ -103,10 +148,10 @@ CREATE TABLE `faculties` (
 
 /*Data for the table `faculties` */
 
-insert  into `faculties`(`id`,`name`) values 
+insert  into `faculties`(`id`,`name`) values
 (1,'Engineering'),
 (2,'Economics'),
-(3,'Some weird faculty');
+(3,'Politics');
 
 /*Table structure for table `questions` */
 
@@ -115,34 +160,91 @@ DROP TABLE IF EXISTS `questions`;
 CREATE TABLE `questions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `subject` varchar(256) COLLATE utf8_bin NOT NULL,
-  `body` varchar(256) COLLATE utf8_bin NOT NULL,
+  `body` varchar(4096) COLLATE utf8_bin NOT NULL,
   `department_id` int(10) unsigned NOT NULL,
-  `course_id` int(10) unsigned NOT NULL,
-  `year_id` int(10) unsigned NOT NULL,
+  `course_id` int(10) unsigned DEFAULT NULL,
+  `semester_id` int(10) unsigned NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `posted_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` varchar(256) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_question_user` (`user_id`),
   KEY `fk_question_course` (`course_id`),
   KEY `fk_question_department` (`department_id`),
-  KEY `fk_question_year` (`year_id`),
+  KEY `fk_question_semester` (`semester_id`),
   CONSTRAINT `fk_question_course` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`),
   CONSTRAINT `fk_question_department` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`),
-  CONSTRAINT `fk_question_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `fk_question_year` FOREIGN KEY (`year_id`) REFERENCES `years` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  CONSTRAINT `fk_question_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `questions` */
 
-insert  into `questions`(`id`,`subject`,`body`,`department_id`,`course_id`,`year_id`,`user_id`,`posted_at`) values 
-(1,'updated question one','How does the world work',1,2,1,8,'2021-04-02 18:55:02'),
-(2,'second question','How do I install git',1,2,1,8,'2021-04-02 17:11:21'),
-(3,'Does this website work','tdghgdsfh',1,2,1,92,'2021-04-02 18:58:16'),
-(4,'Can I use BaseDao to update','Some body',1,2,1,92,'2021-04-02 21:58:36'),
-(5,'first question','how to get girls',1,2,1,92,'2021-04-02 17:14:09'),
-(6,'update','Body',1,2,1,92,'2021-04-02 22:13:49'),
-(7,'how to start programming','is it good to start with python',1,2,1,92,'2021-04-02 21:30:26'),
-(8,'how to start programming','is it good to start with python',1,2,1,92,'2021-04-02 21:31:09');
+insert  into `questions`(`id`,`subject`,`body`,`department_id`,`course_id`,`semester_id`,`user_id`,`posted_at`,`status`) values
+(3,'Does this website work','does the controller work now',1,2,2,92,'2021-06-27 16:26:28','ACTIVE'),
+(4,'Can I use BaseDao to update','Some body updated',1,2,2,92,'2021-06-27 16:26:27','REMOVED'),
+(5,'first question','how to get gyal',1,2,2,92,'2021-06-27 16:26:29','REMOVED'),
+(6,'update','body ody ',1,2,2,92,'2021-06-27 16:26:30','REMOVED'),
+(8,'how to start programming','is it good to start with python',1,2,2,92,'2021-06-27 17:30:53','ACTIVE'),
+(9,'how does coding work','Some body',1,1,3,92,'2021-06-27 16:27:19','REMOVED'),
+(10,'vekacii','veka',1,1,3,92,'2021-06-27 16:27:20','REMOVED'),
+(11,'tost that tost','yeahh budddy',1,1,3,92,'2021-06-27 16:27:31','REMOVED'),
+(12,'how to code','how to hack nasa with html',1,1,3,92,'2021-06-27 16:27:32','ACTIVE'),
+(13,'wow omg','blabla',1,1,3,92,'2021-06-27 16:27:39','ACTIVE'),
+(14,'i love bootstrap','weee',1,1,3,92,'2021-06-27 16:27:41','ACTIVE'),
+(15,'operating systems','how to operate systems heh',1,1,3,92,'2021-06-27 16:27:42','ACTIVE'),
+(16,'asking','something',1,1,3,92,'2021-06-27 16:27:43','ACTIVE'),
+(17,'bfasadf','short text',1,1,3,92,'2021-06-27 16:27:44','ACTIVE'),
+(18,'peggy','how to dog',1,1,3,92,'2021-06-27 16:27:45','ACTIVE'),
+(19,'how to code next facebook','i want money now',1,1,3,92,'2021-06-27 16:27:48','ACTIVE'),
+(21,'First question from departments','pls work',1,1,3,92,'2021-06-27 16:27:48','ACTIVE'),
+(22,'Testing ordering','will it work i wonder',1,1,3,92,'2021-06-27 16:27:51','ACTIVE'),
+(26,'how to do maths','can i get help',1,2,2,92,'2021-06-18 14:14:22','ACTIVE'),
+(27,'Java parent','How to extend a class.',1,1,3,92,'2021-06-18 14:14:25','ACTIVE'),
+(28,'Homework','What is for homework this week.',1,4,1,92,'2021-06-18 14:14:24','ACTIVE'),
+(29,'Python, lists','How to make a list in python?',1,3,1,92,'2021-06-18 14:14:34','ACTIVE'),
+(30,'General question','How much do you study per day?',1,3,1,92,'2021-06-18 14:13:00','ACTIVE'),
+(33,'asking','asking about general',1,NULL,1,92,'2021-06-18 14:13:02','ACTIVE'),
+(34,'Limits','How to calculate a limit that goes to infinity?',1,8,1,92,'2021-06-18 14:13:03','ACTIVE'),
+(35,'Midterms','When do midterms start.',1,NULL,1,92,'2021-06-18 14:13:04','ACTIVE'),
+(36,'printing ','how to print in python',1,3,1,92,'2021-06-18 14:13:05','ACTIVE'),
+(37,'asking','something',1,3,1,92,'2021-06-18 14:13:06','ACTIVE'),
+(38,'testing adding questions','after refactor',1,1,1,92,'2021-06-18 14:13:07','ACTIVE'),
+(39,'lets see does this work','i hope so',1,1,1,92,'2021-06-18 14:13:08','ACTIVE'),
+(40,'Elmida help','elmida hlep with german',1,4,1,92,'2021-06-18 14:13:10','ACTIVE'),
+(41,'how to calculate mass','help',1,10,1,92,'2021-06-18 14:13:10','ACTIVE'),
+(42,'Newton\'s laws','how many Newton\'s laws are there?',1,10,1,92,'2021-06-18 14:13:13','ACTIVE'),
+(43,'What is a JWT token','JSON Web Token (JWT) is an open standard that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.',1,3,1,92,'2021-06-18 14:13:15','ACTIVE'),
+(44,'dsghrsgfdgsdfg','JSON Web Token (JWT) is an open standard that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.\r\nJSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.\r\nJSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.',1,3,1,92,'2021-06-18 14:13:16','ACTIVE'),
+(45,'About the final','Does anybody know what will be on the final exam?',1,9,2,92,'2021-06-18 14:13:51','ACTIVE'),
+(46,'DOes the status work','pls work',1,10,1,92,'2021-06-18 13:43:23','ACTIVE'),
+(50,'work work','lets code some more',1,10,1,92,'2021-06-25 18:42:07','ACTIVE'),
+(51,'My o my no','Can I copy somebodies homework!!',1,10,1,92,'2021-06-24 21:40:33','ACTIVE'),
+(52,'p[o]o[]','p[o]uyi0o',1,NULL,1,92,'2021-06-24 21:42:28','ACTIVE'),
+(53,'Final exam question','Will there be modal verb on the final exam?\r\n',1,4,1,92,'2021-06-27 17:21:15','ACTIVE'),
+(57,'Why is there no questions here','Come on guys be active!!',2,NULL,1,92,'2021-06-27 17:27:57','ACTIVE'),
+(58,'Final exam','What will be on the final exam??',1,3,1,92,'2021-06-27 17:28:25','ACTIVE'),
+(59,'Project defense','When is the project defense',1,6,4,92,'2021-06-27 17:30:19','ACTIVE'),
+(60,'My first question','How to change a light bulb?',2,NULL,1,155,'2021-06-27 17:39:40','ACTIVE');
+
+/*Table structure for table `semesters` */
+
+DROP TABLE IF EXISTS `semesters`;
+
+CREATE TABLE `semesters` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(256) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+/*Data for the table `semesters` */
+
+insert  into `semesters`(`id`,`name`) values
+(1,'Semester I'),
+(2,'Semester II'),
+(3,'Semester III'),
+(4,'Semester IV'),
+(5,'Semester V'),
+(6,'Semester VI');
 
 /*Table structure for table `users` */
 
@@ -153,7 +255,6 @@ CREATE TABLE `users` (
   `name` varchar(256) COLLATE utf8_bin NOT NULL,
   `email` varchar(256) COLLATE utf8_bin NOT NULL,
   `password` varchar(256) COLLATE utf8_bin NOT NULL,
-  `pins` int(11) DEFAULT NULL,
   `date_of_joining` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `faculty_id` int(11) unsigned NOT NULL,
   `department_id` int(11) unsigned NOT NULL,
@@ -167,52 +268,13 @@ CREATE TABLE `users` (
   KEY `fk_user_department` (`department_id`),
   CONSTRAINT `fk_user_department` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`),
   CONSTRAINT `fk_user_faculty` FOREIGN KEY (`faculty_id`) REFERENCES `faculties` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `users` */
 
-insert  into `users`(`id`,`name`,`email`,`password`,`pins`,`date_of_joining`,`faculty_id`,`department_id`,`status`,`role`,`token`,`token_created_at`) values 
-(2,'Dino Keco','dino.keco@gmail.com','veka123',0,'2021-03-11 18:10:19',1,1,'PENDING','USER',NULL,NULL),
-(5,'Eldar Jahic','elda@stu.ibu.edu.ba','123',0,'2021-03-11 18:23:25',1,1,'PENDING','USER',NULL,NULL),
-(7,'Admir Krilašević','adma@stu.ibu.edu.ba','adminpass',0,'2021-03-11 19:22:01',1,1,'PENDING','USER',NULL,NULL),
-(8,'Naim Secerovic','naim@stu.ibu.edu.ba','josvolimmonu',NULL,'2021-03-11 19:45:48',1,1,'PENDING','USER',NULL,NULL),
-(10,'Ilma Tabak','ilma.tabak1999@stu.ibu.edu.ba','honey&maggie',4,'2021-03-11 22:37:55',1,3,'PENDING','USER',NULL,NULL),
-(12,'Sara Selak','sara@gmail.com','bratz',NULL,'2021-03-16 15:13:21',1,1,'PENDING','USER',NULL,NULL),
-(14,'Semain Tabak','semin@gmail.com','1234567',NULL,'2021-03-16 23:15:29',1,1,'PENDING','USER',NULL,NULL),
-(15,'John Terry','john.terry@ibu.edu.ba','london',1,'2021-03-18 14:20:48',1,1,'PENDING','USER',NULL,NULL),
-(17,'Harun Kunovac','harunk@gmail.com','hara01',NULL,'2021-03-16 15:13:21',1,1,'PENDING','USER',NULL,NULL),
-(18,'Matej Marincic','matejm@gmail.com','ironman',NULL,'2021-03-18 14:21:38',1,1,'PENDING','USER',NULL,NULL),
-(19,'Kemal Karic','kemalk@gmail.com','mokisa',NULL,'2021-03-18 14:21:38',1,1,'PENDING','USER',NULL,NULL),
-(20,'Dino Terzic','dinot@gmail.com','presek',0,'2021-03-18 17:23:20',1,3,'PENDING','USER','H??\0?\ZK2?,y?Iе',NULL),
-(21,'Richard Bro','richardB@gmail.com','rick123',0,'2021-03-18 17:23:20',1,3,'PENDING','USER','=sҹ?:???kj????',NULL),
-(22,'Chandler Bing','chandleredge@gmail.com','monica',0,'2021-03-18 18:23:20',1,3,'PENDING','USER','5c931ac9774fadab8d2a0adb934e5852',NULL),
-(23,'Monika Bing','monika@gmail.com','monicacooks',0,'2021-03-18 19:09:02',1,3,'ACTIVE','USER','a91cc1f883e9f20f7dfcf807bce30b13',NULL),
-(24,'Sheldon Cooper','sheldor@gmail.com','stringtheory',0,'2021-03-18 21:27:00',1,2,'PENDING','USER','cbfcd052db0905f0e0f2ad1705e5f789',NULL),
-(25,'Howard Wolowitz','howardw@gmail.com','mitrocks',0,'2021-03-18 21:27:00',1,3,'PENDING','USER','f539c35f2b128fa8860523e8c9b6a4ad',NULL),
-(26,'Bernadet Wolowitz','bernadetw@gmail.com','little',0,'2021-03-18 21:27:00',1,2,'PENDING','USER','326db432f206d84ef725f6ab5b11c16b',NULL),
-(27,'Mirza Delibasic','mirzoni@gmail.com','bosna',0,'2021-03-18 21:27:00',1,3,'PENDING','USER','5ddf929454ca319ffcfea286571fbc6f',NULL),
-(28,'Edin Dzeko','dzekson@gmail.com','roma',0,'2021-03-18 21:27:00',1,2,'PENDING','USER','6eef22c387e56cfcc026c40dfa48aa2a',NULL),
-(47,'Stefan Hadalin','stefo@gmail.com','canthavetwogoodruns',0,'2021-03-23 22:57:40',1,1,'PENDING','USER','7b8a3c13a7c09cf196cdb3d572aa63eb',NULL),
-(53,'Semin Tabak','sema@gmail.com','userspass',0,'2021-03-28 17:15:51',1,1,'ACTIVE','USER','a80762d78ee999b60d4ad0dd8017b822',NULL),
-(91,'Medina Selak','medina.selak@gmail.com','9bb61edb498cebf552ef2619da4070b9',0,'2021-03-29 00:18:20',1,2,'ACTIVE','USER',NULL,NULL),
-(92,'Selak Vedran','selakvedran@gmail.com','be5d9e60d045fb5ed33db5f74e1381d0',0,'2021-04-03 16:25:25',1,1,'ACTIVE','USER',NULL,'2021-04-03 16:24:53'),
-(96,'My test user','vedran.selak@stu.ibu.edu.ba','be5d9e60d045fb5ed33db5f74e1381d0',0,'2021-04-03 16:04:03',1,1,'ACTIVE','USER',NULL,'2021-04-03 16:02:57');
-
-/*Table structure for table `years` */
-
-DROP TABLE IF EXISTS `years`;
-
-CREATE TABLE `years` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `level` varchar(256) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
-/*Data for the table `years` */
-
-insert  into `years`(`id`,`level`) values 
-(1,'bachelor'),
-(2,'bachelor\'s degree');
+insert  into `users`(`id`,`name`,`email`,`password`,`date_of_joining`,`faculty_id`,`department_id`,`status`,`role`,`token`,`token_created_at`) values
+(92,'Selak Vedran','selakvedran@gmail.com','078f4b946d6498e0e506830c9cda8668','2021-06-22 23:28:43',1,1,'ACTIVE','ADMIN',NULL,'2021-05-05 23:56:39'),
+(155,'Veka Peka','vedran.selak@stu.ibu.edu.ba','078f4b946d6498e0e506830c9cda8668','2021-06-27 17:37:52',1,2,'ACTIVE','USER',NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

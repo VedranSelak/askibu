@@ -81,6 +81,10 @@ textarea {
   padding-right: 5px;
 }
 
+.p-3 {
+  padding: 3rem;
+}
+
 .load-hide-answers:hover {
   text-decoration: none;
   color: #6bb8fa;
@@ -95,6 +99,11 @@ textarea {
 .text-red {
   color: #fa141c;
 }
+
+.text-blue {
+  color: #206ef5;
+}
+
 
 .label {
   font-size: 1.5rem;
@@ -147,6 +156,10 @@ textarea {
 
 .ml-1 {
   margin-left: 1rem;
+}
+
+.mt-1 {
+  margin-top: 1rem;
 }
 
 .p-1 {
