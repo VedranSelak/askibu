@@ -34,7 +34,6 @@ class Users {
             delete d.lenght;
             delete d.columns;
             delete d.draw;
-            console.log(d);
         },
       },
       columns: [

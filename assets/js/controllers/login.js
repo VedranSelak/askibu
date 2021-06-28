@@ -96,7 +96,6 @@ class Login {
 
   static doResetPassword(){
     $("#reset-link").prop("disabled", true);
-    console.log(AskIbuUtils.formToJson("#reset-form"));
     RestClient.post("api/reset",  AskIbuUtils.formToJson("#reset-form"), function(data) {
       window.localStorage.setItem("token", data.token);
       window.location = "index.html";

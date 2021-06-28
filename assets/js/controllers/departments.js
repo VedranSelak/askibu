@@ -60,7 +60,6 @@ class Departments {
               },
               error: function(jqXHR, textStatus, errorThrown ){
                 toastr.error(jqXHR.responseJSON.message);
-                console.log(jqXHR);
               }
            });
   }
@@ -68,7 +67,6 @@ class Departments {
   init(){
     let me = this;
     $(document).ready(function() {
-      console.log("loaded dep");
       me.loadPage();
     });
 
@@ -189,7 +187,7 @@ class Departments {
             },
             error: function(jqXHR, textStatus, errorThrown ){
               toastr.error(jqXHR.responseJSON.message);
-              console.log(jqXHR);
+              e.log(jqXHR);
             }
          });
   }
@@ -204,10 +202,13 @@ class Departments {
       course = urlParams.get("course");
     }
     let id = element.id;
+    $("#"+id).prop("disabled", true);
     if (id == "next"){
       this.offset += this.rows;
+      $("#"+id).prop("disabled", false);
       this.loadQuestions(department, semester, course);
     } else if (id == "previous"){
+      $("#"+id).prop("disabled", false);
       this.offset -= this.rows;
       this.loadQuestions(department, semester, course);
     }
@@ -275,7 +276,6 @@ class Departments {
        },
        error: function(jqXHR, textStatus, errorThrown ){
          toastr.error(jqXHR.responseJSON.message);
-         console.log(jqXHR);
        }
     });
 
@@ -297,7 +297,6 @@ class Departments {
           },
           error: function(jqXHR, textStatus, errorThrown){
             toastr.error(jqXHR.responseJSON.message);
-            console.log(jqXHR);
           }
         });
   }
@@ -361,7 +360,6 @@ class Departments {
          },
          error: function(jqXHR, textStatus, errorThrown ){
            toastr.error(jqXHR.responseJSON.message);
-           console.log(jqXHR);
          }
       });
   }
@@ -383,7 +381,6 @@ class Departments {
          },
          error: function(jqXHR, textStatus, errorThrown ){
            toastr.error(jqXHR.responseJSON.message);
-           console.log(jqXHR);
          }
       });
   }

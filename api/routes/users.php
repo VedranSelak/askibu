@@ -40,7 +40,7 @@ Flight::route('GET /admin/user/@id', function($id){
 
 /**
  * @OA\Get(path="/user/account",tags={"x-user","user"},security={{"ApiKeyAuth": {}}},
- *     @OA\Response(response="200", description="Get user by id")
+ *     @OA\Response(response="200", description="Get your account")
  * )
  */
 Flight::route('GET /user/account', function(){
@@ -106,7 +106,7 @@ Flight::route('PUT /admin/user/@id', function($id){
  *           )
  *         )
  *        ),
- *     @OA\Response(response="200", description="Update user based on id")
+ *     @OA\Response(response="200", description="Update your account")
  * )
  */
 Flight::route('PUT /user/account', function(){
@@ -117,7 +117,7 @@ Flight::route('PUT /user/account', function(){
 /**
  * @OA\Get(path="/confirm/{token}",tags={"login"},
  *     @OA\Parameter(@OA\Schema(type="string"), in="path", name="token", description="token of a user"),
- *     @OA\Response(response="200", description="Message that is displayed to the user")
+ *     @OA\Response(response="200", description="Redirection to login")
  * )
  */
 

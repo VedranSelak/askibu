@@ -81,7 +81,7 @@ class UserService extends BaseService {
       }
     }
     $this->smtpClient->send_register_user_token($user);
-    return ["message" => "Confirmaiton email has been sent. Please confirm your account.".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]];
+    return ["message" => "Confirmaiton email has been sent. Please confirm your account."];
   }
 
   public function confirm($token){

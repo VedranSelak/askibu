@@ -4,9 +4,9 @@
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Search by status"),
- *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for questions. Case insensitive search"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for answers. Case insensitive search"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
- *     @OA\Response(response="200", description="Get answers by users id")
+ *     @OA\Response(response="200", description="Get your accounts get_answer_by_question_id")
  * )
  */
 Flight::route("GET /user/answer", function(){
@@ -26,9 +26,9 @@ Flight::route("GET /user/answer", function(){
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25,description="Limit for pagination"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="user_id", description="id of user"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", description="Search by status"),
- *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for questions. Case insensitive search"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for answers. Case insensitive search"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
- *     @OA\Response(response="200", description="Get answers by users id")
+ *     @OA\Response(response="200", description="admin get answers")
  * )
  */
 Flight::route("GET /admin/answers", function(){
@@ -46,7 +46,7 @@ Flight::route("GET /admin/answers", function(){
 /**
  * @OA\Put(path="/admin/remove/answer/{id}",tags={"x-admin","answer"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of an answer"),
- *     @OA\Response(response="200", description="Remove a question")
+ *     @OA\Response(response="200", description="Remove an answer")
  * )
  */
 Flight::route("PUT /admin/remove/answer/@id", function($id){
@@ -56,7 +56,7 @@ Flight::route("PUT /admin/remove/answer/@id", function($id){
 /**
  * @OA\Put(path="/admin/retrieve/answer/{id}",tags={"x-admin","answer"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of an answer"),
- *     @OA\Response(response="200", description="Retrieve a question")
+ *     @OA\Response(response="200", description="Retrieve an answer")
  * )
  */
 Flight::route("PUT /admin/retrieve/answer/@id", function($id){
@@ -75,7 +75,7 @@ Flight::route("GET /user/answer-count", function(){
 /**
  * @OA\Get(path="/user/answer/{id}",tags={"x-user","answer"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of an answer"),
- *     @OA\Response(response="200", description="Get answer by id")
+ *     @OA\Response(response="200", description="Get your answer by id")
  * )
  */
 Flight::route("GET /user/answer/@id", function($id){
@@ -87,7 +87,7 @@ Flight::route("GET /user/answer/@id", function($id){
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of a question"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", description="Search by status"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
- *     @OA\Response(response="200", description="Get answer by question id")
+ *     @OA\Response(response="200", description="Get answers by question id")
  * )
  */
 Flight::route("GET /user/answers-by-question/@id", function($id){
@@ -98,7 +98,7 @@ Flight::route("GET /user/answers-by-question/@id", function($id){
 
 /**
  * @OA\Post(path="/user/answer",tags={"x-user","answer"},security={{"ApiKeyAuth": {}}},
- * @OA\RequestBody(description="Question info", required=true,
+ * @OA\RequestBody(description="Answer info", required=true,
  *    @OA\MediaType(
  *      mediaType="application/json",
  *      @OA\Schema(
@@ -123,11 +123,11 @@ Flight::route("POST /user/answer", function(){
  *    @OA\MediaType(
  *      mediaType="application/json",
  *      @OA\Schema(
- *        @OA\Property(property="body", type="string", example="Some body", desctiption="Body of the question")
+ *        @OA\Property(property="body", type="string", example="Some body", desctiption="Body of the answer")
  *      )
  *    )
  *   ),
- * @OA\Response(response="200", description="Updated question")
+ * @OA\Response(response="200", description="Updated your answer")
  * )
  */
 Flight::route("PUT /user/answer/@id", function($id){
@@ -138,9 +138,9 @@ Flight::route("PUT /user/answer/@id", function($id){
 /**
  * @OA\Put(path="/user/answer/pin/{id}/{question}/{set}",tags={"x-user","answer"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of a answer"),
- *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="question", description="Offset for pagination"),
- *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="set", description="Limit for pagination"),
- *     @OA\Response(response="200", description="Get questions by users id")
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="question", description="id of the question"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="set", description="value of pin"),
+ *     @OA\Response(response="200", description="Pinn an answer")
  * )
  */
 Flight::route("PUT /user/answer/pin/@id/@quesiton/@set", function($id, $question, $set){

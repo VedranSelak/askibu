@@ -16,15 +16,15 @@ class UserProfile {
 
     RestClient.get("api/admin/user/"+user_id, null, function (data){
       RestClient.get("api/admin/department-faculty/"+data.department_id, null, function(data) {
-        $("#users-faculty").html("Users faculty: " + data.faculty);
-        $("#users-department").html("Users department: " + data.name);
+        $("#users-faculty").html("<strong>Users faculty:</strong> " + data.faculty);
+        $("#users-department").html("<strong>Users department:</strong> " + data.name);
       });
-      $("#users-name").html("Users name: " + data.name);
-      $("#users-email").html("Users email: " + data.email);
-      $("#users-password").html("Users password: " + data.password);
-      $("#users-date-of-joining").html("Date of joining: " + data.date_of_joining);
-      $("#users-status").html("Users status: " + data.status);
-      $("#users-role").html("Users role: " + data.role);
+      $("#users-name").html("<strong>Users name:</strong> " + data.name);
+      $("#users-email").html("<strong>Users email:</strong> " + data.email);
+      $("#users-password").html("<strong>Users password:</strong> " + data.password);
+      $("#users-date-of-joining").html("<strong>Date of joining:</strong> " + data.date_of_joining);
+      $("#users-status").html("<strong>Users status:</strong> " + data.status);
+      $("#users-role").html("<strong>Users role:</strong> " + data.role);
     });
 
     $("#user-question-table").dataTable({
@@ -58,7 +58,6 @@ class UserProfile {
             delete d.lenght;
             delete d.columns;
             delete d.draw;
-            console.log(d);
         },
       },
       columns: [
@@ -111,7 +110,6 @@ class UserProfile {
             delete d.lenght;
             delete d.columns;
             delete d.draw;
-            console.log(d);
         },
 
       },

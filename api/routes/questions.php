@@ -7,7 +7,7 @@
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for questions. Case insensitive search"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
- *     @OA\Response(response="200", description="Get questions by users id")
+ *     @OA\Response(response="200", description="Get your accounts questions")
  * )
  */
 Flight::route("GET /user/question", function(){
@@ -24,9 +24,9 @@ Flight::route("GET /user/question", function(){
 
 /**
  * @OA\Get(path="/user/question-by-answer/{answer_id}",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="path", name="answer_id", default=1, description="id of an answer"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25, description="Limit for pagination"),
- *     @OA\Parameter(type="integer", in="path", name="answer_id", default=1, description="Search question by answer"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
  *     @OA\Response(response="200", description="Get questions by answer id")
@@ -41,14 +41,14 @@ Flight::route("GET /user/question-by-answer/@answer_id", function($answer_id){
 });
 
 /**
- * @OA\Get(path="/user/question/hot/{department_id}",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/user/question/hot",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
- *     @OA\Response(response="200", description="Get questions by users id")
+ *     @OA\Response(response="200", description="Get hottest questions in the past 7 days from your department")
  * )
  */
-Flight::route("GET /user/question/hot/@department_id", function($department_id){
+Flight::route("GET /user/question/hot", function(){
   $status = Flight::query('status','ACTIVE');
-  Flight::json(Flight::questionService()->get_weeks_hottest_questions($status, $department_id));
+  Flight::json(Flight::questionService()->get_weeks_hottest_questions($status, Flight::get("user")["d_id"]));
 });
 
 /**
@@ -63,7 +63,7 @@ Flight::route("GET /user/question-count", function(){
 /**
  * @OA\Get(path="/user/question/{id}",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of a question"),
- *     @OA\Response(response="200", description="Get user by id")
+ *     @OA\Response(response="200", description="Get your questions by id")
  * )
  */
 Flight::route("GET /user/question/@id", function($id){
@@ -79,7 +79,7 @@ Flight::route("GET /user/question/@id", function($id){
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", description="limit for pagination),
  *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", description="offset for pagination"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
- *     @OA\Response(response="200", description="Get questions by department id")
+ *     @OA\Response(response="200", description="Get questions")
  * )
  */
 Flight::route("GET /questions", function(){
@@ -104,7 +104,7 @@ Flight::route("GET /questions", function(){
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="search", description="Search string for questions. Case insensitive search"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
- *     @OA\Response(response="200", description="Get questions from database")
+ *     @OA\Response(response="200", description="Get questions from database, admin")
  * )
  */
 Flight::route("GET /admin/question", function(){
@@ -150,7 +150,7 @@ Flight::route("PUT /admin/retrieve/question/@id", function($id){
  *        @OA\Property(property="body", type="string", example="Some body", desctiption="Body of the question"),
  *        @OA\Property(property="department_id", type="integer", example=1, desctiption="Department that the question is ment for"),
  *        @OA\Property(property="course_id", type="integer", example=1, desctiption="Course that the question is ment for"),
- *        @OA\Property(property="semester_id", type="integer", example=1, desctiption="Year that the question is ment for")
+ *        @OA\Property(property="semester_id", type="integer", example=1, desctiption="Semester that the question is ment for")
  *      )
  *    )
  *   ),
@@ -173,7 +173,7 @@ Flight::route("POST /user/question", function(){
  *        @OA\Property(property="body", type="string", example="Some body", desctiption="Body of the question"),
  *        @OA\Property(property="department_id", type="integer", example=1, desctiption="Department that the question is ment for"),
  *        @OA\Property(property="course_id", type="integer", example=1, desctiption="Course that the question is ment for"),
- *        @OA\Property(property="semester_id", type="integer", example=1, desctiption="Year that the question is ment for"),
+ *        @OA\Property(property="semester_id", type="integer", example=1, desctiption="Semester that the question is ment for"),
  *        @OA\Property(property="user_id", type="integer", example=1, desctiption="User that is posting the question")
  *      )
  *    )
@@ -196,7 +196,7 @@ Flight::route("POST /admin/question", function(){
  *        @OA\Property(property="body", type="string", example="Some body", desctiption="Body of the question"),
  *        @OA\Property(property="department_id", type="integer", example=1, desctiption="Department that the question is ment for"),
  *        @OA\Property(property="course_id", type="integer", example=1, desctiption="Course that the question is ment for"),
- *        @OA\Property(property="semester_id", type="integer", example=1, desctiption="Year that the question is ment for")
+ *        @OA\Property(property="semester_id", type="integer", example=1, desctiption="Semester that the question is ment for")
  *      )
  *    )
  *   ),
@@ -219,7 +219,7 @@ Flight::route("PUT /user/question/@id", function($id){
  *        @OA\Property(property="body", type="string", example="Some body", desctiption="Body of the question"),
  *        @OA\Property(property="department_id", type="integer", example=1, desctiption="Department that the question is ment for"),
  *        @OA\Property(property="course_id", type="integer", example=1, desctiption="Course that the question is ment for"),
- *        @OA\Property(property="semester_id", type="integer", example=1, desctiption="Year that the question is ment for")
+ *        @OA\Property(property="semester_id", type="integer", example=1, desctiption="Semester that the question is ment for")
  *      )
  *    )
  *   ),

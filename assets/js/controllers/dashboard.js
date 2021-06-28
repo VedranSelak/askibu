@@ -20,7 +20,7 @@ class Dashboard {
   }
 
   static loadHottestQuestions(){
-    RestClient.get("api/user/question/hot/"+AskIbuUtils.parseJWT(window.localStorage.getItem("token")).d_id, null, function(data) {
+    RestClient.get("api/user/question/hot", null, function(data) {
       if(data.length === 0){
           $("#dash-question-list").addClass("hidden");
           $("#no-hottest-questions-alert").removeClass("hidden");
@@ -263,7 +263,6 @@ class Dashboard {
        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
        data: { "order" : "+is_pinned" },
        success: function(data) {
-         console.log(data);
          let text = "";
          for(var i=0; i<data.length; i++){
            text += `<div class='col-lg-12'>
@@ -307,7 +306,6 @@ class Dashboard {
        },
        error: function(jqXHR, textStatus, errorThrown ){
          toastr.error(jqXHR.responseJSON.message);
-         console.log(jqXHR);
        }
     });
 
@@ -316,8 +314,6 @@ class Dashboard {
   static addAnswer(selector, load_selector){
     let question_id = $(selector+" *[name='question_id']").val();
     let body = $(selector+" *[name='body']").val();
-    console.log(question_id);
-    console.log(body);
     $(selector+" *[name='body']").val("");
     $.ajax({
          url: "api/user/answer",
@@ -335,7 +331,6 @@ class Dashboard {
          },
          error: function(jqXHR, textStatus, errorThrown ){
            toastr.error(jqXHR.responseJSON.message);
-           console.log(jqXHR);
          }
       });
   }
@@ -356,7 +351,6 @@ class Dashboard {
          },
          error: function(jqXHR, textStatus, errorThrown ){
            toastr.error(jqXHR.responseJSON.message);
-           console.log(jqXHR);
          }
       });
   }

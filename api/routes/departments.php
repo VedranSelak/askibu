@@ -48,12 +48,41 @@ Flight::route('GET /admin/department-faculty/@id', function($id){
     Flight::json(Flight::departmentService()->get_deparment_and_faculty($id));
 });
 
-Flight::route('POST /departments', function(){
+/**
+ * @OA\Post(path="/admin/departments",tags={"x-admin","department"},security={{"ApiKeyAuth": {}}},
+ * @OA\RequestBody(description="Department info", required=true,
+ *    @OA\MediaType(
+ *      mediaType="application/json",
+ *      @OA\Schema(
+ *        @OA\Property(property="name", type="string", example="Department name", desctiption="Name of the department"),
+ *        @OA\Property(property="faculty_id", type="integer", example=1, desctiption="Faculty id of that department")
+ *      )
+ *    )
+ *   ),
+ * @OA\Response(response="200", description="Department that was added")
+ * )
+ */
+Flight::route('POST /admin/departments', function(){
     $data = Flight::request()->data->getData();
     Flight::json(Flight::departmentService()->add($data));
 });
 
-Flight::route('PUT /departments/@id', function($id){
+/**
+ * @OA\Put(path="/admin/departments/{id}",tags={"x-admin","department"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="id of the department"),
+ * @OA\RequestBody(description="Department info", required=true,
+ *    @OA\MediaType(
+ *      mediaType="application/json",
+ *      @OA\Schema(
+ *        @OA\Property(property="name", type="string", example="Department name", desctiption="Name of the department"),
+ *        @OA\Property(property="faculty_id", type="integer", example=1, desctiption="Faculty id of that department")
+ *      )
+ *    )
+ *   ),
+ * @OA\Response(response="200", description="Department that was updated")
+ * )
+ */
+Flight::route('PUT /admin/departments/@id', function($id){
   $data = Flight::request()->data->getData();
   Flight::json(Flight::departmentService()->update($id,$data));
 });
