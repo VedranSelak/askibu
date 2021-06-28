@@ -445,35 +445,27 @@ class Account {
     $("#"+id).prop("disabled", true);
     if (id == "next-answers-removed"){
       this.offsetRemovedAnswers += this.rows;
-      $("#"+id).prop("disabled", false);
       this.loadYourRemovedAnswers();
     } else if (id == "previous-answers-removed"){
       this.offsetRemovedAnswers -= this.rows;
-      $("#"+id).prop("disabled", false);
       this.loadYourRemovedAnswers();
     } else if (id == "next-questions-removed"){
       this.offsetRemovedQuestions += this.rows;
-      $("#"+id).prop("disabled", false);
       this.loadYourRemovedQuestions();
     } else if (id == "previous-questions-removed"){
       this.offsetRemovedQuestions -= this.rows;
-      $("#"+id).prop("disabled", false);
       this.loadYourRemovedQuestions();
     } else if (id == "next-answers"){
       this.offsetYourAnswers += this.rows;
-      $("#"+id).prop("disabled", false);
       this.loadYourAnswers();
     } else if (id == "previous-answers"){
       this.offsetYourAnswers -= this.rows;
-      $("#"+id).prop("disabled", false);
       this.loadYourAnswers();
     } else if (id == "next-questions"){
       this.offsetYourQuestions += this.rows;
-      $("#"+id).prop("disabled", false);
       this.loadYourQuestions();
     } else if (id == "previous-questions"){
       this.offsetYourQuestions -= this.rows;
-      $("#"+id).prop("disabled", false);
       this.loadYourQuestions();
     }
   }

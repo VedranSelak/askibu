@@ -248,10 +248,10 @@
                            for(var i=0; i<dep.length; i++){
                               text += "<li><a href='#departments' onclick='loadDepartment("+dep[i].id+")'>"+dep[i].name+"</a></li>";
                           }
-                          $("#"+dep[0].faculty_id+"").html(text);
+                          $("#"+dep[0].faculty_id).html(text);
                          },
                          error: function(jqXHR, textStatus, errorThrown ){
-                           console.log(jqXHR);
+                           toastr.error(jqXHR.responseJSON.message);
                          }
                       });
                   }
@@ -271,7 +271,7 @@
                   $('#side-menu').metisMenu();
                  },
                  error: function(jqXHR, textStatus, errorThrown ){
-                   console.log(jqXHR);
+                     toastr.error(jqXHR.responseJSON.message);
                  }
               });
           }
@@ -296,7 +296,6 @@
           }
 
           function openAddDepartmentModal(faculty_id){
-            console.log(faculty_id);
             $("#add-department *[name='faculty_id']").val(faculty_id);
             $("#add-department-modal").modal("show");
           }

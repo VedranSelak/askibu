@@ -193,6 +193,8 @@ class Departments {
   }
 
   paginate(element){
+    let id = element.id;
+    $("#"+id).prop("disabled", true);
     let query = window.location.search;
     const urlParams = new URLSearchParams(query);
     let department = urlParams.get("department");
@@ -201,8 +203,6 @@ class Departments {
     if (urlParams.has("course")){
       course = urlParams.get("course");
     }
-    let id = element.id;
-    $("#"+id).prop("disabled", true);
     if (id == "next"){
       this.offset += this.rows;
       $("#"+id).prop("disabled", false);

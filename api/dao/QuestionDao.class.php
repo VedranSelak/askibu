@@ -90,7 +90,7 @@ class QuestionDao extends BaseDao{
       $params["answer_id"] = $answer_id ;
     } else {
       $query .= "FROM questions
-                 JOIN users ON users.id = questions.user_id 
+                 JOIN users ON users.id = questions.user_id
                  WHERE 1 = 1";
     }
 
