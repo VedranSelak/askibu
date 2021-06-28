@@ -79,16 +79,18 @@ class QuestionDao extends BaseDao{
     if ($total){
       $query = "SELECT COUNT(*) AS total ";
     }else{
-      $query = "SELECT questions.* ";
+      $query = "SELECT questions.*, users.name ";
     }
 
     if(isset($answer_id)){
       $query .= "FROM questions
                  JOIN answers ON answers.question_id = questions.id
+                 JOIN users ON users.id = questions.user_id
                  WHERE answers.id = :answer_id";
       $params["answer_id"] = $answer_id ;
     } else {
       $query .= "FROM questions
+                 JOIN users ON users.id = questions.user_id 
                  WHERE 1 = 1";
     }
 

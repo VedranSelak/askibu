@@ -23,6 +23,24 @@ Flight::route("GET /user/question", function(){
 });
 
 /**
+ * @OA\Get(path="/user/question-by-answer/{answer_id}",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="offset", default=0, description="Offset for pagination"),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="query", name="limit", default=25, description="Limit for pagination"),
+ *     @OA\Parameter(type="integer", in="path", name="answer_id", default=1, description="Search question by answer"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="order", default="-id", description="Sorting for return elements. -columne_name ascending order by columne_name, +columne_name descending order by columne_name"),
+ *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
+ *     @OA\Response(response="200", description="Get questions by answer id")
+ * )
+ */
+Flight::route("GET /user/question-by-answer/@answer_id", function($answer_id){
+  $offset = Flight::query("offset", 0);
+  $limit = Flight::query("limit", 1);
+  $status = Flight::query('status','ACTIVE');
+  $order = urldecode(Flight::query('order','-id'));
+  Flight::json(Flight::questionService()->get_questions(null, $offset, $limit, null, $order, $status, $answer_id));
+});
+
+/**
  * @OA\Get(path="/user/question/hot/{department_id}",tags={"x-user","question"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(@OA\Schema(type="string"), in="query", name="status", default="ACTIVE", description="Status of the question"),
  *     @OA\Response(response="200", description="Get questions by users id")

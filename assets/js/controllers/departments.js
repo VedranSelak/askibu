@@ -68,6 +68,7 @@ class Departments {
   init(){
     let me = this;
     $(document).ready(function() {
+      console.log("loaded dep");
       me.loadPage();
     });
 

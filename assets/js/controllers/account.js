@@ -218,68 +218,65 @@ class Account {
   loadQuestion(question_id, answer_id, check = false){
     let me = this;
     $.ajax({
-       url: "api/user/question/",
+       url: "api/user/question-by-answer/"+answer_id,
        type: "GET",
        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-       data: { "answer_id" : answer_id },
        success: function(data) {
          if(data.length == 0){
            toastr.error("Question of this answer has been removed!");
          } else {
-           let text = `<div class='col-lg-12'>
-                                 <div class='card bg-grey card-padding card-style' style='height: auto;'>
-                                   <div class='card-body p-1'>
-                                     <h3 class='card-title question-subject'>${data[0].subject}</h3>
-                                     <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[0].posted_at)}</h6>
-                                     <p class='card-text panel p-1'>${data[0].body}</p>
-                                   </div>`;
-                                   if(check){
-                                     text += `<div class="container-fluid p-1">
-                                       <div class="row">
-                                         <div class="col-md-6 col-sm-6 col-xs-6">
-                                           <a onclick="account.loadAnswer(${answer_id}, true)" class="pointer toggling-link">Load answer</a>
-                                         </div>
-                                         <div class="col-md-6 col-sm-6 col-xs-6">
-                                           <a id="account-answers-add-answer-show-form-${data[0].id}" onclick="account.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
-                                         </div>
-                                       </div>
-                                     </div>`;
-                                   } else {
-                                     text += `<div class="container-fluid p-1">
-                                       <div class="row">
-                                         <div class="col-md-12">
-                                           <a id="account-answers-add-answer-show-form-${data[0].id}" onclick="account.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
-                                         </div>
-                                       </div>
-                                     </div>`;
-                                   }
-
-                    text += `      <div id='account-${answer_id}-answers-container-${data[0].id}' class="container-fluid hidden">
-                                     <div class="row" id='account-${answer_id}-answers-list-${data[0].id}'>
-
-                                     </div>`;
-                                     if(check){
-                                       text += `<div class="row text-center">
-                                         <a onclick="account.loadAnswer(${answer_id}, true)" class="toggling-link pointer">Load answer</a>
-                                       </div>`;
-                                     } else {
-                                       text += `<div class="row text-center">
-                                         <a onclick="account.loadAnswer(${answer_id})" class="toggling-link pointer">Load answer</a>
-                                       </div>`;
-                                     }
-                text += `          </div>
-                                   <div id="account-answers-add-answer-${data[0].id}" class="container-fluid hidden">
-
-                                      <input name="question_id" type="hidden" value="${data[0].id}">
-                                      <div class="row m-1">
-                                         <textarea name="body" type="text" class="form-control"></textarea>
-                                      </div>
-                                       <div class="row m-1">
-                                         <button onclick="account.addAnswer('#account-answers-add-answer-${data[0].id}', '-${answer_id}')" class="btn btn-success" type="button">Send</button>
-                                       </div>
+           let text = `<div class='card bg-grey card-padding card-style' style='height: auto;'>
+                             <div class='card-body p-1'>
+                               <h3 class='card-title question-subject'>${data[0].subject}</h3>
+                               <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[0].name} ${AskIbuUtils.time(data[0].posted_at)}</h6>
+                               <p class='card-text panel p-1'>${data[0].body}</p>
+                             </div>`;
+                             if(check){
+                               text += `<div class="container-fluid p-1">
+                                 <div class="row">
+                                   <div class="col-md-6 col-sm-6 col-xs-6">
+                                     <a onclick="account.loadAnswer(${answer_id}, true)" class="pointer toggling-link">Load answer</a>
+                                   </div>
+                                   <div class="col-md-6 col-sm-6 col-xs-6">
+                                     <a id="account-answers-add-answer-show-form-${data[0].id}" onclick="account.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
                                    </div>
                                  </div>
                                </div>`;
+                             } else {
+                               text += `<div class="container-fluid p-1">
+                                 <div class="row">
+                                   <div class="col-md-12">
+                                     <a id="account-answers-add-answer-show-form-${data[0].id}" onclick="account.showAnswerForm(${data[0].id}, '#account-answers-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
+                                   </div>
+                                 </div>
+                               </div>`;
+                             }
+
+                    text += `<div id='account-${answer_id}-answers-container-${data[0].id}' class="container-fluid hidden">
+                               <div class="row" id='account-${answer_id}-answers-list-${data[0].id}'>
+
+                               </div>`;
+                               if(check){
+                                 text += `<div class="row text-center">
+                                   <a onclick="account.loadAnswer(${answer_id}, true)" class="toggling-link pointer">Load answer</a>
+                                 </div>`;
+                               } else {
+                                 text += `<div class="row text-center">
+                                   <a onclick="account.loadAnswer(${answer_id})" class="toggling-link pointer">Load answer</a>
+                                 </div>`;
+                               }
+                    text += ` </div>
+                             <div id="account-answers-add-answer-${data[0].id}" class="container-fluid hidden">
+
+                                <input name="question_id" type="hidden" value="${data[0].id}">
+                                <div class="row m-1">
+                                   <textarea name="body" type="text" class="form-control"></textarea>
+                                </div>
+                                 <div class="row m-1">
+                                   <button onclick="account.addAnswer('#account-answers-add-answer-${data[0].id}', '-${answer_id}')" class="btn btn-success" type="button">Send</button>
+                                 </div>
+                             </div>
+                           </div>`;
                   $("#"+answer_id+"-your-answer-"+question_id).html(text);
                   me.loadAnswers(question_id, `-${answer_id}`);
          }
@@ -539,9 +536,7 @@ class Account {
        type: "GET",
        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
        success: function(data) {
-         console.log(data)
-         let text = `
-                     <div class='card bg-white border-blue card-padding-s card-style' style='height: auto;'>
+         let text = `<div class='card bg-white border-blue card-padding-s card-style' style='height: auto;'>
                       <div class="card-header">
                         <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data.name} ${AskIbuUtils.time(data.posted_at)}</h6>
                       </div>
@@ -617,6 +612,9 @@ class Account {
   }
 
   update(question){
+    if(question.course_id == ""){
+      question.course_id = null;
+    }
     let me = this;
     $.ajax({
             url: "api/user/question/"+question.id,

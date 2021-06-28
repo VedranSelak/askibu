@@ -149,12 +149,15 @@
         <script src="./assets/js/controllers/account.js"></script>
 
         <script type="text/javascript">
+          let account;
+          let departments;
           function doLogout(){
             window.localStorage.clear();
             window.location = "login.html";
           }
 
           $(document).ready(function() {
+
 
             if(!window.localStorage.getItem("token")){
               window.location = "login.html";
@@ -195,6 +198,11 @@
 
                   $("#faculty-list").html(text);
                   var app = $.jQuerySPApp({defaultView  : "dashboard"});
+                  app.route({view : "dashboard", load : "dashboard.html", onReady: function() { Dashboard.init() }});
+                  app.route({view : "account", load : "account.html", onReady: function() { account = new Account(); account.init(); }});
+                  app.route({view : "departments", load : "departments.html", onReady: function() {   departments = new Departments();  departments.init(); }});
+                  app.route({view : "user", load : "user.html", onReady: function() { UserProfile.init() }});
+                  app.route({view : "users", load : "users.html", onReady: function() { Users.init() }});
                   app.run();
                   $('#side-menu').metisMenu();
                  },

@@ -33,11 +33,11 @@ CREATE TABLE `answers` (
   KEY `fk_answer_question` (`question_id`),
   CONSTRAINT `fk_answer_question` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`),
   CONSTRAINT `fk_answer_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `answers` */
 
-insert  into `answers`(`id`,`is_pinned`,`body`,`user_id`,`question_id`,`posted_at`,`status`) values
+insert  into `answers`(`id`,`is_pinned`,`body`,`user_id`,`question_id`,`posted_at`,`status`) values 
 (3,0,'we did some updates',92,3,'2021-06-24 16:35:29','REMOVED'),
 (4,0,'i like this questions',92,3,'2021-06-24 16:35:31','REMOVED'),
 (5,0,'vekas answer',92,5,'2021-06-24 16:35:32','ACTIVE'),
@@ -58,7 +58,7 @@ insert  into `answers`(`id`,`is_pinned`,`body`,`user_id`,`question_id`,`posted_a
 (23,0,'how about now',92,39,'2021-06-15 15:49:21','ACTIVE'),
 (26,1,'google it bro',92,43,'2021-06-15 18:30:17','ACTIVE'),
 (27,0,'JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can ',92,44,'2021-06-15 18:31:27','ACTIVE'),
-(28,1,'JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can ',92,44,'2021-06-18 16:45:34','ACTIVE'),
+(28,0,'JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can ',92,44,'2021-06-18 16:45:34','ACTIVE'),
 (29,0,'what he said',92,36,'2021-06-15 21:19:04','ACTIVE'),
 (30,1,'nice job',92,44,'2021-06-18 16:42:46','ACTIVE'),
 (32,0,'All from week 7 till week 13. I think.',92,45,'2021-06-15 22:03:27','ACTIVE'),
@@ -77,7 +77,25 @@ insert  into `answers`(`id`,`is_pinned`,`body`,`user_id`,`question_id`,`posted_a
 (68,0,'Is this encrypted?',92,52,'2021-06-27 17:09:52','ACTIVE'),
 (69,0,'It\'s cool tbh',92,14,'2021-06-27 17:10:52','ACTIVE'),
 (70,1,'It is hahaha',92,52,'2021-06-27 17:21:38','ACTIVE'),
-(71,0,'I study for 4 hours',92,30,'2021-06-27 17:22:12','ACTIVE');
+(71,0,'I study for 4 hours',92,30,'2021-06-27 17:22:12','ACTIVE'),
+(73,1,'Sorry man',155,57,'2021-06-27 23:36:10','REMOVED'),
+(74,1,'No idea!',92,59,'2021-06-28 13:10:21','ACTIVE'),
+(75,1,'Everything from week 8.',92,58,'2021-06-28 13:13:03','ACTIVE'),
+(76,0,'It\'s next monday.',92,61,'2021-06-28 13:14:09','ACTIVE'),
+(77,0,'Friday.',92,59,'2021-06-28 15:38:50','ACTIVE'),
+(78,0,'Yes, at 10.',92,61,'2021-06-28 15:39:41','ACTIVE'),
+(79,1,'We have time don\'t worry',92,59,'2021-06-28 15:40:29','ACTIVE'),
+(80,0,'bootstrap 5 is great bootstrap 3 is terrible!!!',92,14,'2021-06-28 15:41:10','ACTIVE'),
+(81,0,'Isn\'t it on Monday.',92,59,'2021-06-28 15:42:21','ACTIVE'),
+(82,1,'I think you got it!',92,46,'2021-06-28 15:43:20','ACTIVE'),
+(83,0,'It\'s monday',92,59,'2021-06-28 15:43:54','ACTIVE'),
+(84,1,'Monday.',92,61,'2021-06-28 15:44:40','ACTIVE'),
+(85,0,'I don\'t',92,30,'2021-06-28 15:45:16','ACTIVE'),
+(86,0,'this is not a question',92,44,'2021-06-28 15:47:42','ACTIVE'),
+(87,1,'there are millions of tutorials online.',92,60,'2021-06-28 15:49:58','ACTIVE'),
+(88,0,'Thanks guys!',155,61,'2021-06-28 15:55:48','ACTIVE'),
+(89,0,'Very helpful hahaha',155,60,'2021-06-28 15:56:16','ACTIVE'),
+(90,0,'wow!',155,57,'2021-06-28 15:57:10','ACTIVE');
 
 /*Table structure for table `courses` */
 
@@ -97,7 +115,7 @@ CREATE TABLE `courses` (
 
 /*Data for the table `courses` */
 
-insert  into `courses`(`id`,`name`,`department_id`,`semester_id`) values
+insert  into `courses`(`id`,`name`,`department_id`,`semester_id`) values 
 (1,'Object Oriented Programming',1,3),
 (2,'Programming II',1,2),
 (3,'Programming I',1,1),
@@ -127,7 +145,7 @@ CREATE TABLE `departments` (
 
 /*Data for the table `departments` */
 
-insert  into `departments`(`id`,`name`,`faculty_id`,`created_at`) values
+insert  into `departments`(`id`,`name`,`faculty_id`,`created_at`) values 
 (1,'Information Technology',1,'2021-03-19 16:43:23'),
 (2,'Electrical Engineering & Robotics',1,'2021-03-19 16:43:24'),
 (3,'Architecture',1,'2021-03-19 17:43:23'),
@@ -148,7 +166,7 @@ CREATE TABLE `faculties` (
 
 /*Data for the table `faculties` */
 
-insert  into `faculties`(`id`,`name`) values
+insert  into `faculties`(`id`,`name`) values 
 (1,'Engineering'),
 (2,'Economics'),
 (3,'Politics');
@@ -175,11 +193,11 @@ CREATE TABLE `questions` (
   CONSTRAINT `fk_question_course` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`),
   CONSTRAINT `fk_question_department` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`),
   CONSTRAINT `fk_question_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `questions` */
 
-insert  into `questions`(`id`,`subject`,`body`,`department_id`,`course_id`,`semester_id`,`user_id`,`posted_at`,`status`) values
+insert  into `questions`(`id`,`subject`,`body`,`department_id`,`course_id`,`semester_id`,`user_id`,`posted_at`,`status`) values 
 (3,'Does this website work','does the controller work now',1,2,2,92,'2021-06-27 16:26:28','ACTIVE'),
 (4,'Can I use BaseDao to update','Some body updated',1,2,2,92,'2021-06-27 16:26:27','REMOVED'),
 (5,'first question','how to get gyal',1,2,2,92,'2021-06-27 16:26:29','REMOVED'),
@@ -213,8 +231,8 @@ insert  into `questions`(`id`,`subject`,`body`,`department_id`,`course_id`,`seme
 (40,'Elmida help','elmida hlep with german',1,4,1,92,'2021-06-18 14:13:10','ACTIVE'),
 (41,'how to calculate mass','help',1,10,1,92,'2021-06-18 14:13:10','ACTIVE'),
 (42,'Newton\'s laws','how many Newton\'s laws are there?',1,10,1,92,'2021-06-18 14:13:13','ACTIVE'),
-(43,'What is a JWT token','JSON Web Token (JWT) is an open standard that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.',1,3,1,92,'2021-06-18 14:13:15','ACTIVE'),
-(44,'dsghrsgfdgsdfg','JSON Web Token (JWT) is an open standard that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.\r\nJSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.\r\nJSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.',1,3,1,92,'2021-06-18 14:13:16','ACTIVE'),
+(43,'What is a JWT token','JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.',1,3,1,92,'2021-06-18 14:13:15','ACTIVE'),
+(44,'dsghrsgfdgsdfg','JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.\r\nJSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.\r\nJSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.\r\n\r\nAlthough JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.',1,3,1,92,'2021-06-18 14:13:16','ACTIVE'),
 (45,'About the final','Does anybody know what will be on the final exam?',1,9,2,92,'2021-06-18 14:13:51','ACTIVE'),
 (46,'DOes the status work','pls work',1,10,1,92,'2021-06-18 13:43:23','ACTIVE'),
 (50,'work work','lets code some more',1,10,1,92,'2021-06-25 18:42:07','ACTIVE'),
@@ -222,9 +240,12 @@ insert  into `questions`(`id`,`subject`,`body`,`department_id`,`course_id`,`seme
 (52,'p[o]o[]','p[o]uyi0o',1,NULL,1,92,'2021-06-24 21:42:28','ACTIVE'),
 (53,'Final exam question','Will there be modal verb on the final exam?\r\n',1,4,1,92,'2021-06-27 17:21:15','ACTIVE'),
 (57,'Why is there no questions here','Come on guys be active!!',2,NULL,1,92,'2021-06-27 17:27:57','ACTIVE'),
-(58,'Final exam','What will be on the final exam??',1,3,1,92,'2021-06-27 17:28:25','ACTIVE'),
-(59,'Project defense','When is the project defense',1,6,4,92,'2021-06-27 17:30:19','ACTIVE'),
-(60,'My first question','How to change a light bulb?',2,NULL,1,155,'2021-06-27 17:39:40','ACTIVE');
+(58,'Final exam','What will be on the final exam???',1,3,1,92,'2021-06-28 13:12:41','ACTIVE'),
+(59,'Project defense','When is the project defense?',1,6,4,92,'2021-06-28 15:42:50','ACTIVE'),
+(60,'My first question','How to change a light bulb??',2,NULL,1,155,'2021-06-28 16:02:12','ACTIVE'),
+(61,'Midterm makeup','When is the midterm makeup?',1,8,1,155,'2021-06-28 16:02:25','ACTIVE'),
+(62,'IT????','What do you guys actually do?\r\nCopy paste stuff right?',1,NULL,1,92,'2021-06-28 15:53:12','ACTIVE'),
+(63,'Mailing problem','Gmail SMTP not working on DigitalCloud but works on localhost?',1,6,4,92,'2021-06-28 15:52:06','ACTIVE');
 
 /*Table structure for table `semesters` */
 
@@ -238,7 +259,7 @@ CREATE TABLE `semesters` (
 
 /*Data for the table `semesters` */
 
-insert  into `semesters`(`id`,`name`) values
+insert  into `semesters`(`id`,`name`) values 
 (1,'Semester I'),
 (2,'Semester II'),
 (3,'Semester III'),
@@ -272,7 +293,7 @@ CREATE TABLE `users` (
 
 /*Data for the table `users` */
 
-insert  into `users`(`id`,`name`,`email`,`password`,`date_of_joining`,`faculty_id`,`department_id`,`status`,`role`,`token`,`token_created_at`) values
+insert  into `users`(`id`,`name`,`email`,`password`,`date_of_joining`,`faculty_id`,`department_id`,`status`,`role`,`token`,`token_created_at`) values 
 (92,'Selak Vedran','selakvedran@gmail.com','078f4b946d6498e0e506830c9cda8668','2021-06-22 23:28:43',1,1,'ACTIVE','ADMIN',NULL,'2021-05-05 23:56:39'),
 (155,'Veka Peka','vedran.selak@stu.ibu.edu.ba','078f4b946d6498e0e506830c9cda8668','2021-06-27 17:37:52',1,2,'ACTIVE','USER',NULL,NULL);
 

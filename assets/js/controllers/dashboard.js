@@ -12,6 +12,8 @@ class Dashboard {
       });
     });
 
+
+
     Dashboard.loadLatestQuestions();
     Dashboard.loadLatestAnswers();
     Dashboard.loadHottestQuestions();
@@ -139,7 +141,7 @@ class Dashboard {
       }
       let text = "";
       for(var i=0; i<data.length; i++){
-        text += `<div class='col-lg-12' id="${data[i].id}-your-answer-${data[i].question_id}">
+        text += `<div class='col-lg-12' id="${data[i].id}-your-latest-answer-${data[i].question_id}">
                     <div class='card bg-white border-blue card-padding-s card-style' style='height: auto;'>
                      <div class="card-header">
                        <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[i].name} ${AskIbuUtils.time(data[i].posted_at)}</h6>
@@ -174,15 +176,14 @@ class Dashboard {
   }
 
   static loadQuestion(question_id, answer_id){
-    RestClient.get("api/user/question/", { "answer_id" : answer_id }, function(data) {
+    RestClient.get("api/user/question-by-answer/"+answer_id, null, function(data) {
       if(data.length == 0){
         toastr.error("Question of this answer has been removed!");
       } else {
-        let text = `<div class='col-lg-12'>
-                      <div class='card bg-grey card-padding card-style' style='height: auto;'>
+        let text = `<div class='card bg-grey card-padding card-style' style='height: auto;'>
                         <div class='card-body p-1'>
                           <h3 class='card-title question-subject '>${data[0].subject}</h3>
-                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[0].posted_at)}</h6>
+                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data[0].name} ${AskIbuUtils.time(data[0].posted_at)}</h6>
                           <p class='card-text panel p-1'>${data[0].body}</p>
                         </div>
 
@@ -212,9 +213,8 @@ class Dashboard {
                               <button onclick="Dashboard.addAnswer('#account-answers-add-answer-${data[0].id}', '#${answer_id}')" class="btn btn-success" type="button">Send</button>
                             </div>
                         </div>
-                      </div>
-                    </div>`;
-               $("#"+answer_id+"-your-answer-"+question_id).html(text);
+                      </div>`;
+               $("#"+answer_id+"-your-latest-answer-"+question_id).html(text);
                Dashboard.loadAnswers(question_id, `#${answer_id}`);
       }
     });
@@ -227,7 +227,6 @@ class Dashboard {
 
   static loadAnswer(answer_id){
     RestClient.get("api/user/answer/"+answer_id, null, function(data){
-      console.log(data)
       let text = `<div class='card bg-white border-blue card-padding-s card-style' style='height: auto;'>
                        <div class="card-header">
                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted by:</strong> ${data.name} ${AskIbuUtils.time(data.posted_at)}</h6>
@@ -253,7 +252,7 @@ class Dashboard {
             </div>
           </div>
         </div>`;
-      $(`#${data.id}-your-answer-${data.question_id}`).html(text);
+      $(`#${data.id}-your-latest-answer-${data.question_id}`).html(text);
     });
   }
 
