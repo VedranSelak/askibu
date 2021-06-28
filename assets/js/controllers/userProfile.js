@@ -1,11 +1,6 @@
 class UserProfile {
 
   static init(){
-
-    $(window).on('hashchange', function(e){
-      UserProfile.loadData();
-    });
-
     UserProfile.loadData();
   }
 
