@@ -17,4 +17,23 @@ Flight::route("GET /faculties", function(){
   Flight::json(Flight::facultyService()->get_faculties($offset, $limit, $search, $order));
 });
 
+
+/**
+ * @OA\Post(path="/admin/faculties",tags={"x-admin","faculty"},security={{"ApiKeyAuth": {}}},
+ * @OA\RequestBody(description="Faculty info", required=true,
+ *    @OA\MediaType(
+ *      mediaType="application/json",
+ *      @OA\Schema(
+ *        @OA\Property(property="name", type="string", example="Faculty name", desctiption="Name of the faculty")
+ *      )
+ *    )
+ *   ),
+ * @OA\Response(response="200", description="faculty that was added")
+ * )
+ */
+Flight::route('POST /admin/faculties', function(){
+    $data = Flight::request()->data->getData();
+    Flight::json(Flight::facultyService()->add($data));
+});
+
  ?>

@@ -80,7 +80,7 @@
                                 <a href="#account"><i class="fa fa-user-circle text-blue"></i> Account</a>
                             </li>
                             <li class="active">
-                                <a href="#"><i class="fa fa-university fa-fw text-blue"></i> Faculties<span class="fa arrow"></span></a>
+                                <a href="#"><i class="fa fa-university fa-fw text-blue"></i> Faculties<i onclick="openAddFacultyModal()" class="fa fa-plus pl-1 add-answer admin-panel hidden"></i><span class="fa arrow"></span></a>
                                 <ul id="faculty-list" class="nav nav-second-level">
                                 </ul>
                             </li>
@@ -102,6 +102,52 @@
             </main>
         </div>
         <!-- /#wrapper -->
+
+        <div class="modal fade" id="add-faculty-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <form id="add-faculty" role="form">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Add a faculty</h4>
+                    </div>
+                    <div class="modal-body">
+                          <div class="form-group">
+                              <label>Name of the faculty</label>
+                              <input name="name" class="form-control"></input>
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-default">Save changes</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="add-department-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <form id="add-department" role="form">
+                    <input type="hidden" name="faculty_id" />
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Add a department</h4>
+                    </div>
+                    <div class="modal-body">
+                          <div class="form-group">
+                              <label>Department name</label>
+                              <input name="name" class="form-control"></input>
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-default">Save changes</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
 
         <!-- jQuery -->
         <script src="./assets/js/jquery.min.js"></script>
@@ -154,6 +200,22 @@
             window.location = "login.html";
           }
 
+          $("#add-faculty").validate({
+           submitHandler: function(form, event) {
+             event.preventDefault();
+             let data = AskIbuUtils.formToJson($(form));
+             addFaculty(data);
+           }
+          });
+
+          $("#add-department").validate({
+           submitHandler: function(form, event) {
+             event.preventDefault();
+             let data = AskIbuUtils.formToJson($(form));
+             addDepartment(data);
+           }
+          });
+
           $(document).ready(function() {
 
 
@@ -161,19 +223,19 @@
               window.location = "login.html";
             }else {
               $("body").show();
-              let userInfo = AskIbuUtils.parseJWT(window.localStorage.getItem("token"));
-              if(userInfo.r == "ADMIN"){
-                $(".admin-panel").removeClass("hidden");
-              }
             }
 
+            loadMain();
+          });
+
+          function loadMain(){
             $.ajax({
                  url: "api/faculties",
                  type: "GET",
                  success: function(data) {
                    var text = "";
                    for(var i=0; i<data.length; i++){
-                     text += "<li><a href='#'>"+data[i].name+"<span class='fa arrow'></span></a><ul id='"+data[i].id+"'class='nav nav-third-level'></ul></li>";
+                     text += `<li><a href='#'>${data[i].name}<i onclick="openAddDepartmentModal(${data[i].id})" class="fa fa-plus pl-1 add-answer admin-panel hidden"></i><span class='fa arrow'></span></a><ul id='${data[i].id}'class='nav nav-third-level'></ul></li>`;
                   }
 
                   for(var i=0; i<data.length; i++){
@@ -195,6 +257,10 @@
                   }
 
                   $("#faculty-list").html(text);
+                  let userInfo = AskIbuUtils.parseJWT(window.localStorage.getItem("token"));
+                  if(userInfo.r == "ADMIN"){
+                    $(".admin-panel").removeClass("hidden");
+                  }
                   var app = $.jQuerySPApp({defaultView  : "dashboard"});
                   app.route({view : "dashboard", load : "dashboard.html", onReady: function() { Dashboard.init() }});
                   app.route({view : "account", load : "account.html", onReady: function() { account = new Account(); account.init(); }});
@@ -208,7 +274,7 @@
                    console.log(jqXHR);
                  }
               });
-          });
+          }
 
           function loadDepartment(department_id){
             var url = new URL(window.location);
@@ -224,6 +290,36 @@
 
             window.history.pushState({},'', url);
           }
+
+          function openAddFacultyModal(){
+            $("#add-faculty-modal").modal("show");
+          }
+
+          function openAddDepartmentModal(faculty_id){
+            console.log(faculty_id);
+            $("#add-department *[name='faculty_id']").val(faculty_id);
+            $("#add-department-modal").modal("show");
+          }
+
+          function addFaculty(faculty) {
+            RestClient.post("api/admin/faculties", faculty, function (data){
+              toastr.success("Faculty added seccessfuly!");
+              $("#add-faculty").trigger("reset");
+              $("#add-faculty-modal").modal("hide");
+              loadMain();
+            });
+          }
+
+          function addDepartment(department) {
+            RestClient.post("api/admin/departments", department, function (data){
+              toastr.success("Department added seccessfuly!");
+              $("#add-department").trigger("reset");
+              $("#add-department-modal").modal("hide");
+              loadMain();
+            });
+          }
+
+
         </script>
 
     </body>

@@ -22,6 +22,9 @@ class Account {
       me.loadYourAnswers();
       me.loadYourRemovedQuestions();
       me.loadYourRemovedAnswers();
+      let url = new URL(window.location);
+      url.search = '';
+      history.replaceState(null, null, url);
     });
 
     $("#edit-question").validate({

@@ -10,9 +10,11 @@ class Dashboard {
         $("#pin-count").html(data.pins);
         $("#answer-count").html(data.count);
       });
+
+      let url = new URL(window.location);
+      url.search = '';
+      history.replaceState(null, null, url);
     });
-
-
 
     Dashboard.loadLatestQuestions();
     Dashboard.loadLatestAnswers();

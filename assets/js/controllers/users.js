@@ -1,6 +1,9 @@
 class Users {
 
   static init(){
+    let url = new URL(window.location);
+    url.search = '';
+    history.replaceState(null, null, url);
     Users.getAll();
   }
 
