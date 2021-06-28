@@ -58,8 +58,7 @@ class AnswerService extends BaseService {
       ];
       return parent::add($data);
     } catch (\Exception $e) {
-      //throw new Exception("One of the fields is invalid!",403);
-      throw new $e;
+      throw new Exception("One of the fields is invalid!",403);
     }
 
   }
@@ -67,7 +66,7 @@ class AnswerService extends BaseService {
   public function update_answer($user, $id, $data) {
     $db_answer = $this->dao->get_by_id($id);
     if($db_answer["user_id"] != $user["id"]) throw new Exception("Invalid answer!", 403);
-    $data["status"] = "UPDATED";
+    if(strtotime(date(Config::DATE_FORMAT)) - strtotime($db_answer["posted_at"]) > 600) throw new Exception("Can't edit answer older than 10 minutes!",400);
     return $this->update($id, $data);
   }
 

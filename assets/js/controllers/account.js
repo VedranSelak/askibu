@@ -31,6 +31,14 @@ class Account {
        me.update(data);
      }
     });
+
+    $("#edit-answer").validate({
+     submitHandler: function(form, event) {
+       event.preventDefault();
+       let data = AskIbuUtils.formToJson($(form));
+       me.updateAnswer(data);
+     }
+    });
   }
 
   loadYourQuestions(){
@@ -59,53 +67,53 @@ class Account {
 
               for(var i=0; i<data.length; i++){
                 text += `<div class='col-lg-12'>
-                                      <div class='card bg-grey card-padding card-style' style='height: auto;'>
-                                        <div class='card-body p-1'>
-                                        <div class="container-fluid cut-size p-1">
-                                          <div class="row">
-                                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                              <h3 class='card-title question-subject'>${data[i].subject}</h3>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                              <a onclick="account.preEdit(${data[i].id})" class="pull-right pointer edit-link"><i class="fa fa-edit fa-2x"></i></a>
-                                            </div>
-                                          </div>
-                                        </div>
-                                          <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[i].posted_at)}</h6>
-                                          <p class='card-text panel p-1'>${data[i].body}</p>
-                                        </div>
-                                        <div class="container-fluid p-1">
-                                          <div class="row">
-                                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                              <a onclick='account.loadAnswers(${data[i].id})' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                              <a id="account-add-answer-show-form-${data[i].id}" onclick="account.showAnswerForm(${data[i].id}, '#account-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
-                                            </div>
-                                          </div>
-                                        </div>
+                            <div class='card bg-grey card-padding card-style' style='height: auto;'>
+                              <div class='card-body p-1'>
+                              <div class="container-fluid cut-size p-1">
+                                <div class="row">
+                                  <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <h3 class='card-title question-subject'>${data[i].subject}</h3>
+                                  </div>
+                                  <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <a onclick="account.preEdit(${data[i].id})" class="pull-right pointer edit-link"><i class="fa fa-edit fa-2x"></i></a>
+                                  </div>
+                                </div>
+                              </div>
+                                <h6 class='card-subtitle mb-2 text-muted'><strong>Posted</strong> ${AskIbuUtils.time(data[i].posted_at)}</h6>
+                                <p class='card-text panel p-1'>${data[i].body}</p>
+                              </div>
+                              <div class="container-fluid p-1">
+                                <div class="row">
+                                  <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <a onclick='account.loadAnswers(${data[i].id})' class="pointer load-hide-answers"><i class='fa fa-comments'></i>Anwsers</a>
+                                  </div>
+                                  <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <a id="account-add-answer-show-form-${data[i].id}" onclick="account.showAnswerForm(${data[i].id}, '#account-add-answer-')" class="pull-right pointer add-answer">+ Add answer</a>
+                                  </div>
+                                </div>
+                              </div>
 
-                                        <div id='account-answers-container-${data[i].id}' class="container-fluid hidden">
-                                          <div class="row" id='account-answers-list-${data[i].id}'>
+                              <div id='account-answers-container-${data[i].id}' class="container-fluid hidden">
+                                <div class="row" id='account-answers-list-${data[i].id}'>
 
-                                          </div>
-                                          <div class='row text-center'>
-                                            <div class="card-footer load-hide-answers"><i class="fa fa-chevron-up pointer" onclick='account.hideAnswers(${data[i].id})'></i></div>
-                                          </div>
-                                        </div>
-                                        <div id="account-add-answer-${data[i].id}" class="container-fluid hidden">
+                                </div>
+                                <div class='row text-center'>
+                                  <div class="card-footer load-hide-answers"><i class="fa fa-chevron-up pointer" onclick='account.hideAnswers(${data[i].id})'></i></div>
+                                </div>
+                              </div>
+                              <div id="account-add-answer-${data[i].id}" class="container-fluid hidden">
 
-                                           <input name="question_id" type="hidden" value="${data[i].id}">
-                                           <div class="row m-1">
-                                              <textarea name="body" type="text" class="form-control"></textarea>
-                                           </div>
-                                            <div class="row m-1">
-                                              <button onclick="account.addAnswer('#account-add-answer-${data[i].id}', '')" class="btn btn-success" type="button">Send</button>
-                                            </div>
+                                 <input name="question_id" type="hidden" value="${data[i].id}">
+                                 <div class="row m-1">
+                                    <textarea name="body" type="text" class="form-control"></textarea>
+                                 </div>
+                                  <div class="row m-1">
+                                    <button onclick="account.addAnswer('#account-add-answer-${data[i].id}', '')" class="btn btn-success" type="button">Send</button>
+                                  </div>
 
-                                        </div>
-                                      </div>
-                                    </div>`;
+                              </div>
+                            </div>
+                          </div>`;
               }
               $("#account-questions-list").html(text);
               if(me.offsetYourQuestions+me.rows >= me.totalYourQuestions ){
@@ -179,7 +187,7 @@ class Account {
                }
                text += `            </div>
                                     <div class="row">
-                                      <a onclick="account.loadQuestion(${data[i].question_id}, ${data[i].id})" class="pointer toggling-link pl-1">Load question</a>
+                                      <a onclick="account.loadQuestion(${data[i].question_id}, ${data[i].id})" class="pointer toggling-link pl-1 pr-1">Load question</a>|<a onclick="account.preEditAnswer(${data[i].id})" class="pointer toggling-link pl-1">Edit</a>
                                     </div>
                                  </div>
                               </div>
@@ -565,7 +573,7 @@ class Account {
           </div>`;
         } else {
           text += `<div class="row">
-            <a onclick="account.loadQuestion(${data.question_id}, ${data.id})" class="pointer toggling-link pl-1 ">Load question</a>
+            <a onclick="account.loadQuestion(${data.question_id}, ${data.id})" class="pointer toggling-link pl-1 pr-1">Load question</a>|<a onclick="account.preEditAnswer(${data.id})" class="pointer toggling-link pl-1">Edit</a>
           </div>`;
         }
 
@@ -612,6 +620,13 @@ class Account {
     });
   }
 
+  preEditAnswer(id){
+    RestClient.get("api/user/answer/"+id, null, function(data){
+        AskIbuUtils.dataToForm("#edit-answer", data);
+        $("#edit-answer-modal").modal("show");
+    });
+  }
+
   update(question){
     if(question.course_id == ""){
       question.course_id = null;
@@ -638,6 +653,30 @@ class Account {
             }
          });
  }
+
+ updateAnswer(answer){
+   let me = this;
+   $.ajax({
+           url: "api/user/answer/"+answer.id,
+           type: "PUT",
+           data: JSON.stringify(answer),
+           contentType: "application/json",
+           beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+           success: function(data) {
+             toastr.success("Answer was updated!");
+             $("#edit-answer").trigger("reset");
+             $("#edit-answer *[name='id']").val("");
+             $('#edit-answer-modal').modal("hide");
+             me.loadYourQuestions();
+             me.loadYourAnswers();
+             me.loadYourRemovedQuestions();
+             me.loadYourRemovedAnswers();
+             },
+           error: function(jqXHR, textStatus, errorThrown ){
+             toastr.error(jqXHR.responseJSON.message);
+           }
+        });
+}
 
   pinned(answer_id, question_id, selector = ""){
     let value = 0;

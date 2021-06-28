@@ -132,13 +132,37 @@
             <input name="semester_id" type="hidden" />
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Ask a question</h4>
+                <h4 class="modal-title" id="myModalLabel">Edit a question</h4>
             </div>
             <div class="modal-body">
                   <div class="form-group">
                       <label>Subject</label>
                       <input type="text" name="subject" class="form-control" placeholder="Subject of the question" required minlength="5">
                   </div>
+                  <div class="form-group">
+                      <label>Body</label>
+                      <textarea name="body" class="form-control" rows="10"></textarea>
+                  </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-default">Save changes</button>
+            </div>
+          </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit-answer-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form id="edit-answer" role="form">
+            <input type="hidden" name="id" />
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Edit an answer</h4>
+            </div>
+            <div class="modal-body">
                   <div class="form-group">
                       <label>Body</label>
                       <textarea name="body" class="form-control" rows="10"></textarea>
