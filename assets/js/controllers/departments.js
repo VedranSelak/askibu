@@ -205,10 +205,8 @@ class Departments {
     }
     if (id == "next"){
       this.offset += this.rows;
-      $("#"+id).prop("disabled", false);
       this.loadQuestions(department, semester, course);
     } else if (id == "previous"){
-      $("#"+id).prop("disabled", false);
       this.offset -= this.rows;
       this.loadQuestions(department, semester, course);
     }
